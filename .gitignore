@@ -1,0 +1,57 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+out/
+
+# Cache directories
+.cache/
+.temp/
+.cursorrules
+
+# Foundry
+crypto/lib/
+crypto/out/
+crypto/.coverage_artifacts
+crypto/.coverage_cache
+crypto/.coverage_contracts
+crypto/broadcast/
+crypto/cache/
+
+keypair/
+# Foundry cache
+.foundry/
+
+prep/*
+.wake/
