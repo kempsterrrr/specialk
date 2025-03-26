@@ -41,13 +41,13 @@ out/
 .cursorrules
 
 # Foundry
-crypto/lib/
-crypto/out/
-crypto/.coverage_artifacts
-crypto/.coverage_cache
-crypto/.coverage_contracts
-crypto/broadcast/
-crypto/cache/
+forge/lib/
+forge/out/
+forge/.coverage_artifacts
+forge/.coverage_cache
+forge/.coverage_contracts
+forge/broadcast/
+forge/cache/
 
 keypair/
 # Foundry cache

@@ -1,5 +1,7 @@
 # Katana Development Starter Kit
 
+![Box of legos](leo.jpg)
+
 ## 🚀 Introduction
 
 Welcome to the **Katana Development Starter Kit**! This repository serves as
@@ -9,9 +11,13 @@ This kit provides:
 
 - **Deno-based development environment** 🦕
 - **Pre-configured build system** using Esbuild & TypeScript
+- **[UI-kit CSS](https://getuikit.com/)**, optional to use
+- **[viem](https://viem.sh/)** for blockchain interactions
 - **Example contracts** to help you integrate with **Katana’s money legos** and
   interfaces for all deployed contracts on Katana and Tatara
 - **Foundry setup** for smart contract development and testing
+- **Static File Handling** (HTML, CSS, and assets copied to `dist/`, easy to
+  host on IPFS or any static file hosting service)
 
 Whether you're building **yield strategies, cross-chain intent-based execution,
 or novel DeFi protocols**, this starter kit helps you bootstrap your project
@@ -19,19 +25,11 @@ or novel DeFi protocols**, this starter kit helps you bootstrap your project
 
 ---
 
-## 📦 What's Included
-
-- **Simple Unopinionated Deno Build System** (see `build.ts`)
-- **Example Smart Contracts** (coming soon)
-- **Standard Interfaces & ABIs** for interacting with Katana primitives
-- **Static File Handling** (HTML, CSS, and assets copied to `dist/`, easy to
-  host on IPFS or any static file hosting service)
-
----
-
 ## 🛠 Setup & Installation
 
 ### 1️⃣ **Install Dependencies**
+
+Copy `.env.example` into `.env` and add in your RPC endpoints.
 
 Ensure you have the required tools installed:
 
