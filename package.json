@@ -5,11 +5,16 @@
   "scripts": {
     "build": "bun build.js",
     "fork:tatara": "bun scripts/tatara_bun.js",
-    "dev": "bun build.js && bun run fork:tatara"
+    "start:anvil": "chmod +x scripts/start_anvil.sh && scripts/start_anvil.sh",
+    "verify:anvil": "bun scripts/verify_anvil.js",
+    "fork:anvil": "echo \"Use two separate terminals:\n1. Run 'bun run start:anvil'\n2. In a new terminal: 'bun run verify:anvil'\"",
+    "test:connection": "bun scripts/test_connection.js",
+    "dev:tevm": "bun build.js && bun run fork:tatara",
+    "dev": "echo \"Run these commands in separate terminals:\n1. bun run build\n2. bun run start:anvil\n3. open dist/index.html in your browser\""
   },
   "dependencies": {
     "tevm": "^1.0.0-next.140",
-    "viem": "^2.24.3"
+    "viem": "^2.23.13"
   },
   "devDependencies": {
     "esbuild": "^0.24.0",

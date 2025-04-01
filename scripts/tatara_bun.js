@@ -39,10 +39,12 @@ async function main() {
   console.log('⚡ Creating local Tatara fork...');
   
   try {
+    // Create a memory client as recommended in the TEVM docs
     const client = createMemoryClient({
       fork: {
+        // Use transport with appropriate options
         transport: http(TATARA_RPC_URL, {
-          timeout: 30000, // 30 seconds timeout
+          timeout: 60000, // 60 seconds timeout for initial fork
           fetchOptions: {
             headers: {
               'Content-Type': 'application/json',
@@ -54,24 +56,35 @@ async function main() {
         type: 'auto'
       },
       chainId: 471, // Tatara chain ID
-      loggingLevel: 'error' // Only show errors
+      loggingLevel: 'info', // More detailed logging for troubleshooting
+      jsonRpcHandler: {
+        retryCount: 3,
+        retryDelay: 1000,
+      }
     });
 
-    console.log('⏳ Connecting to Tatara and creating local fork...');
+    console.log('⏳ Waiting for fork to be ready...');
     
+    // Explicitly wait for the fork to be ready before proceeding
+    await client.tevmReady();
+    
+    console.log('✅ Fork is ready');
+
     // Set up the server with CORS enabled
     const server = createServer(client, {
-      corsOrigin: '*' // Allow requests from any origin
+      corsOrigin: '*', // Allow requests from any origin
+      enableCache: true // Enable caching for better performance
     });
     
-    // Start the server first
+    // Start the server
     await new Promise((resolve) => {
-      server.listen(PORT, resolve);
+      server.listen(PORT, () => {
+        console.log(`\n✅ Tatara fork server running at http://localhost:${PORT}`);
+        console.log(`RPC URL: http://localhost:${PORT}`);
+        console.log('Chain ID: 471 (Tatara)');
+        resolve();
+      });
     });
-    
-    console.log(`\n✅ Tatara fork server running at http://localhost:${PORT}`);
-    console.log(`RPC URL: http://localhost:${PORT}`);
-    console.log('Chain ID: 471 (Tatara)');
     
     // Verify contracts after the server is running
     console.log('\n📋 Verifying contracts on the fork:');
@@ -79,6 +92,8 @@ async function main() {
     try {
       // Query AUSD contract (native stablecoin)
       console.log('\n🪙 Checking AUSD contract...');
+      
+      // Use sequential requests to avoid overwhelming the server
       const ausdName = await client.readContract({
         address: ADDRESSES.AUSD,
         abi: ERC20_ABI,
@@ -110,6 +125,7 @@ async function main() {
       
       // Query WETH contract
       console.log('\n🪙 Checking WETH contract...');
+      
       const wethName = await client.readContract({
         address: ADDRESSES.WETH,
         abi: ERC20_ABI,
@@ -133,13 +149,18 @@ async function main() {
       console.log(`Total Supply: ${formatEther(wethTotalSupply)} ${wethSymbol}`);
       
       console.log('\n✅ Contract verification successful!');
+      console.log('\nYour Tatara fork is ready for use!');
+      console.log('\nConnect MetaMask or other wallets to this RPC endpoint:');
+      console.log('- Network Name: Tatara Local Fork');
+      console.log(`- RPC URL: http://localhost:${PORT}`);
+      console.log('- Chain ID: 471');
+      console.log('- Currency Symbol: ETH');
     } catch (error) {
       console.error('❌ Error verifying contracts:', error);
       console.log('Server is still running, you can connect to it, but some contracts might not be accessible.');
     }
     
-    console.log('\nConnect MetaMask or other wallets to this RPC endpoint');
-    console.log('Press Ctrl+C to stop the server');
+    console.log('\nPress Ctrl+C to stop the server');
 
     // Handle server shutdown
     process.on('SIGINT', () => {

@@ -10,6 +10,7 @@ your launchpad for building on **Katana** and its testnet **Tatara**.
 This kit provides:
 
 - **Bun-based development environment** 🧅
+- **Anvil + Foundry integration** for reliable local chain forks
 - **Pre-configured build system** using Esbuild & TypeScript
 - **[UI-kit CSS](https://getuikit.com/)**, optional to use
 - **[viem](https://viem.sh/)** for blockchain interactions
@@ -18,7 +19,7 @@ This kit provides:
 - **Foundry setup** for smart contract development and testing
 - **Static File Handling** (HTML, CSS, and assets copied to `dist/`, easy to
   host on IPFS or any static file hosting service)
-- **[TEVM](https://tevm.sh/) support** for local development with forked Tatara state
+- **Local blockchain forks** for development with real contract states
 
 Whether you're building **yield strategies, cross-chain intent-based execution,
 or novel DeFi protocols**, this starter kit helps you bootstrap your project
@@ -35,7 +36,7 @@ Copy `.env.example` into `.env` and add in your RPC endpoints.
 Ensure you have the required tools installed:
 
 - [Bun](https://bun.sh/) - Follow the installation instructions at https://bun.sh/
-- [Foundry](https://book.getfoundry.sh/) for contract development
+- [Foundry](https://book.getfoundry.sh/) for contract development and local chain forks
 - [Git](https://git-scm.com/)
 
 After installing Bun, run:
@@ -62,14 +63,24 @@ This will:
 
 ### 3️⃣ **Local Chain Forking**
 
-For local development with a Tatara testnet fork:
+For local development with a Tatara testnet fork, you'll need to run two commands in separate terminals:
 
+**Terminal 1: Start Anvil Fork**
 ```sh
-# Start local Tatara fork
-bun run fork:tatara
+bun run start:anvil
 ```
 
-This will create a local fork of Tatara and start an RPC server at http://localhost:8545 that you can connect to with MetaMask (Chain ID: 471).
+**Terminal 2: Verify the Fork**
+```sh
+bun run verify:anvil
+```
+
+You can also test the connection with:
+```sh
+bun run test:connection
+```
+
+This creates a local fork of Tatara at http://localhost:8545 that you can connect to with MetaMask (Chain ID: 471).
 
 See [scripts/README.md](scripts/README.md) for more details.
 
@@ -79,9 +90,9 @@ The starter kit includes a simple example dApp that connects to the Tatara testn
 
 To run the example:
 
-1. Start your local Tatara fork:
+1. Start your local Tatara fork (in its own terminal):
    ```sh
-   bun run fork:tatara
+   bun run start:anvil
    ```
 
 2. In a new terminal, build the dApp:
