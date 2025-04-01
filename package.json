@@ -3,11 +3,18 @@
   "version": "0.1.0",
   "description": "Development starter kit for Katana and Tatara",
   "scripts": {
-    "fork:tatara": "bun scripts/tatara_bun.js"
+    "build": "bun build.js",
+    "fork:tatara": "bun scripts/tatara_bun.js",
+    "dev": "bun build.js && bun run fork:tatara"
   },
   "dependencies": {
     "tevm": "^1.0.0-next.140",
-    "viem": "^2.23.13"
+    "viem": "^2.24.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "@types/node": "^20.11.25",
+    "typescript": "^5.4.2"
   },
   "type": "module"
 }

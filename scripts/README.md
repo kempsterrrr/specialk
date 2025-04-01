@@ -4,23 +4,21 @@ This folder contains utility scripts for Katana and Tatara development.
 
 ## Tatara Chain Forking
 
-### Using Bun (Recommended)
-
 The `tatara_bun.js` script creates a local fork of the Tatara testnet using TEVM, allowing you to:
 
 - Test interactions with Tatara contracts without spending gas
 - Use MetaMask or other wallets with your local fork
 - Verify contract states and experiment with modifications
 
-#### Prerequisites
+### Prerequisites
 
-1. Install [Bun](https://bun.sh/)
+1. Install [Bun](https://bun.sh/) - Follow installation instructions at https://bun.sh/
 2. Make sure you have a Tatara RPC URL in your `.env` file:
    ```
    TATARA_RPC_URL=https://your-tatara-rpc-url
    ```
 
-#### Usage
+### Usage
 
 Run the following command:
 
@@ -34,28 +32,13 @@ The script will:
 3. Verify several contracts including AUSD, WETH, and MorphoBlue
 4. Start a local RPC server at http://localhost:8545
 
-#### Connecting to the Fork
+### Connecting to the Fork
 
 In MetaMask or other wallets:
 - **Network Name**: Tatara Local Fork
 - **RPC URL**: http://localhost:8545
 - **Chain ID**: 471
 - **Currency Symbol**: ETH
-
-### Using Deno
-
-The `tevm-tatara.ts` script provides similar functionality using Deno.
-
-#### Prerequisites
-
-1. Install [Deno](https://deno.land/)
-2. Make sure you have a Tatara RPC URL in your `.env` file
-
-#### Usage
-
-```bash
-deno task tevm:tatara
-```
 
 ### What the Script Does
 
@@ -64,8 +47,7 @@ deno task tevm:tatara
 3. Reads ERC20 data from AUSD and WETH tokens
 4. Reads configuration data from the MorphoBlue protocol
 5. Reports all data to the console
-
-The script includes detailed logging at each step to help diagnose any issues.
+6. Starts a local RPC server that you can connect to
 
 ### Extending the Script
 
@@ -80,10 +62,9 @@ You can extend this script to:
 
 If you encounter issues:
 
-- **Script hangs**: The script now includes a 60-second timeout for the TEVM node initialization. If it exceeds this time, it will exit with an error.
 - **RPC issues**: Ensure your Tatara RPC URL is correct and accessible. The script requires this to be set.
 - **Contract errors**: Check that the contract addresses are correct and that your ABI matches the deployed contracts.
-- **Debug mode**: The script uses debug-level logging to provide more information about its execution.
+- **Connection issues**: Make sure port 8545 is not being used by another application.
 
 If the TEVM node fails to connect, try:
 
