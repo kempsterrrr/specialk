@@ -1,0 +1,13 @@
+{
+  "name": "katana-development-starter-kit",
+  "version": "0.1.0",
+  "description": "Development starter kit for Katana and Tatara",
+  "scripts": {
+    "fork:tatara": "bun scripts/tatara_bun.js"
+  },
+  "dependencies": {
+    "tevm": "^1.0.0-next.140",
+    "viem": "^2.23.13"
+  },
+  "type": "module"
+}

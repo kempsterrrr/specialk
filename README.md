@@ -10,6 +10,7 @@ your launchpad for building on **Katana** and its testnet **Tatara**.
 This kit provides:
 
 - **Deno-based development environment** 🦕
+- **Bun support** for local chain forks and development 🧅
 - **Pre-configured build system** using Esbuild & TypeScript
 - **[UI-kit CSS](https://getuikit.com/)**, optional to use
 - **[viem](https://viem.sh/)** for blockchain interactions
@@ -34,7 +35,7 @@ Copy `.env.example` into `.env` and add in your RPC endpoints.
 
 Ensure you have the required tools installed:
 
-- [Deno](https://deno.land/) `2+`
+- [Deno](https://deno.land/) `2+` or [Bun](https://bun.sh/)
 - [Foundry](https://book.getfoundry.sh/) for contract development
 - [Git](https://git-scm.com/)
 
@@ -53,21 +54,29 @@ This will:
 - Copy HTML & static assets to `./dist`
 - Prepare the environment for deployment
 
-### 3️⃣ **TEVM Local Development**
+### 3️⃣ **Local Chain Forking**
 
-For local development with a Tatara testnet fork, run:
+For local development with a Tatara testnet fork, you have two options:
+
+#### Using Bun (Recommended)
+
+```sh
+# Install dependencies
+bun install
+
+# Start local Tatara fork
+bun run fork:tatara
+```
+
+This will create a local fork of Tatara and start an RPC server at http://localhost:8545 that you can connect to with MetaMask (Chain ID: 471).
+
+#### Using Deno
 
 ```sh
 deno task tevm:tatara
 ```
 
-This will:
-
-- Create a local TEVM node that forks Tatara's state
-- Verify the fork is working by checking contract states
-- Allow you to test interactions without spending gas
-
-See [scripts/README.md](scripts/README.md) for more details.
+See [scripts/README.md](scripts/README.md) for more details on both methods.
 
 ---
 

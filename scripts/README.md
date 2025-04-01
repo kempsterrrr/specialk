@@ -1,29 +1,60 @@
-# TEVM Scripts
+# Katana Development Scripts
 
-This directory contains scripts for interacting with the Katana ecosystem using TEVM.
+This folder contains utility scripts for Katana and Tatara development.
 
-## TEVM Tatara Fork
+## Tatara Chain Forking
 
-The `tevm-tatara.ts` script creates a local fork of the Tatara testnet using TEVM. This allows you to:
+### Using Bun (Recommended)
 
-- Test interactions with deployed contracts without spending actual gas
-- Read state from contracts on the Tatara network
-- Simulate transactions against deployed contracts
-- Set up local development with a realistic state copy
+The `tatara_bun.js` script creates a local fork of the Tatara testnet using TEVM, allowing you to:
 
-### Running the Script
+- Test interactions with Tatara contracts without spending gas
+- Use MetaMask or other wallets with your local fork
+- Verify contract states and experiment with modifications
 
-First, make sure you have set the required environment variables:
+#### Prerequisites
 
-1. Copy `.env.example` to `.env` in the project root
-2. Set your Tatara RPC URL in the `.env` file (this is required!)
+1. Install [Bun](https://bun.sh/)
+2. Make sure you have a Tatara RPC URL in your `.env` file:
+   ```
+   TATARA_RPC_URL=https://your-tatara-rpc-url
+   ```
+
+#### Usage
+
+Run the following command:
 
 ```bash
-# Run with the RPC URL from your .env file
-deno task tevm:tatara
+bun run fork:tatara
+```
 
-# Or provide the RPC URL directly
-TATARA_RPC_URL=https://your-custom-rpc.example deno task tevm:tatara
+The script will:
+1. Connect to the Tatara RPC
+2. Create a local fork of the Tatara blockchain
+3. Verify several contracts including AUSD, WETH, and MorphoBlue
+4. Start a local RPC server at http://localhost:8545
+
+#### Connecting to the Fork
+
+In MetaMask or other wallets:
+- **Network Name**: Tatara Local Fork
+- **RPC URL**: http://localhost:8545
+- **Chain ID**: 471
+- **Currency Symbol**: ETH
+
+### Using Deno
+
+The `tevm-tatara.ts` script provides similar functionality using Deno.
+
+#### Prerequisites
+
+1. Install [Deno](https://deno.land/)
+2. Make sure you have a Tatara RPC URL in your `.env` file
+
+#### Usage
+
+```bash
+deno task tevm:tatara
 ```
 
 ### What the Script Does
