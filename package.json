@@ -1,0 +1,21 @@
+{
+  "name": "katana-development-starter-kit",
+  "version": "0.1.0",
+  "description": "Development starter kit for Katana and Tatara",
+  "scripts": {
+    "build": "bun build.js",
+    "start:tevm:tatara": "bun scripts/tatara_bun.js",
+    "start:anvil:tatara": "chmod +x scripts/start_anvil.sh && scripts/start_anvil.sh",
+    "verify:anvil:tatara": "bun scripts/verify_anvil.js",
+  },
+  "dependencies": {
+    "tevm": "^1.0.0-next.140",
+    "viem": "^2.23.13"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "@types/node": "^20.11.25",
+    "typescript": "^5.4.2"
+  },
+  "type": "module"
+}
