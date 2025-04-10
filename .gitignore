@@ -55,3 +55,5 @@ keypair/
 
 prep/*
 .wake/
+abis/
+temp/

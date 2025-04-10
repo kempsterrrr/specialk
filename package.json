@@ -7,6 +7,7 @@
     "start:tevm:tatara": "bun scripts/tatara_bun.js",
     "start:anvil:tatara": "chmod +x scripts/start_anvil.sh && scripts/start_anvil.sh",
     "verify:anvil:tatara": "bun scripts/verify_anvil.js",
+    "build:abi": "bun scripts/build_abi.js"
   },
   "dependencies": {
     "tevm": "^1.0.0-next.140",
