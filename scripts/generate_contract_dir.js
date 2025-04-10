@@ -157,8 +157,8 @@ function generateContractDirectory() {
     // Get the interface content
     const interfaceContent = readFileSync(interfaceInfo.path, 'utf8');
     
-    // Extract interface name
-    const interfaceMatch = interfaceContent.match(/interface\s+(\w+)/);
+    // Extract interface name - improved regex to match actual interface declarations not comments
+    const interfaceMatch = interfaceContent.match(/(?:^|\n)\s*interface\s+(\w+)/);
     const interfaceName = interfaceMatch ? interfaceMatch[1] : fileName;
     
     // Try to find matching ABI
