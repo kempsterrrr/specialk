@@ -7,7 +7,8 @@ import { execSync } from 'node:child_process';
 // Constants
 const INTERFACES_DIR = join(process.cwd(), 'interfaces');
 const ABIS_DIR = join(process.cwd(), 'abis');
-const ADDRESS_FILE = join(INTERFACES_DIR, 'utils', 'KatanaAddresses.sol');
+const KATANA_ADDRESS_FILE = join(INTERFACES_DIR, 'utils', 'KatanaAddresses.sol');
+const TATARA_ADDRESS_FILE = join(INTERFACES_DIR, 'utils', 'TataraAddresses.sol');
 const OUTPUT_DIR = join(process.cwd(), 'dist');
 const FULL_OUTPUT = join(OUTPUT_DIR, 'contractdir.json');
 const SAMPLE_OUTPUT = join(OUTPUT_DIR, 'contractdir_sample.json');
@@ -24,9 +25,13 @@ if (!existsSync(ABIS_DIR)) {
   process.exit(1);
 }
 
-if (!existsSync(ADDRESS_FILE)) {
+if (!existsSync(KATANA_ADDRESS_FILE)) {
   console.error('Error: KatanaAddresses.sol file does not exist');
   process.exit(1);
+}
+
+if (!existsSync(TATARA_ADDRESS_FILE)) {
+  console.warn('Warning: TataraAddresses.sol file does not exist. Will only use KatanaAddresses.sol.');
 }
 
 if (!existsSync(OUTPUT_DIR)) {
@@ -36,9 +41,9 @@ if (!existsSync(OUTPUT_DIR)) {
 console.log('Generating contract directory files...');
 
 // Extract addresses from KatanaAddresses.sol
-function extractAddresses() {
+function extractKatanaAddresses() {
   try {
-    const addressContent = readFileSync(ADDRESS_FILE, 'utf8');
+    const addressContent = readFileSync(KATANA_ADDRESS_FILE, 'utf8');
     const addressMap = {};
     
     // Look for getter function patterns like getSeaportAddress, getMorphoBlueAddress, etc.
@@ -51,24 +56,87 @@ function extractAddresses() {
       
       const contractName = nameMatch[1];
       
-      // Find the Tatara testnet address for this contract
-      const pattern = new RegExp(`function\\s+get${contractName}Address\\(\\)[\\s\\S]*?else[\\s\\S]*?return\\s+(0x[a-fA-F0-9]{40})`);
+      // Find the Katana mainnet address for this contract
+      const pattern = new RegExp(`function\\s+get${contractName}Address\\(\\)[\\s\\S]*?if\\s*\\([^)]*\\)\\s*{[\\s\\S]*?return\\s+(0x[a-fA-F0-9]{40}|address\\(0\\))`);
+      const addressMatch = addressContent.match(pattern);
+      
+      let mainnetAddress = null;
+      if (addressMatch && addressMatch[1] && addressMatch[1] !== 'address(0)') {
+        mainnetAddress = addressMatch[1];
+      }
+      
+      addressMap[contractName] = {
+        tatara: null, // We'll fill this from TataraAddresses.sol
+        mainnet: mainnetAddress
+      };
+    }
+    
+    console.log('Found Katana addresses for the following contracts:', Object.keys(addressMap));
+    return addressMap;
+  } catch (error) {
+    console.error('Error extracting Katana addresses:', error);
+    return {};
+  }
+}
+
+// Extract addresses from TataraAddresses.sol
+function extractTataraAddresses() {
+  try {
+    if (!existsSync(TATARA_ADDRESS_FILE)) {
+      return {};
+    }
+    
+    const addressContent = readFileSync(TATARA_ADDRESS_FILE, 'utf8');
+    const addressMap = {};
+    
+    // Look for getter function patterns
+    const functionMatches = addressContent.match(/function\s+get(\w+)Address\(\)/g) || [];
+    
+    for (const functionMatch of functionMatches) {
+      // Extract the contract name from the function name
+      const nameMatch = functionMatch.match(/get(\w+)Address/);
+      if (!nameMatch) continue;
+      
+      const contractName = nameMatch[1];
+      
+      // Extract the address from the return statement
+      const pattern = new RegExp(`function\\s+get${contractName}Address\\(\\)[^{]*{[^}]*return\\s+(0x[a-fA-F0-9]{40})`);
       const addressMatch = addressContent.match(pattern);
       
       if (addressMatch && addressMatch[1]) {
-        addressMap[contractName] = {
-          tatara: addressMatch[1],
-          mainnet: null // Placeholder for mainnet address
-        };
+        addressMap[contractName] = addressMatch[1];
       }
     }
     
-    console.log('Found addresses for the following contracts:', Object.keys(addressMap));
+    console.log('Found Tatara addresses for the following contracts:', Object.keys(addressMap));
     return addressMap;
   } catch (error) {
-    console.error('Error extracting addresses:', error);
+    console.error('Error extracting Tatara addresses:', error);
     return {};
   }
+}
+
+// Merge Katana and Tatara addresses
+function mergeAddresses() {
+  const katanaAddresses = extractKatanaAddresses();
+  const tataraAddresses = extractTataraAddresses();
+  
+  // Merge the two address maps
+  const mergedAddresses = { ...katanaAddresses };
+  
+  // Add Tatara addresses to the merged map
+  for (const [contractName, tataraAddress] of Object.entries(tataraAddresses)) {
+    if (mergedAddresses[contractName]) {
+      mergedAddresses[contractName].tatara = tataraAddress;
+    } else {
+      mergedAddresses[contractName] = {
+        tatara: tataraAddress,
+        mainnet: null
+      };
+    }
+  }
+  
+  return mergedAddresses;
 }
 
 // Get all interface files recursively
@@ -141,9 +209,73 @@ function extractFunctionSignatures(abi) {
   return signatures;
 }
 
+// Extract documentation comments from interface file
+function extractInterfaceDescription(content) {
+  // Find the main comment block before the interface declaration
+  const commentBlockRegex = /\/\*\*([\s\S]*?)\*\/\s*interface\s+\w+/;
+  const commentMatch = content.match(commentBlockRegex);
+  
+  if (!commentMatch) return null;
+  
+  const commentBlock = commentMatch[1];
+  
+  // Extract various tags
+  const titleMatches = commentBlock.match(/@title\s+(.*?)(?=\s*\*\s*@|\s*\*\/)/gs) || [];
+  const noticeMatches = commentBlock.match(/@notice\s+(.*?)(?=\s*\*\s*@|\s*\*\/)/gs) || [];
+  const devMatches = commentBlock.match(/@dev\s+(.*?)(?=\s*\*\s*@|\s*\*\/)/gs) || [];
+  const customAddressMatches = commentBlock.match(/@custom:address\s+(0x[a-fA-F0-9]{40})(?=\s*\*\s*@|\s*\*\/)/gs) || [];
+  
+  // Clean up the extracted comments
+  const titles = titleMatches.map(title => 
+    title.replace(/@title\s+/g, '').replace(/\s*\*\s*/g, ' ').trim()
+  );
+  
+  const notices = noticeMatches.map(notice => 
+    notice.replace(/@notice\s+/g, '').replace(/\s*\*\s*/g, ' ').trim()
+  );
+  
+  const devs = devMatches.map(dev => 
+    dev.replace(/@dev\s+/g, '').replace(/\s*\*\s*/g, ' ').trim()
+  );
+  
+  const customAddresses = customAddressMatches.map(addr => 
+    addr.replace(/@custom:address\s+/g, '').replace(/\s*\*\s*/g, ' ').trim()
+  );
+  
+  // Combine all information in a structured way
+  const description = {
+    title: titles.length > 0 ? titles[0] : null,
+    notice: notices.length > 0 ? notices.join(' ') : null,
+    dev: devs.length > 0 ? devs.join(' ') : null,
+    customAddress: customAddresses.length > 0 ? customAddresses[0] : null,
+    full: ''
+  };
+  
+  // Build a full text description
+  let fullText = '';
+  
+  if (description.title) {
+    fullText += description.title;
+  }
+  
+  if (description.notice) {
+    if (fullText) fullText += ': ';
+    fullText += description.notice;
+  }
+  
+  if (description.dev) {
+    if (fullText) fullText += ' ';
+    fullText += '(' + description.dev + ')';
+  }
+  
+  description.full = fullText.trim() || null;
+  
+  return description;
+}
+
 // Generate the contract directory
 function generateContractDirectory() {
-  const addresses = extractAddresses();
+  const addresses = mergeAddresses();
   const interfaceFiles = getAllFiles(INTERFACES_DIR);
   const abiFiles = getAllABIs(ABIS_DIR);
   
@@ -160,6 +292,9 @@ function generateContractDirectory() {
     // Extract interface name - improved regex to match actual interface declarations not comments
     const interfaceMatch = interfaceContent.match(/(?:^|\n)\s*interface\s+(\w+)/);
     const interfaceName = interfaceMatch ? interfaceMatch[1] : fileName;
+    
+    // Extract interface description
+    const description = extractInterfaceDescription(interfaceContent);
     
     // Try to find matching ABI
     let abi = null;
@@ -216,11 +351,26 @@ function generateContractDirectory() {
       }
     }
     
-    // Create contract entry
+    // If we still don't have an address, check if there's a custom address in the comments
+    if (!address && description && description.customAddress) {
+      address = {
+        tatara: description.customAddress,
+        mainnet: description.customAddress // Assuming same address for both networks if specified in comments
+      };
+      console.log(`Found custom address for ${interfaceName} in comments: ${description.customAddress}`);
+    }
+    
+    // Create contract entry with updated structure
     const contract = {
       name: interfaceName,
       path: key,
       relativePath: interfaceInfo.relativePath,
+      description: description ? description.full : null,
+      metadata: {
+        title: description ? description.title : null,
+        notice: description ? description.notice : null,
+        dev: description ? description.dev : null
+      },
       address,
       abi,
       functionSignatures
