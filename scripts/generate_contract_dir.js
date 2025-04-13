@@ -40,6 +40,54 @@ if (!existsSync(OUTPUT_DIR)) {
 
 console.log('Generating contract directory files...');
 
+// Define contexts and their theme colors
+const CONTEXTS = {
+  "morpho": {
+    name: "morpho",
+    color: "#6f4ff2" // Purple
+  },
+  "yearn": {
+    name: "yearn",
+    color: "#0657F9" // Blue
+  },
+  "sushi": {
+    name: "sushi",
+    color: "#fa52a0" // Pink
+  },
+  "seaport": {
+    name: "seaport",
+    color: "#2081e2" // OpenSea blue
+  },
+  "gnosis": {
+    name: "gnosis",
+    color: "#028390" // Teal
+  },
+  "account-abstraction": {
+    name: "account-abstraction",
+    color: "#ff7a00" // Orange
+  },
+  "bridge": {
+    name: "bridge",
+    color: "#e20b8c" // Magenta
+  },
+  "utility": {
+    name: "utility",
+    color: "#00b7c5" // Cyan
+  },
+  "deployment": {
+    name: "deployment",
+    color: "#8b5cf6" // Indigo
+  },
+  "token": {
+    name: "token",
+    color: "#10b981" // Green
+  },
+  "general": {
+    name: "general",
+    color: "#6b7280" // Gray
+  }
+};
+
 // Extract addresses from KatanaAddresses.sol
 function extractKatanaAddresses() {
   try {
@@ -273,6 +321,133 @@ function extractInterfaceDescription(content) {
   return description;
 }
 
+// Determine the context for a contract based on its name, path, etc.
+function determineContext(name, path, relativePath, description) {
+  // Convert to lowercase for case-insensitive matching
+  const nameLower = name.toLowerCase();
+  const pathLower = path.toLowerCase();
+  const relativeLower = relativePath ? relativePath.toLowerCase() : '';
+  const desc = description ? description.toLowerCase() : '';
+  
+  // Morpho-related contracts
+  if (
+    nameLower.includes('morpho') || 
+    pathLower.includes('morpho') || 
+    desc.includes('morpho')
+  ) {
+    return CONTEXTS["morpho"];
+  }
+  
+  // Yearn-related contracts
+  if (
+    nameLower.includes('yearn') || 
+    nameLower.includes('yv') || 
+    relativeLower.includes('yearn') ||
+    desc.includes('yearn')
+  ) {
+    return CONTEXTS["yearn"];
+  }
+  
+  // Sushi-related contracts
+  if (
+    nameLower.includes('sushi') || 
+    pathLower.includes('sushi') ||
+    desc.includes('sushi')
+  ) {
+    return CONTEXTS["sushi"];
+  }
+  
+  // Seaport/OpenSea-related contracts
+  if (
+    nameLower.includes('seaport') || 
+    nameLower.includes('conduit') || 
+    pathLower.includes('seaport') ||
+    desc.includes('seaport') ||
+    desc.includes('opensea')
+  ) {
+    return CONTEXTS["seaport"];
+  }
+  
+  // Gnosis Safe-related contracts
+  if (
+    nameLower.includes('gnosis') || 
+    nameLower.includes('safe') || 
+    pathLower.includes('gnosis') ||
+    desc.includes('gnosis') ||
+    desc.includes('multisig')
+  ) {
+    return CONTEXTS["gnosis"];
+  }
+  
+  // Account Abstraction/ERC-4337-related contracts
+  if (
+    nameLower.includes('entrypoint') || 
+    nameLower.includes('erc4337') || 
+    pathLower.includes('aav0') ||
+    relativeLower.includes('aav0') ||
+    desc.includes('erc-4337') ||
+    desc.includes('account abstraction')
+  ) {
+    return CONTEXTS["account-abstraction"];
+  }
+  
+  // Bridge-related contracts
+  if (
+    nameLower.includes('bridge') || 
+    nameLower.includes('sovereign') || 
+    nameLower.includes('l2') ||
+    pathLower.includes('bridge') ||
+    desc.includes('bridge') ||
+    desc.includes('cross-chain')
+  ) {
+    return CONTEXTS["bridge"];
+  }
+  
+  // Utility contracts
+  if (
+    nameLower.includes('multicall') || 
+    nameLower.includes('permit2') || 
+    nameLower.includes('bundler') ||
+    nameLower.includes('rip7212') ||
+    desc.includes('utility') ||
+    desc.includes('helper')
+  ) {
+    return CONTEXTS["utility"];
+  }
+  
+  // Deployment-related contracts
+  if (
+    nameLower.includes('deploy') || 
+    nameLower.includes('create2') || 
+    nameLower.includes('createx') ||
+    nameLower.includes('deterministic') ||
+    desc.includes('deploy') ||
+    desc.includes('creation')
+  ) {
+    return CONTEXTS["deployment"];
+  }
+  
+  // Token-related contracts
+  if (
+    nameLower.includes('token') || 
+    nameLower.includes('erc20') || 
+    nameLower.includes('weth') ||
+    nameLower.includes('ausd') ||
+    nameLower.includes('usdc') ||
+    nameLower.includes('usdt') ||
+    nameLower.includes('dai') ||
+    nameLower.includes('wbtc') ||
+    nameLower.includes('yb') ||
+    desc.includes('token') ||
+    desc.includes('stablecoin')
+  ) {
+    return CONTEXTS["token"];
+  }
+  
+  // Default context for anything else
+  return CONTEXTS["general"];
+}
+
 // Generate the contract directory
 function generateContractDirectory() {
   const addresses = mergeAddresses();
@@ -361,6 +536,7 @@ function generateContractDirectory() {
     }
     
     // Create contract entry with updated structure
+    const context = determineContext(interfaceName, key, interfaceInfo.relativePath, description ? description.full : null);
     const contract = {
       name: interfaceName,
       path: key,
@@ -371,6 +547,8 @@ function generateContractDirectory() {
         notice: description ? description.notice : null,
         dev: description ? description.dev : null
       },
+      context: context.name,
+      theme: context.color,
       address,
       abi,
       functionSignatures

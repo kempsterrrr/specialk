@@ -20,10 +20,16 @@ This kit provides:
 - **Static File Handling** (HTML, CSS, and assets copied to `dist/`, easy to
   host on IPFS or any static file hosting service)
 - **Local blockchain forks** for development with real contract states
+- Script to generate a single file contract directory with all the ABIs,
+  contract names, paths, descriptions, addresses, and context they belong to,
+  for directory browsers like the [contract dir](https://contractdir.bruno.id)
 
 Whether you're building **yield strategies, cross-chain intent-based execution,
 or novel DeFi protocols**, this starter kit helps you bootstrap your project
 **fast**.
+
+- [More about contract interfaces](/interfaces/README.md)
+- [More about running Katana locally for development](/scripts/README.md)
 
 ---
 
@@ -63,39 +69,47 @@ This will:
 
 ### 3️⃣ **Local Chain Forking**
 
-For local development with a Tatara testnet fork, you'll need to run two commands in separate terminals:
+For local development with a Tatara testnet fork, you'll need to run two
+commands in separate terminals:
 
-**Terminal 1: Start Anvil Fork**
+#### Terminal 1: Start Anvil Fork
+
 ```sh
 bun run start:anvil
 ```
 
-**Terminal 2: Verify the Fork**
+#### Terminal 2: Verify the Fork
+
 ```sh
 bun run verify:anvil
 ```
 
 You can also test the connection with:
+
 ```sh
 bun run test:connection
 ```
 
-This creates a local fork of Tatara at http://localhost:8545 that you can connect to with MetaMask (Chain ID: 471).
+This creates a local fork of Tatara at `http://localhost:8545` that you can
+connect to with MetaMask (Chain ID: 471).
 
 See [scripts/README.md](scripts/README.md) for more details.
 
 ### 4️⃣ **Example dApp**
 
-The starter kit includes a simple example dApp that connects to the Tatara testnet (or your local fork) and displays information about key contracts.
+The starter kit includes a simple example dApp that connects to the Tatara
+testnet (or your local fork) and displays information about key contracts.
 
 To run the example:
 
 1. Start your local Tatara fork (in its own terminal):
+
    ```sh
    bun run start:anvil
    ```
 
 2. In a new terminal, build the dApp:
+
    ```sh
    bun run build
    ```
@@ -103,6 +117,7 @@ To run the example:
 3. Open `dist/index.html` in your browser
 
 The example dApp shows:
+
 - AUSD token information
 - WETH token information
 - MorphoBlue protocol information
