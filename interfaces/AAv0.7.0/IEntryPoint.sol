@@ -3,6 +3,8 @@ pragma solidity ^0.8.0;
 
 import "../IERC4337.sol";
 import "./IERC4337Account.sol";
+import "./IStakeManager.sol";
+import "./INonceManager.sol";
 
 /**
  * @title IEntryPoint v0.7.0
