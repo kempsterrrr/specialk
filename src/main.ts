@@ -1,30 +1,10 @@
 import { createPublicClient, createWalletClient, http, custom, formatEther, formatUnits, PublicClient, WalletClient } from 'viem';
-import { parseAbi } from 'viem';
 import getContractAddress, { CHAIN_IDS } from '../utils/addresses';
 
-// Define ABIs inline
-const AUSD_ABI = parseAbi([
-  'function name() view returns (string)',
-  'function symbol() view returns (string)',
-  'function decimals() view returns (uint8)',
-  'function totalSupply() view returns (uint256)',
-  'function balanceOf(address) view returns (uint256)'
-]);
-
-const WETH_ABI = parseAbi([
-  'function name() view returns (string)',
-  'function symbol() view returns (string)',
-  'function totalSupply() view returns (uint256)',
-  'function balanceOf(address) view returns (uint256)',
-  'function deposit() payable',
-  'function withdraw(uint256) external'
-]);
-
-const MORPHO_BLUE_ABI = parseAbi([
-  'function owner() view returns (address)',
-  'function feeRecipient() view returns (address)',
-  'function isLltvEnabled(uint256 lltv) view returns (bool)'
-]);
+// Import ABIs from their respective locations
+import AUSD_ABI from '../abis/tokens/IAUSD.json';
+import WETH_ABI from '../abis/vb/IWETH.json';
+import MORPHO_BLUE_ABI from '../abis/IMorphoBlue.json';
 
 // Get addresses based on chain ID
 const TATARA_CHAIN_ID = CHAIN_IDS.TATARA;
