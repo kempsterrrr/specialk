@@ -42,7 +42,9 @@ changes.
 
 ## JavaScript Address Mapping
 
-For frontend and JavaScript applications, we provide a utility to generate a JavaScript mapping of all contract addresses. This is particularly useful for web applications that need to connect to contracts without hardcoding addresses.
+For frontend and JavaScript applications, we provide a utility to generate a
+JavaScript mapping of all contract addresses. This is particularly useful for
+web applications that need to connect to contracts without hardcoding addresses.
 
 ### Generating the Address Mapping
 
@@ -56,7 +58,8 @@ This will create a file at `utils/addresses.js` that exports:
 
 - `CHAIN_IDS` - Constants for Tatara and Katana chain IDs
 - `CONTRACT_ADDRESSES` - A mapping of contract names to their addresses on each network
-- `getContractAddress(contractName, chainId)` - A helper function to get the right address
+- `getContractAddress(contractName, chainId)` - A helper function to get the
+  right address
 
 ### Using the Address Mapping
 
@@ -76,7 +79,9 @@ const chainId = await ethereum.request({ method: 'eth_chainId' });
 const morphoAddress = getContractAddress('MorphoBlue', parseInt(chainId, 16));
 ```
 
-The address mapping is automatically generated from the Solidity address libraries (`TataraAddresses.sol` and `KatanaAddresses.sol`), ensuring consistency between your Solidity and JavaScript code.
+The address mapping is automatically generated from the Solidity address
+libraries (`TataraAddresses.sol` and `KatanaAddresses.sol`), ensuring
+consistency between your Solidity and JavaScript code.
 
 ## Interface Categories
 

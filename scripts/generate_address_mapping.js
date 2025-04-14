@@ -7,7 +7,7 @@ const KATANA_MAINNET_CHAIN_ID = 0; // Will be updated when mainnet launches
 
 const TATARA_ADDRESSES_PATH = 'interfaces/utils/TataraAddresses.sol';
 const KATANA_ADDRESSES_PATH = 'interfaces/utils/KatanaAddresses.sol';
-const OUTPUT_PATH = 'utils/addresses.js';
+const OUTPUT_PATH = 'utils/addresses.ts';
 
 /**
  * Extract function names and addresses from TataraAddresses.sol
@@ -88,24 +88,57 @@ function generateAddressMapping() {
     };
   });
   
-  // Create the JavaScript file content
-  const jsContent = `// Auto-generated contract address mapping
+  // Create the TypeScript file content with proper type definitions
+  const tsContent = `// Auto-generated contract address mapping
 // Generated on ${new Date().toISOString()}
 
-export const CHAIN_IDS = {
+/**
+ * Chain IDs for Tatara testnet and Katana mainnet
+ */
+export interface ChainIds {
+  TATARA: number;
+  KATANA: number;
+}
+
+/**
+ * Contract addresses for each network - using viem's Address type format
+ */
+export interface ContractAddresses {
+  [contractName: string]: {
+    tatara: \`0x\${string}\` | null;
+    katana: \`0x\${string}\` | null;
+  };
+}
+
+/**
+ * Chain ID constants
+ */
+export const CHAIN_IDS: ChainIds = {
   TATARA: ${TATARA_CHAIN_ID},
   KATANA: ${KATANA_MAINNET_CHAIN_ID}
 };
 
-export const CONTRACT_ADDRESSES = ${JSON.stringify(addressMapping, null, 2)};
+/**
+ * Mapping of contract names to their addresses on each network
+ */
+export const CONTRACT_ADDRESSES: ContractAddresses = {
+${Object.entries(addressMapping)
+  .map(([name, addrs]) => {
+    // Correctly type addresses as template literal types
+    const tatara = addrs.tatara ? `"tatara": "${addrs.tatara}" as \`0x\${string}\`` : '"tatara": null';
+    const katana = addrs.katana ? `"katana": "${addrs.katana}" as \`0x\${string}\`` : '"katana": null';
+    return `  "${name}": { ${tatara}, ${katana} }`;
+  })
+  .join(',\n')}
+};
 
 /**
  * Get a contract address based on the contract name and chain ID
- * @param {string} contractName - The name of the contract (without "get" and "Address")
- * @param {number} chainId - The chain ID
- * @returns {string|null} The contract address or null if not found
+ * @param contractName - The name of the contract (without "get" and "Address")
+ * @param chainId - The chain ID
+ * @returns The contract address or null if not found
  */
-export function getContractAddress(contractName, chainId) {
+export function getContractAddress(contractName: string, chainId: number): \`0x\${string}\` | null {
   if (!contractName || !CONTRACT_ADDRESSES[contractName]) {
     return null;
   }
@@ -130,7 +163,7 @@ export default getContractAddress;
   }
   
   // Write the output file
-  fs.writeFileSync(OUTPUT_PATH, jsContent);
+  fs.writeFileSync(OUTPUT_PATH, tsContent);
   console.log(`Address mapping generated at ${OUTPUT_PATH}`);
 }
 
