@@ -75,19 +75,13 @@ commands in separate terminals:
 #### Terminal 1: Start Anvil Fork
 
 ```sh
-bun run start:anvil
+bun run start:anvil:tatara
 ```
 
 #### Terminal 2: Verify the Fork
 
 ```sh
-bun run verify:anvil
-```
-
-You can also test the connection with:
-
-```sh
-bun run test:connection
+bun run verify:anvil:tatara
 ```
 
 This creates a local fork of Tatara at `http://localhost:8545` that you can

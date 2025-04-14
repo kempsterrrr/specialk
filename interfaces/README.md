@@ -7,7 +7,8 @@ Katana.
 
 All interfaces in this repository include the deployed contract addresses for
 the Tatara testnet. For code that needs to work across both testnet and mainnet
-environments, we provide the `KatanaAddresses` library:
+environments, we provide the `KatanaAddresses` library (and the matching
+`TataraAddresses` lib):
 
 - **[KatanaAddresses](./utils/KatanaAddresses.sol)** - Utility library that
   dynamically resolves contract addresses based on the current network

@@ -57,3 +57,6 @@ prep/*
 .wake/
 abis/
 temp/
+
+.cursor
+tutorials/
