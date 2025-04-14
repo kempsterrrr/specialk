@@ -61,7 +61,7 @@ This project uses **Bun** as its runtime and **Esbuild** for bundling. To build
 your project, run:
 
 ```sh
-bun run build
+bun run build:all
 ```
 
 This will:
@@ -69,6 +69,10 @@ This will:
 - Compile and minify your TypeScript code
 - Copy HTML & static assets to `./dist`
 - Prepare the environment for deployment
+- Compile helper utilities like an address-to-contract mapping in
+  `utils/addresses.ts` and interface ABIs in the `/abis` folder
+
+Going forward, you can just rebuild the web app using `bun run build`.
 
 ### 3️⃣ **Local Chain Forking**
 
@@ -111,7 +115,8 @@ To run the example:
    bun run build
    ```
 
-3. Open `dist/index.html` in your browser
+3. Serve `dist/index.html` in your browser with something like
+   `cd dist && npx http-server`
 
 The example dApp shows:
 
@@ -134,7 +139,7 @@ To generate the address mapping:
 bun run build:addresses
 ```
 
-This will create a file at `utils/addresses.js` that exports:
+This will create a file at `utils/addresses.ts` that exports:
 
 - `CHAIN_IDS` - An object with chain ID constants
 - `CONTRACT_ADDRESSES` - A mapping of all contract names to their addresses on
@@ -145,7 +150,7 @@ This will create a file at `utils/addresses.js` that exports:
 Example usage in your JavaScript/TypeScript code:
 
 ```javascript
-import getContractAddress, { CHAIN_IDS } from '../utils/addresses.js';
+import getContractAddress, { CHAIN_IDS } from '../utils/addresses';
 
 // Get WETH address for the current network
 const chainId = 471; // Tatara testnet

@@ -54,7 +54,7 @@ Run the following command to generate the JavaScript address mapping:
 bun run build:addresses
 ```
 
-This will create a file at `utils/addresses.js` that exports:
+This will create a file at `utils/addresses.ts` that exports:
 
 - `CHAIN_IDS` - Constants for Tatara and Katana chain IDs
 - `CONTRACT_ADDRESSES` - A mapping of contract names to their addresses on each network
@@ -66,7 +66,7 @@ This will create a file at `utils/addresses.js` that exports:
 In your JavaScript/TypeScript code:
 
 ```javascript
-import getContractAddress, { CHAIN_IDS, CONTRACT_ADDRESSES } from '../utils/addresses.js';
+import getContractAddress, { CHAIN_IDS, CONTRACT_ADDRESSES } from '../utils/addresses';
 
 // Example 1: Get a specific contract address for a specific chain
 const wethAddress = getContractAddress('WETH', CHAIN_IDS.TATARA);
