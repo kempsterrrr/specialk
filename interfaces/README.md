@@ -7,7 +7,8 @@ Katana.
 
 All interfaces in this repository include the deployed contract addresses for
 the Tatara testnet. For code that needs to work across both testnet and mainnet
-environments, we provide the `KatanaAddresses` library:
+environments, we provide the `KatanaAddresses` library (and the matching
+`TataraAddresses` lib):
 
 - **[KatanaAddresses](./utils/KatanaAddresses.sol)** - Utility library that
   dynamically resolves contract addresses based on the current network
@@ -38,6 +39,49 @@ contract MyDapp {
 As Katana mainnet launches, the `KatanaAddresses` library will be updated with
 mainnet addresses, allowing your code to work across environments without
 changes.
+
+## JavaScript Address Mapping
+
+For frontend and JavaScript applications, we provide a utility to generate a
+JavaScript mapping of all contract addresses. This is particularly useful for
+web applications that need to connect to contracts without hardcoding addresses.
+
+### Generating the Address Mapping
+
+Run the following command to generate the JavaScript address mapping:
+
+```sh
+bun run build:addresses
+```
+
+This will create a file at `utils/addresses.ts` that exports:
+
+- `CHAIN_IDS` - Constants for Tatara and Katana chain IDs
+- `CONTRACT_ADDRESSES` - A mapping of contract names to their addresses on each network
+- `getContractAddress(contractName, chainId)` - A helper function to get the
+  right address
+
+### Using the Address Mapping
+
+In your JavaScript/TypeScript code:
+
+```javascript
+import getContractAddress, { CHAIN_IDS, CONTRACT_ADDRESSES } from '../utils/addresses';
+
+// Example 1: Get a specific contract address for a specific chain
+const wethAddress = getContractAddress('WETH', CHAIN_IDS.TATARA);
+
+// Example 2: Access all contract addresses
+console.log(CONTRACT_ADDRESSES.Seaport.tatara);
+
+// Example 3: Dynamic chain ID (e.g., from wallet connection)
+const chainId = await ethereum.request({ method: 'eth_chainId' });
+const morphoAddress = getContractAddress('MorphoBlue', parseInt(chainId, 16));
+```
+
+The address mapping is automatically generated from the Solidity address
+libraries (`TataraAddresses.sol` and `KatanaAddresses.sol`), ensuring
+consistency between your Solidity and JavaScript code.
 
 ## Interface Categories
 

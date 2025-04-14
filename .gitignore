@@ -55,5 +55,9 @@ keypair/
 
 prep/*
 .wake/
-abis/
+abis
 temp/
+
+.cursor
+tutorials/
+utils/addresses.ts

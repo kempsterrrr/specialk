@@ -1,27 +1,13 @@
-import { createPublicClient, createWalletClient, http, custom, formatEther, formatUnits } from 'viem';
-import { parseAbi } from 'viem';
+import { createPublicClient, createWalletClient, http, custom, formatEther, formatUnits, PublicClient, WalletClient } from 'viem';
+import getContractAddress, { CHAIN_IDS } from '../utils/addresses';
 
-// Contract addresses
-const ADDRESSES = {
-  AUSD: '0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC',
-  WETH: '0x17B8Ee96E3bcB3b04b3e8334de4524520C51caB4',
-  MORPHO_BLUE: '0xC263190b99ceb7e2b7409059D24CB573e3bB9021'
-};
+// Import ABIs from their respective locations
+import AUSD_ABI from '../abis/tokens/IAUSD.json';
+import WETH_ABI from '../abis/vb/IWETH.json';
+import MORPHO_BLUE_ABI from '../abis/IMorphoBlue.json';
 
-// ABIs
-const ERC20_ABI = parseAbi([
-  'function name() view returns (string)',
-  'function symbol() view returns (string)',
-  'function decimals() view returns (uint8)',
-  'function totalSupply() view returns (uint256)',
-  'function balanceOf(address) view returns (uint256)'
-]);
-
-const MORPHO_BLUE_ABI = parseAbi([
-  'function owner() view returns (address)',
-  'function feeRecipient() view returns (address)',
-  'function isLltvEnabled(uint256 lltv) view returns (bool)'
-]);
+// Get addresses based on chain ID
+const TATARA_CHAIN_ID = CHAIN_IDS.TATARA;
 
 // DOM Elements
 const networkIndicator = document.getElementById('network-indicator') as HTMLElement;
@@ -36,8 +22,8 @@ const morphoDataElement = document.getElementById('morpho-data') as HTMLElement;
 const hasEthereum = typeof window !== 'undefined' && window.ethereum;
 
 // Create clients
-let publicClient: any;
-let walletClient: any;
+let publicClient: PublicClient;
+let walletClient: WalletClient;
 
 // Create transport with retry logic
 function createRobustTransport() {
@@ -72,15 +58,22 @@ async function initialize() {
       // Then try to get chain ID
       const chainId = await publicClient.getChainId();
       
-      if (chainId === 471) {
+      if (chainId === TATARA_CHAIN_ID) {
         updateNetworkStatus('connected', 'Tatara');
         
+        // Get AUSD address dynamically
+        const ausdAddress = getContractAddress('AUSD', TATARA_CHAIN_ID);
+        
         // Validate that we can read contract data before attempting to load everything
+        if (!ausdAddress) {
+          throw new Error('AUSD address not found');
+        }
+        
         // This acts as a sanity check
         try {
           const ausdSymbol = await publicClient.readContract({
-            address: ADDRESSES.AUSD,
-            abi: ERC20_ABI,
+            address: ausdAddress,
+            abi: AUSD_ABI,
             functionName: 'symbol'
           });
           console.log(`Connected and able to read contracts. AUSD symbol: ${ausdSymbol}`);
@@ -94,7 +87,7 @@ async function initialize() {
         }
       } else {
         updateNetworkStatus('error', `Wrong network: ${chainId}`);
-        displayRpcError(`Connected to wrong network. Expected 471 (Tatara), got ${chainId}`);
+        displayRpcError(`Connected to wrong network. Expected ${TATARA_CHAIN_ID} (Tatara), got ${chainId}`);
       }
     } catch (error) {
       console.error('RPC connection error:', error);
@@ -183,6 +176,13 @@ async function safeContractCall<T>(
 
 // Load AUSD Token data
 async function loadAUSDData() {
+  // Get AUSD address
+  const ausdAddress = getContractAddress('AUSD', TATARA_CHAIN_ID);
+  if (!ausdAddress) {
+    ausdDataElement.innerHTML = '<p>Error: AUSD address not found</p>';
+    return;
+  }
+
   // Clear previous content and show loading state
   ausdDataElement.innerHTML = '<div class="spinner"></div><p>Loading data...</p>';
   
@@ -190,8 +190,8 @@ async function loadAUSDData() {
     // Load data sequentially to avoid batching issues
     const name = await safeContractCall(
       () => publicClient.readContract({
-        address: ADDRESSES.AUSD,
-        abi: ERC20_ABI,
+        address: ausdAddress,
+        abi: AUSD_ABI,
         functionName: 'name'
       }),
       (error) => console.error('Error reading AUSD name:', error)
@@ -199,8 +199,8 @@ async function loadAUSDData() {
     
     const symbol = await safeContractCall(
       () => publicClient.readContract({
-        address: ADDRESSES.AUSD,
-        abi: ERC20_ABI,
+        address: ausdAddress,
+        abi: AUSD_ABI,
         functionName: 'symbol'
       }),
       (error) => console.error('Error reading AUSD symbol:', error)
@@ -208,8 +208,8 @@ async function loadAUSDData() {
     
     const decimals = await safeContractCall(
       () => publicClient.readContract({
-        address: ADDRESSES.AUSD,
-        abi: ERC20_ABI,
+        address: ausdAddress,
+        abi: AUSD_ABI,
         functionName: 'decimals'
       }),
       (error) => console.error('Error reading AUSD decimals:', error)
@@ -217,8 +217,8 @@ async function loadAUSDData() {
     
     const totalSupply = await safeContractCall(
       () => publicClient.readContract({
-        address: ADDRESSES.AUSD,
-        abi: ERC20_ABI,
+        address: ausdAddress,
+        abi: AUSD_ABI,
         functionName: 'totalSupply'
       }),
       (error) => console.error('Error reading AUSD totalSupply:', error)
@@ -251,7 +251,8 @@ async function loadAUSDData() {
       { label: 'Name', value: name ? String(name) : 'Error loading' },
       { label: 'Symbol', value: symbol ? String(symbol) : 'Error loading' },
       { label: 'Decimals', value: decimals !== null ? String(decimals) : 'Error loading' },
-      { label: 'Total Supply', value: formattedSupply }
+      { label: 'Total Supply', value: formattedSupply },
+      { label: 'Address', value: ausdAddress }
     ];
 
     formattedData.forEach(item => {
@@ -271,6 +272,13 @@ async function loadAUSDData() {
 
 // Load WETH Token data
 async function loadWETHData() {
+  // Get WETH address
+  const wethAddress = getContractAddress('WETH', TATARA_CHAIN_ID);
+  if (!wethAddress) {
+    wethDataElement.innerHTML = '<p>Error: WETH address not found</p>';
+    return;
+  }
+
   // Clear previous content and show loading state
   wethDataElement.innerHTML = '<div class="spinner"></div><p>Loading data...</p>';
   
@@ -278,8 +286,8 @@ async function loadWETHData() {
     // Load data sequentially to avoid batching issues
     const name = await safeContractCall(
       () => publicClient.readContract({
-        address: ADDRESSES.WETH,
-        abi: ERC20_ABI,
+        address: wethAddress,
+        abi: WETH_ABI,
         functionName: 'name'
       }),
       (error) => console.error('Error reading WETH name:', error)
@@ -287,8 +295,8 @@ async function loadWETHData() {
     
     const symbol = await safeContractCall(
       () => publicClient.readContract({
-        address: ADDRESSES.WETH,
-        abi: ERC20_ABI,
+        address: wethAddress,
+        abi: WETH_ABI,
         functionName: 'symbol'
       }),
       (error) => console.error('Error reading WETH symbol:', error)
@@ -296,8 +304,8 @@ async function loadWETHData() {
     
     const totalSupply = await safeContractCall(
       () => publicClient.readContract({
-        address: ADDRESSES.WETH,
-        abi: ERC20_ABI,
+        address: wethAddress,
+        abi: WETH_ABI,
         functionName: 'totalSupply'
       }),
       (error) => console.error('Error reading WETH totalSupply:', error)
@@ -328,7 +336,8 @@ async function loadWETHData() {
     const formattedData = [
       { label: 'Name', value: name ? String(name) : 'Error loading' },
       { label: 'Symbol', value: symbol ? String(symbol) : 'Error loading' },
-      { label: 'Total Supply', value: formattedSupply }
+      { label: 'Total Supply', value: formattedSupply },
+      { label: 'Address', value: wethAddress }
     ];
 
     formattedData.forEach(item => {
@@ -348,6 +357,13 @@ async function loadWETHData() {
 
 // Load MorphoBlue data
 async function loadMorphoData() {
+  // Get MorphoBlue address
+  const morphoAddress = getContractAddress('MorphoBlue', TATARA_CHAIN_ID);
+  if (!morphoAddress) {
+    morphoDataElement.innerHTML = '<p>Error: MorphoBlue address not found</p>';
+    return;
+  }
+
   // Clear previous content and show loading state
   morphoDataElement.innerHTML = '<div class="spinner"></div><p>Loading data...</p>';
   
@@ -355,7 +371,7 @@ async function loadMorphoData() {
     // Load data sequentially to avoid batching issues
     const owner = await safeContractCall(
       () => publicClient.readContract({
-        address: ADDRESSES.MORPHO_BLUE,
+        address: morphoAddress,
         abi: MORPHO_BLUE_ABI,
         functionName: 'owner'
       }),
@@ -364,7 +380,7 @@ async function loadMorphoData() {
     
     const feeRecipient = await safeContractCall(
       () => publicClient.readContract({
-        address: ADDRESSES.MORPHO_BLUE,
+        address: morphoAddress,
         abi: MORPHO_BLUE_ABI,
         functionName: 'feeRecipient'
       }),
@@ -375,7 +391,7 @@ async function loadMorphoData() {
     const lltv50Percent = 5000n; // 50% in basis points
     const isLltv50Enabled = await safeContractCall(
       () => publicClient.readContract({
-        address: ADDRESSES.MORPHO_BLUE,
+        address: morphoAddress,
         abi: MORPHO_BLUE_ABI,
         functionName: 'isLltvEnabled',
         args: [lltv50Percent]
@@ -397,7 +413,8 @@ async function loadMorphoData() {
       { label: 'Owner', value: owner ? shortenAddress(String(owner)) : 'Error loading' },
       { label: 'Fee Recipient', value: feeRecipient ? shortenAddress(String(feeRecipient)) : 'Error loading' },
       { label: '50% LLTV Enabled', value: isLltv50Enabled === null ? 'Error loading' : 
-          isLltv50Enabled ? 'Yes' : 'No' }
+          isLltv50Enabled ? 'Yes' : 'No' },
+      { label: 'Address', value: morphoAddress }
     ];
 
     formattedData.forEach(item => {
