@@ -20,6 +20,8 @@ This kit provides:
 - **Static File Handling** (HTML, CSS, and assets copied to `dist/`, easy to
   host on IPFS or any static file hosting service)
 - **Local blockchain forks** for development with real contract states
+- **Contract address mapping generator** for easy access to deployed contract
+  addresses in JavaScript
 - Script to generate a single file contract directory with all the ABIs,
   contract names, paths, descriptions, addresses, and context they belong to,
   for directory browsers like the [contract dir](https://contractdir.bruno.id)
@@ -42,7 +44,8 @@ Copy `.env.example` into `.env` and add in your RPC endpoints.
 Ensure you have the required tools installed:
 
 - [Bun](https://bun.sh/) - Follow the installation instructions at https://bun.sh/
-- [Foundry](https://book.getfoundry.sh/) for contract development and local chain forks
+- [Foundry](https://book.getfoundry.sh/) for contract development and local
+  chain forks
 - [Git](https://git-scm.com/)
 
 After installing Bun, run:
@@ -117,6 +120,43 @@ The example dApp shows:
 - MorphoBlue protocol information
 
 You can use this as a starting point for your own dApp development.
+
+### 5️⃣ **Contract Address Mapping**
+
+The kit includes a utility to generate a JavaScript mapping of all contract
+addresses for both Tatara testnet and Katana mainnet (when available). This
+makes it easy to access contract addresses in your frontend code without
+hardcoding them.
+
+To generate the address mapping:
+
+```sh
+bun run build:addresses
+```
+
+This will create a file at `utils/addresses.js` that exports:
+
+- `CHAIN_IDS` - An object with chain ID constants
+- `CONTRACT_ADDRESSES` - A mapping of all contract names to their addresses on
+  both networks
+- `getContractAddress(contractName, chainId)` - A utility function to get the
+  correct address for a contract on a specific network
+
+Example usage in your JavaScript/TypeScript code:
+
+```javascript
+import getContractAddress, { CHAIN_IDS } from '../utils/addresses.js';
+
+// Get WETH address for the current network
+const chainId = 471; // Tatara testnet
+const wethAddress = getContractAddress('WETH', chainId);
+
+// Or use the CHAIN_IDS constants
+const morphoAddress = getContractAddress('MorphoBlue', CHAIN_IDS.TATARA);
+```
+
+The address mapping is generated from the Solidity address libraries in the
+interfaces directory.
 
 ---
 

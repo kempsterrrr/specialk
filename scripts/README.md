@@ -83,3 +83,9 @@ If you encounter issues:
 - **Anvil not found**: Make sure Foundry is installed and `anvil` is in your PATH
 - **Script not executable**: Run `chmod +x scripts/start_anvil.sh` to make the
   script executable
+
+  ## Other Scripts
+
+  See [general README](../README.md) and
+  [interfaces README](../interfaces/README.md) to learn about the purpose of the
+  other scripts.
