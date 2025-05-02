@@ -60,9 +60,81 @@ async function buildProject() {
   }
 }
 
-// Run if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  buildProject();
+async function buildMcpServer() {
+  console.log('🏗️ Building MCP server...');
+
+  // Ensure dist-mcp directory exists
+  if (fs.existsSync('./dist-mcp')) {
+    console.log('Cleaning dist-mcp directory...');
+    fs.rmSync('./dist-mcp', { recursive: true, force: true });
+  }
+  fs.mkdirSync('./dist-mcp', { recursive: true });
+
+  try {
+    // Build MCP server
+    await build({
+      entryPoints: ['./utils/mcp-server/index.ts'],
+      outfile: './dist-mcp/index.js',
+      bundle: true,
+      minify: false, // For easier debugging
+      format: 'esm',
+      platform: 'node',
+      loader: {
+        '.ts': 'ts',
+      },
+      external: ['child_process', 'fs', 'path', 'os', 'util'],
+      define: {
+        'process.env.NODE_ENV': '"production"',
+      }
+    });
+
+    console.log('✅ MCP server compiled successfully.');
+
+    // Create README for MCP server
+    const mcpReadme = `# Katana Foundry MCP Server
+
+This is a Model Context Protocol (MCP) server for Foundry that provides tools
+for interacting with Katana blockchain via the command line.
+
+## Usage
+
+To use this MCP server with Cursor, add the following to your Cursor config:
+
+\`\`\`json
+"mcpServers": {
+  "foundry": {
+    "command": "bun",
+    "args": [
+      "${path.resolve('./dist-mcp/index.js')}"
+    ],
+    "env": {
+      "PRIVATE_KEY": "0xYourPrivateKeyHere",
+      "RPC_URL": "http://localhost:8545"
+    }
+  }
+}
+\`\`\`
+
+The \`PRIVATE_KEY\` and \`RPC_URL\` environment variables are optional. If not provided,
+the RPC URL will default to http://localhost:8545.
+`;
+
+    fs.writeFileSync('./dist-mcp/README.md', mcpReadme);
+    console.log('✅ MCP server README created.');
+
+  } catch (error) {
+    console.error('❌ MCP server build failed:', error);
+    process.exit(1);
+  }
 }
 
-export { buildProject }; 
+// Run if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  if (process.argv.includes('--mcp-only')) {
+    buildMcpServer();
+  } else {
+    buildProject();
+  }
+}
+
+export { buildProject, buildMcpServer }; 
