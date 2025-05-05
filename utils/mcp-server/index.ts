@@ -1304,6 +1304,381 @@ server.tool(
   }
 );
 
+// Tool: Address lookup for contract interactions
+server.tool(
+  "address_lookup",
+  "Look up contract addresses by contract name or symbol, checking both README.md and addresses.ts",
+  {
+    contractName: z.string().describe("The name or symbol of the contract to look up (e.g., 'AUSD', 'MorphoBlue')"),
+    chainId: z.number().optional().describe("Chain ID to use for looking up addresses (defaults to Tatara testnet if not specified)")
+  },
+  async ({ contractName, chainId }: {
+    contractName: string;
+    chainId?: number;
+  }) => {
+    try {
+      // First, try to load the addresses.ts file directly
+      const addressesPath = path.join(process.cwd(), 'utils', 'addresses.ts');
+      let addressesContent: string;
+      
+      try {
+        addressesContent = await fs.readFile(addressesPath, 'utf8');
+      } catch (error) {
+        return {
+          content: [{ 
+            type: "text", 
+            text: `Could not read addresses file: ${error instanceof Error ? error.message : String(error)}` 
+          }],
+          isError: true
+        };
+      }
+
+      // Check if the contract exists in addresses.ts
+      const contractRegex = new RegExp(`"${contractName}":\\s*{\\s*"tatara":\\s*"(0x[a-fA-F0-9]+)"`, 'i');
+      const exactContractRegex = new RegExp(`"${contractName}":\\s*{\\s*"tatara":\\s*"(0x[a-fA-F0-9]+)"`, 'g');
+      
+      // Also try to find if this might be a token symbol like AUSD which is in the file as "AUSD"
+      const tokenRegex = new RegExp(`"${contractName}":\\s*{`, 'i');
+      
+      // Try to load the README.md file to check for context
+      const readmePath = path.join(process.cwd(), 'interfaces', 'README.md');
+      let readmeContent: string;
+      
+      try {
+        readmeContent = await fs.readFile(readmePath, 'utf8');
+      } catch (error) {
+        readmeContent = '';
+      }
+
+      // See if the contract is mentioned in the README
+      const readmeContractInfo = readmeContent.includes(contractName) 
+        ? readmeContent
+            .split('\n')
+            .filter(line => line.includes(contractName))
+            .join('\n')
+        : '';
+
+      // Look for direct address mention in README
+      const addressInReadmeMatch = readmeContractInfo.match(/Address:\s*`(0x[a-fA-F0-9]+)`/);
+      const addressInReadme = addressInReadmeMatch ? addressInReadmeMatch[1] : null;
+      
+      // Import from addresses.ts using dynamic import in Node.js
+      let contractAddressFromTS: `0x${string}` | null = null;
+      try {
+        // Use dynamic import
+        const { CHAIN_IDS, getContractAddress } = await import(addressesPath);
+        const effectiveChainId = chainId || CHAIN_IDS.TATARA;
+        
+        // Search for the contract using different possible naming conventions
+        contractAddressFromTS = getContractAddress(contractName, effectiveChainId);
+        
+        // If not found directly, try with 'I' prefix (interface convention)
+        if (!contractAddressFromTS) {
+          contractAddressFromTS = getContractAddress(`I${contractName}`, effectiveChainId);
+        }
+        
+        // Try without 'I' prefix if name might start with 'I'
+        if (!contractAddressFromTS && contractName.startsWith('I')) {
+          contractAddressFromTS = getContractAddress(contractName.substring(1), effectiveChainId);
+        }
+      } catch (error) {
+        // Fallback to regex search if dynamic import fails
+        const match = addressesContent.match(contractRegex);
+        if (match && match[1]) {
+          contractAddressFromTS = match[1] as `0x${string}`;
+        }
+      }
+
+      // If we found an address, return it with context
+      if (contractAddressFromTS || addressInReadme) {
+        const address = contractAddressFromTS || addressInReadme;
+        
+        // Extract contract description if available
+        let description = '';
+        if (readmeContractInfo) {
+          const descMatch = readmeContractInfo.match(/\*\*.*\*\*\s*-\s*(.*)/);
+          if (descMatch) {
+            description = descMatch[1];
+          }
+        }
+        
+        // Check if we have any ABI info for this contract in contractdir.json
+        const contractdirPath = path.join(process.cwd(), 'utils', 'contractdir.json');
+        let abiInfo = '';
+        
+        try {
+          const contractdirContent = await fs.readFile(contractdirPath, 'utf8');
+          const contractdir = JSON.parse(contractdirContent);
+          
+          // Find matching contract by name (case-insensitive)
+          const contractData = contractdir.find((c: any) => 
+            c.name.toLowerCase() === contractName.toLowerCase() || 
+            `I${c.name}`.toLowerCase() === contractName.toLowerCase()
+          );
+          
+          if (contractData) {
+            // Extract function signatures
+            if (contractData.functionSignatures && contractData.functionSignatures.length > 0) {
+              abiInfo = "\n\nAvailable Functions:\n" + 
+                contractData.functionSignatures
+                  .map((fn: any) => `- ${fn.name}(${fn.inputs.map((i: any) => i.type).join(',')})`)
+                  .join('\n');
+            }
+            
+            // If we didn't have a description but found it in contractdir, use that
+            if (!description && contractData.description) {
+              description = contractData.description;
+            }
+          }
+        } catch (error) {
+          // Silently ignore contractdir errors
+        }
+        
+        return {
+          content: [{ 
+            type: "text", 
+            text: `Contract: ${contractName}\nAddress: ${address}${description ? `\n\nDescription: ${description}` : ''}${abiInfo}` 
+          }]
+        };
+      }
+      
+      // If we didn't find a direct match but the token seems to exist
+      if (tokenRegex.test(addressesContent)) {
+        return {
+          content: [{ 
+            type: "text", 
+            text: `Found contract "${contractName}" in addresses.ts but couldn't extract the address. Please check the addresses.ts file directly.` 
+          }]
+        };
+      }
+
+      // If no match found at all
+      return {
+        content: [{ 
+          type: "text", 
+          text: `Contract "${contractName}" not found in either addresses.ts or README.md.` 
+        }],
+        isError: true
+      };
+      
+    } catch (error) {
+      return {
+        content: [{ 
+          type: "text", 
+          text: `Error looking up contract address: ${error instanceof Error ? error.message : String(error)}` 
+        }],
+        isError: true
+      };
+    }
+  }
+);
+
+// Tool: Call contract function by name instead of address
+server.tool(
+  "contract_call",
+  "Call a contract function by contract name instead of address, automatically looking up the address",
+  {
+    contractName: z.string().describe("The name or symbol of the contract (e.g., 'AUSD', 'MorphoBlue')"),
+    functionName: z.string().describe("Function name to call (e.g., 'totalSupply', 'balanceOf')"),
+    args: z.array(z.string()).optional().describe("Function arguments"),
+    chainId: z.number().optional().describe("Chain ID to use (defaults to Tatara testnet if not specified)"),
+    rpcUrl: z.string().optional().describe("JSON-RPC URL (default: http://localhost:8545)"),
+    blockNumber: z.string().optional().describe("Block number (e.g., 'latest', 'earliest', or a number)"),
+    from: z.string().optional().describe("Address to perform the call as")
+  },
+  async ({ contractName, functionName, args = [], chainId, rpcUrl, blockNumber, from }: {
+    contractName: string;
+    functionName: string;
+    args?: string[];
+    chainId?: number;
+    rpcUrl?: string;
+    blockNumber?: string;
+    from?: string;
+  }) => {
+    try {
+      // First, look up the contract address
+      const addressesPath = path.join(process.cwd(), 'utils', 'addresses.ts');
+      const contractdirPath = path.join(process.cwd(), 'utils', 'contractdir.json');
+      
+      let contractAddress: string | null = null;
+      let functionSignature: string | null = null;
+      
+      // Try to find the address using the address_lookup logic
+      try {
+        // Use dynamic import for addresses.ts
+        const { CHAIN_IDS, getContractAddress } = await import(addressesPath);
+        const effectiveChainId = chainId || CHAIN_IDS.TATARA;
+        
+        // Try different naming conventions
+        contractAddress = getContractAddress(contractName, effectiveChainId) ||
+                          getContractAddress(`I${contractName}`, effectiveChainId) ||
+                          (contractName.startsWith('I') ? 
+                            getContractAddress(contractName.substring(1), effectiveChainId) : 
+                            null);
+      } catch (error) {
+        // If dynamic import fails, try regex approach from addresses.ts content
+        try {
+          const addressesContent = await fs.readFile(addressesPath, 'utf8');
+          const contractRegex = new RegExp(`"${contractName}":\\s*{\\s*"tatara":\\s*"(0x[a-fA-F0-9]+)"`, 'i');
+          const match = addressesContent.match(contractRegex);
+          if (match && match[1]) {
+            contractAddress = match[1];
+          }
+        } catch (fsError) {
+          // Silently continue if file read fails
+        }
+      }
+      
+      // If we still don't have an address, try README.md
+      if (!contractAddress) {
+        try {
+          const readmePath = path.join(process.cwd(), 'interfaces', 'README.md');
+          const readmeContent = await fs.readFile(readmePath, 'utf8');
+          
+          // Find lines mentioning the contract
+          const contractLines = readmeContent
+            .split('\n')
+            .filter(line => line.includes(contractName))
+            .join('\n');
+            
+          // Look for address mentions
+          const addressMatch = contractLines.match(/Address:\s*`(0x[a-fA-F0-9]+)`/);
+          if (addressMatch && addressMatch[1]) {
+            contractAddress = addressMatch[1];
+          }
+        } catch (fsError) {
+          // Silently continue if README read fails
+        }
+      }
+      
+      // If we couldn't find the address, return an error
+      if (!contractAddress) {
+        return {
+          content: [{ 
+            type: "text", 
+            text: `Could not find address for contract "${contractName}". Please try using the address_lookup tool first.` 
+          }],
+          isError: true
+        };
+      }
+      
+      // Now find the function signature in contractdir.json
+      try {
+        const contractdirContent = await fs.readFile(contractdirPath, 'utf8');
+        const contractdir = JSON.parse(contractdirContent);
+        
+        // Find the contract by name
+        const contractData = contractdir.find((c: any) => 
+          c.name.toLowerCase() === contractName.toLowerCase() || 
+          c.name.toLowerCase() === contractName.toLowerCase().replace(/^i/, '') || 
+          `I${c.name}`.toLowerCase() === contractName.toLowerCase()
+        );
+        
+        if (contractData && contractData.functionSignatures) {
+          // Find the matching function
+          const funcData = contractData.functionSignatures.find((f: any) => 
+            f.name.toLowerCase() === functionName.toLowerCase()
+          );
+          
+          if (funcData) {
+            // Use the signature from the ABI
+            functionSignature = funcData.signature;
+          }
+        }
+      } catch (error) {
+        // If we can't get the signature from contractdir.json, we'll infer it later
+      }
+      
+      // If we couldn't get the signature from ABI, try to infer it
+      if (!functionSignature) {
+        // For common functions with standard signatures
+        if (functionName.toLowerCase() === 'totalsupply' && args.length === 0) {
+          functionSignature = 'totalSupply()';
+        } else if (functionName.toLowerCase() === 'balanceof' && args.length === 1) {
+          functionSignature = 'balanceOf(address)';
+        } else if (functionName.toLowerCase() === 'symbol' && args.length === 0) {
+          functionSignature = 'symbol()';
+        } else if (functionName.toLowerCase() === 'decimals' && args.length === 0) {
+          functionSignature = 'decimals()';
+        } else if (functionName.toLowerCase() === 'name' && args.length === 0) {
+          functionSignature = 'name()';
+        } else if (functionName.toLowerCase() === 'allowance' && args.length === 2) {
+          functionSignature = 'allowance(address,address)';
+        } else if (functionName.toLowerCase() === 'transfer' && args.length === 2) {
+          functionSignature = 'transfer(address,uint256)';
+        } else if (functionName.toLowerCase() === 'transferfrom' && args.length === 3) {
+          functionSignature = 'transferFrom(address,address,uint256)';
+        } else if (functionName.toLowerCase() === 'approve' && args.length === 2) {
+          functionSignature = 'approve(address,uint256)';
+        } else {
+          // If we can't infer it, build a simple signature based on the function name and arg count
+          functionSignature = `${functionName}(${Array(args.length).fill('').map(() => 'bytes32').join(',')})`;
+        }
+      }
+      
+      // Now call the contract function using cast_call
+      const installed = await checkFoundryInstalled();
+      if (!installed) {
+        return {
+          content: [{ type: "text", text: FOUNDRY_NOT_INSTALLED_ERROR }],
+          isError: true
+        };
+      }
+
+      const resolvedRpcUrl = await resolveRpcUrl(rpcUrl);
+      let command = `${castPath} call ${contractAddress} "${functionSignature}"`;
+      
+      if (args.length > 0) {
+        command += " " + args.join(" ");
+      }
+      
+      if (resolvedRpcUrl) {
+        command += ` --rpc-url "${resolvedRpcUrl}"`;
+      }
+      
+      if (blockNumber) {
+        command += ` --block ${blockNumber}`;
+      }
+      
+      if (from) {
+        command += ` --from ${from}`;
+      }
+      
+      const result = await executeCommand(command);
+      
+      let formattedOutput = result.message;
+      if (result.success) {
+        // Try to detect arrays and format them better
+        if (formattedOutput.includes('\n') && !formattedOutput.includes('Error')) {
+          formattedOutput = formattedOutput.split('\n')
+            .map(line => line.trim())
+            .filter(line => line.length > 0)
+            .join('\n');
+        }
+      }
+      
+      return {
+        content: [{ 
+          type: "text", 
+          text: result.success 
+            ? `Call to ${contractName}.${functionName} at ${contractAddress} result:\n${formattedOutput}` 
+            : `Call failed: ${result.message}` 
+        }],
+        isError: !result.success
+      };
+      
+    } catch (error) {
+      return {
+        content: [{ 
+          type: "text", 
+          text: `Error calling contract function: ${error instanceof Error ? error.message : String(error)}` 
+        }],
+        isError: true
+      };
+    }
+  }
+);
+
 async function startServer() {
   const foundryInstalled = await checkFoundryInstalled();
   if (!foundryInstalled) {

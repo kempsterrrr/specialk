@@ -8395,6 +8395,261 @@ ${content}`
     }
   }
 );
+server.tool(
+  "address_lookup",
+  "Look up contract addresses by contract name or symbol, checking both README.md and addresses.ts",
+  {
+    contractName: z.string().describe("The name or symbol of the contract to look up (e.g., 'AUSD', 'MorphoBlue')"),
+    chainId: z.number().optional().describe("Chain ID to use for looking up addresses (defaults to Tatara testnet if not specified)")
+  },
+  async ({ contractName, chainId }) => {
+    try {
+      const addressesPath = path.join(process.cwd(), "utils", "addresses.ts");
+      let addressesContent;
+      try {
+        addressesContent = await fs.readFile(addressesPath, "utf8");
+      } catch (error) {
+        return {
+          content: [{
+            type: "text",
+            text: `Could not read addresses file: ${error instanceof Error ? error.message : String(error)}`
+          }],
+          isError: true
+        };
+      }
+      const contractRegex = new RegExp(`"${contractName}":\\s*{\\s*"tatara":\\s*"(0x[a-fA-F0-9]+)"`, "i");
+      const exactContractRegex = new RegExp(`"${contractName}":\\s*{\\s*"tatara":\\s*"(0x[a-fA-F0-9]+)"`, "g");
+      const tokenRegex = new RegExp(`"${contractName}":\\s*{`, "i");
+      const readmePath = path.join(process.cwd(), "interfaces", "README.md");
+      let readmeContent;
+      try {
+        readmeContent = await fs.readFile(readmePath, "utf8");
+      } catch (error) {
+        readmeContent = "";
+      }
+      const readmeContractInfo = readmeContent.includes(contractName) ? readmeContent.split("\n").filter((line) => line.includes(contractName)).join("\n") : "";
+      const addressInReadmeMatch = readmeContractInfo.match(/Address:\s*`(0x[a-fA-F0-9]+)`/);
+      const addressInReadme = addressInReadmeMatch ? addressInReadmeMatch[1] : null;
+      let contractAddressFromTS = null;
+      try {
+        const { CHAIN_IDS, getContractAddress } = await import(addressesPath);
+        const effectiveChainId = chainId || CHAIN_IDS.TATARA;
+        contractAddressFromTS = getContractAddress(contractName, effectiveChainId);
+        if (!contractAddressFromTS) {
+          contractAddressFromTS = getContractAddress(`I${contractName}`, effectiveChainId);
+        }
+        if (!contractAddressFromTS && contractName.startsWith("I")) {
+          contractAddressFromTS = getContractAddress(contractName.substring(1), effectiveChainId);
+        }
+      } catch (error) {
+        const match = addressesContent.match(contractRegex);
+        if (match && match[1]) {
+          contractAddressFromTS = match[1];
+        }
+      }
+      if (contractAddressFromTS || addressInReadme) {
+        const address = contractAddressFromTS || addressInReadme;
+        let description = "";
+        if (readmeContractInfo) {
+          const descMatch = readmeContractInfo.match(/\*\*.*\*\*\s*-\s*(.*)/);
+          if (descMatch) {
+            description = descMatch[1];
+          }
+        }
+        const contractdirPath = path.join(process.cwd(), "utils", "contractdir.json");
+        let abiInfo = "";
+        try {
+          const contractdirContent = await fs.readFile(contractdirPath, "utf8");
+          const contractdir = JSON.parse(contractdirContent);
+          const contractData = contractdir.find(
+            (c) => c.name.toLowerCase() === contractName.toLowerCase() || `I${c.name}`.toLowerCase() === contractName.toLowerCase()
+          );
+          if (contractData) {
+            if (contractData.functionSignatures && contractData.functionSignatures.length > 0) {
+              abiInfo = "\n\nAvailable Functions:\n" + contractData.functionSignatures.map((fn) => `- ${fn.name}(${fn.inputs.map((i) => i.type).join(",")})`).join("\n");
+            }
+            if (!description && contractData.description) {
+              description = contractData.description;
+            }
+          }
+        } catch (error) {
+        }
+        return {
+          content: [{
+            type: "text",
+            text: `Contract: ${contractName}
+Address: ${address}${description ? `
+
+Description: ${description}` : ""}${abiInfo}`
+          }]
+        };
+      }
+      if (tokenRegex.test(addressesContent)) {
+        return {
+          content: [{
+            type: "text",
+            text: `Found contract "${contractName}" in addresses.ts but couldn't extract the address. Please check the addresses.ts file directly.`
+          }]
+        };
+      }
+      return {
+        content: [{
+          type: "text",
+          text: `Contract "${contractName}" not found in either addresses.ts or README.md.`
+        }],
+        isError: true
+      };
+    } catch (error) {
+      return {
+        content: [{
+          type: "text",
+          text: `Error looking up contract address: ${error instanceof Error ? error.message : String(error)}`
+        }],
+        isError: true
+      };
+    }
+  }
+);
+server.tool(
+  "contract_call",
+  "Call a contract function by contract name instead of address, automatically looking up the address",
+  {
+    contractName: z.string().describe("The name or symbol of the contract (e.g., 'AUSD', 'MorphoBlue')"),
+    functionName: z.string().describe("Function name to call (e.g., 'totalSupply', 'balanceOf')"),
+    args: z.array(z.string()).optional().describe("Function arguments"),
+    chainId: z.number().optional().describe("Chain ID to use (defaults to Tatara testnet if not specified)"),
+    rpcUrl: z.string().optional().describe("JSON-RPC URL (default: http://localhost:8545)"),
+    blockNumber: z.string().optional().describe("Block number (e.g., 'latest', 'earliest', or a number)"),
+    from: z.string().optional().describe("Address to perform the call as")
+  },
+  async ({ contractName, functionName, args = [], chainId, rpcUrl, blockNumber, from }) => {
+    try {
+      const addressesPath = path.join(process.cwd(), "utils", "addresses.ts");
+      const contractdirPath = path.join(process.cwd(), "utils", "contractdir.json");
+      let contractAddress = null;
+      let functionSignature = null;
+      try {
+        const { CHAIN_IDS, getContractAddress } = await import(addressesPath);
+        const effectiveChainId = chainId || CHAIN_IDS.TATARA;
+        contractAddress = getContractAddress(contractName, effectiveChainId) || getContractAddress(`I${contractName}`, effectiveChainId) || (contractName.startsWith("I") ? getContractAddress(contractName.substring(1), effectiveChainId) : null);
+      } catch (error) {
+        try {
+          const addressesContent = await fs.readFile(addressesPath, "utf8");
+          const contractRegex = new RegExp(`"${contractName}":\\s*{\\s*"tatara":\\s*"(0x[a-fA-F0-9]+)"`, "i");
+          const match = addressesContent.match(contractRegex);
+          if (match && match[1]) {
+            contractAddress = match[1];
+          }
+        } catch (fsError) {
+        }
+      }
+      if (!contractAddress) {
+        try {
+          const readmePath = path.join(process.cwd(), "interfaces", "README.md");
+          const readmeContent = await fs.readFile(readmePath, "utf8");
+          const contractLines = readmeContent.split("\n").filter((line) => line.includes(contractName)).join("\n");
+          const addressMatch = contractLines.match(/Address:\s*`(0x[a-fA-F0-9]+)`/);
+          if (addressMatch && addressMatch[1]) {
+            contractAddress = addressMatch[1];
+          }
+        } catch (fsError) {
+        }
+      }
+      if (!contractAddress) {
+        return {
+          content: [{
+            type: "text",
+            text: `Could not find address for contract "${contractName}". Please try using the address_lookup tool first.`
+          }],
+          isError: true
+        };
+      }
+      try {
+        const contractdirContent = await fs.readFile(contractdirPath, "utf8");
+        const contractdir = JSON.parse(contractdirContent);
+        const contractData = contractdir.find(
+          (c) => c.name.toLowerCase() === contractName.toLowerCase() || c.name.toLowerCase() === contractName.toLowerCase().replace(/^i/, "") || `I${c.name}`.toLowerCase() === contractName.toLowerCase()
+        );
+        if (contractData && contractData.functionSignatures) {
+          const funcData = contractData.functionSignatures.find(
+            (f) => f.name.toLowerCase() === functionName.toLowerCase()
+          );
+          if (funcData) {
+            functionSignature = funcData.signature;
+          }
+        }
+      } catch (error) {
+      }
+      if (!functionSignature) {
+        if (functionName.toLowerCase() === "totalsupply" && args.length === 0) {
+          functionSignature = "totalSupply()";
+        } else if (functionName.toLowerCase() === "balanceof" && args.length === 1) {
+          functionSignature = "balanceOf(address)";
+        } else if (functionName.toLowerCase() === "symbol" && args.length === 0) {
+          functionSignature = "symbol()";
+        } else if (functionName.toLowerCase() === "decimals" && args.length === 0) {
+          functionSignature = "decimals()";
+        } else if (functionName.toLowerCase() === "name" && args.length === 0) {
+          functionSignature = "name()";
+        } else if (functionName.toLowerCase() === "allowance" && args.length === 2) {
+          functionSignature = "allowance(address,address)";
+        } else if (functionName.toLowerCase() === "transfer" && args.length === 2) {
+          functionSignature = "transfer(address,uint256)";
+        } else if (functionName.toLowerCase() === "transferfrom" && args.length === 3) {
+          functionSignature = "transferFrom(address,address,uint256)";
+        } else if (functionName.toLowerCase() === "approve" && args.length === 2) {
+          functionSignature = "approve(address,uint256)";
+        } else {
+          functionSignature = `${functionName}(${Array(args.length).fill("").map(() => "bytes32").join(",")})`;
+        }
+      }
+      const installed = await checkFoundryInstalled();
+      if (!installed) {
+        return {
+          content: [{ type: "text", text: FOUNDRY_NOT_INSTALLED_ERROR }],
+          isError: true
+        };
+      }
+      const resolvedRpcUrl = await resolveRpcUrl(rpcUrl);
+      let command = `${castPath} call ${contractAddress} "${functionSignature}"`;
+      if (args.length > 0) {
+        command += " " + args.join(" ");
+      }
+      if (resolvedRpcUrl) {
+        command += ` --rpc-url "${resolvedRpcUrl}"`;
+      }
+      if (blockNumber) {
+        command += ` --block ${blockNumber}`;
+      }
+      if (from) {
+        command += ` --from ${from}`;
+      }
+      const result = await executeCommand(command);
+      let formattedOutput = result.message;
+      if (result.success) {
+        if (formattedOutput.includes("\n") && !formattedOutput.includes("Error")) {
+          formattedOutput = formattedOutput.split("\n").map((line) => line.trim()).filter((line) => line.length > 0).join("\n");
+        }
+      }
+      return {
+        content: [{
+          type: "text",
+          text: result.success ? `Call to ${contractName}.${functionName} at ${contractAddress} result:
+${formattedOutput}` : `Call failed: ${result.message}`
+        }],
+        isError: !result.success
+      };
+    } catch (error) {
+      return {
+        content: [{
+          type: "text",
+          text: `Error calling contract function: ${error instanceof Error ? error.message : String(error)}`
+        }],
+        isError: true
+      };
+    }
+  }
+);
 async function startServer() {
   const foundryInstalled = await checkFoundryInstalled();
   if (!foundryInstalled) {
