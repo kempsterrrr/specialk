@@ -22,6 +22,7 @@ This kit provides:
 - **Local blockchain forks** for development with real contract states
 - **Contract address mapping generator** for easy access to deployed contract
   addresses in JavaScript
+- **Foundry MCP Server** for AI-assisted smart contract development with Cursor
 - Script to generate a single file contract directory with all the ABIs,
   contract names, paths, descriptions, addresses, and context they belong to,
   for directory browsers like the [contract dir](https://contractdir.bruno.id)
@@ -43,7 +44,7 @@ Copy `.env.example` into `.env` and add in your RPC endpoints.
 
 Ensure you have the required tools installed:
 
-- [Bun](https://bun.sh/) - Follow the installation instructions at https://bun.sh/
+- [Bun](https://bun.sh/) - Follow the installation instructions at <https://bun.sh/>
 - [Foundry](https://book.getfoundry.sh/) for contract development and local
   chain forks
 - [Git](https://git-scm.com/)
@@ -71,6 +72,7 @@ This will:
 - Prepare the environment for deployment
 - Compile helper utilities like an address-to-contract mapping in
   `utils/addresses.ts` and interface ABIs in the `/abis` folder
+- Build the Foundry MCP server for AI-assisted development
 
 Going forward, you can just rebuild the web app using `bun run build`.
 
@@ -126,7 +128,53 @@ The example dApp shows:
 
 You can use this as a starting point for your own dApp development.
 
-### 5️⃣ **Contract Address Mapping**
+### 5️⃣ **Using the Foundry MCP Server**
+
+The kit includes a Foundry MCP (Model Context Protocol) server that enables
+AI-assisted smart contract and app development when used with compatible AI
+tools like Cursor.
+
+To use the MCP server:
+
+1. Configure e.g. Cursor to use the MCP server by adding the following to your Cursor
+   config in `.cursor/mcp.json`:
+
+   ```json
+   "mcpServers": {
+     "foundry": {
+       "command": "bun run",
+       "args": [
+         "/absolute_path_to_starter_kit/dist-mcp/index.js"
+       ],
+       "env": {
+         "PRIVATE_KEY": "0xYourPrivateKeyHere",
+         "RPC_URL": "http://localhost:8545"
+       }
+     }
+   }
+   ```
+
+   Replace `/absolute_path_to_starter_kit/` with absolute path to your clone of
+   the starter kit.
+
+2. Launch the local chain with `bun run start:anvil:tatara`.
+
+3. The `PRIVATE_KEY` and `RPC_URL` environment variables are optional. If not
+   provided, the RPC URL will default to `http://localhost:8545`.
+
+4. After configuring, you can use the AI in Cursor to interact with Foundry
+   tools, including:
+   - Calling contract functions
+   - Checking balances
+   - Starting/stopping Anvil instances
+   - Creating and deploying smart contracts
+   - Working with Katana-specific contracts
+
+The MCP server provides a seamless interface between AI tools and Foundry's
+blockchain development toolkit, making it easier to build and interact with
+contracts on Katana.
+
+### 6️⃣ **Contract Address Mapping**
 
 The kit includes a utility to generate a JavaScript mapping of all contract
 addresses for both Tatara testnet and Katana mainnet (when available). This

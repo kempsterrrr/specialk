@@ -10,11 +10,15 @@
     "build:abi": "bun scripts/build_abi.js && bun scripts/extract_abi.js --validate",
     "build:contractdir": "bun scripts/generate_contract_dir.js",
     "build:addresses": "bun scripts/generate_address_mapping.js",
-    "build:all": "bun run build:addresses && bun run build:abi && bun run build:contractdir && bun run build"
+    "build:mcpserver": "bun build.js --mcp-only",
+    "build:all": "bun run build:addresses && bun run build:abi && bun run build:contractdir && bun run build && bun run build:mcpserver",
+    "start:mcp": "bun dist-mcp/index.js"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.2",
     "tevm": "^1.0.0-next.140",
-    "viem": "^2.23.13"
+    "viem": "^2.23.13",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "esbuild": "^0.24.0",
