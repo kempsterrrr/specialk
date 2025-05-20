@@ -4,7 +4,6 @@
   "description": "Development starter kit for Katana and Tatara",
   "scripts": {
     "build": "bun build.js",
-    "start:tevm:tatara": "bun scripts/tatara_bun.js",
     "start:anvil:tatara": "chmod +x scripts/start_anvil.sh && scripts/start_anvil.sh",
     "verify:anvil:tatara": "bun scripts/verify_anvil.js",
     "build:abi": "bun scripts/build_abi.js && bun scripts/extract_abi.js --validate",
@@ -16,7 +15,6 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.2",
-    "tevm": "^1.0.0-next.140",
     "viem": "^2.23.13",
     "zod": "^3.22.4"
   },
