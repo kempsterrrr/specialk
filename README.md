@@ -108,7 +108,7 @@ To run the example:
 1. Start your local Tatara fork (in its own terminal):
 
    ```sh
-   bun run start:anvil
+   bun run start:anvil:tatara
    ```
 
 2. In a new terminal, build the dApp:
