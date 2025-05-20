@@ -113,7 +113,7 @@ function displayRpcError(customMessage?: string) {
       <h4>⚠️ RPC Connection Error</h4>
       ${customMessage ? `<p>${customMessage}</p>` : ''}
       <p>Make sure you've started the local Tatara fork with:</p>
-      <pre>bun run fork:tatara</pre>
+      <pre>bun run start:anvil:tatara</pre>
       <p>Your local RPC should be running at http://localhost:8545</p>
     </div>
   `;
