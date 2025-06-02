@@ -63,3 +63,5 @@ tutorials/
 utils/addresses.ts
 utils/contractdir.json
 utils/contractdir_sample.json
+
+wallet.json

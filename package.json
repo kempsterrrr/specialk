@@ -11,10 +11,12 @@
     "build:addresses": "bun scripts/generate_address_mapping.js",
     "build:mcpserver": "bun build.js --mcp-only",
     "build:all": "bun run build:addresses && bun run build:abi && bun run build:contractdir && bun run build && bun run build:mcpserver",
-    "start:mcp": "bun dist-mcp/index.js"
+    "start:mcp": "bun dist-mcp/index.js",
+    "deploy:arweave": "bun run build && permaweb-deploy --arns-name <ARNS_NAME>"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.2",
+    "permaweb-deploy": "^2.1.0",
     "viem": "^2.23.13",
     "zod": "^3.22.4"
   },
