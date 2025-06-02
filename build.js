@@ -23,6 +23,7 @@ async function buildProject() {
       platform: 'browser',
       loader: {
         '.ts': 'ts',
+        '.json': 'json'
       },
       define: {
         'process.env.NODE_ENV': '"production"',
