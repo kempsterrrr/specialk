@@ -25,6 +25,8 @@ async function buildProject() {
         '.ts': 'ts',
         '.json': 'json'
       },
+      resolveExtensions: ['.ts', '.js', '.json'],
+      nodePaths: ['./'],
       define: {
         'process.env.NODE_ENV': '"production"',
       }
