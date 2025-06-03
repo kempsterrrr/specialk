@@ -1,0 +1,183 @@
+[
+  {
+    "name": "IAccount",
+    "path": "AAv0.7.0/IERC4337Account.sol",
+    "relativePath": "AAv0.7.0",
+    "description": "ERC-4337 v0.7.0 Account Interface: Interface for accounts that can be validated by the EntryPoint",
+    "metadata": {
+      "title": "ERC-4337 v0.7.0 Account Interface",
+      "notice": "Interface for accounts that can be validated by the EntryPoint",
+      "dev": null
+    },
+    "context": "account-abstraction",
+    "theme": "#ff7a00",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IAccount",
+    "path": "AAv0.6.0/IERC4337Account.sol",
+    "relativePath": "AAv0.6.0",
+    "description": "ERC-4337 v0.6.0 Account Interface: Interface for accounts that can be validated by the EntryPoint",
+    "metadata": {
+      "title": "ERC-4337 v0.6.0 Account Interface",
+      "notice": "Interface for accounts that can be validated by the EntryPoint",
+      "dev": null
+    },
+    "context": "account-abstraction",
+    "theme": "#ff7a00",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IAggregatorV3Interface",
+    "path": "IAggregatorV3Interface.sol",
+    "relativePath": "",
+    "description": "IAggregatorV3Interface: Interface for Chainlink price feed aggregators",
+    "metadata": {
+      "title": "IAggregatorV3Interface",
+      "notice": "Interface for Chainlink price feed aggregators",
+      "dev": null
+    },
+    "context": "general",
+    "theme": "#6b7280",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IAUSD",
+    "path": "tokens/IAUSD.sol",
+    "relativePath": "tokens",
+    "description": "IAUSD: Interface for Agora USD (AUSD), the stablecoin on Katana (AUSD implements the standard ERC-20 interface)",
+    "metadata": {
+      "title": "IAUSD",
+      "notice": "Interface for Agora USD (AUSD), the stablecoin on Katana",
+      "dev": "AUSD implements the standard ERC-20 interface"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IBridgeL2SovereignChain",
+    "path": "agglayer/IBridgeL2SovereignChain.sol",
+    "relativePath": "agglayer",
+    "description": "IBridgeL2SovereignChain: Interface for the BridgeL2SovereignChain contract which handles cross-chain message passing (Implementation address: 0x8BD36ca1A55e389335004872aA3C3Be0969D3aA7)",
+    "metadata": {
+      "title": "IBridgeL2SovereignChain",
+      "notice": "Interface for the BridgeL2SovereignChain contract which handles cross-chain message passing",
+      "dev": "Implementation address: 0x8BD36ca1A55e389335004872aA3C3Be0969D3aA7"
+    },
+    "context": "bridge",
+    "theme": "#e20b8c",
+    "address": {
+      "tatara": "0x528e26b25a34a4A5d0dbDa1d57D318153d2ED582",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IBundler3",
+    "path": "IBundler3.sol",
+    "relativePath": "",
+    "description": "IBundler3: Interface for the Bundler3 contract, which enables batching multiple calls in a single transaction",
+    "metadata": {
+      "title": "IBundler3",
+      "notice": "Interface for the Bundler3 contract, which enables batching multiple calls in a single transaction",
+      "dev": null
+    },
+    "context": "utility",
+    "theme": "#00b7c5",
+    "address": {
+      "tatara": "0xD0bDf3E62F6750Bd83A50b4001743898Af287009",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IConduit",
+    "path": "IConduit.sol",
+    "relativePath": "",
+    "description": "IConduit: Interface for OpenSea's Conduit contracts that enable transferring approved tokens (Conduits are deployed by the ConduitController and can transfer ERC20/721/1155 tokens)",
+    "metadata": {
+      "title": "IConduit",
+      "notice": "Interface for OpenSea's Conduit contracts that enable transferring approved tokens",
+      "dev": "Conduits are deployed by the ConduitController and can transfer ERC20/721/1155 tokens"
+    },
+    "context": "seaport",
+    "theme": "#2081e2",
+    "address": {
+      "tatara": "0x00000000F9490004C11Cef243f5400493c00Ad63",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IConduitController",
+    "path": "IConduitController.sol",
+    "relativePath": "",
+    "description": "IConduitController: Interface for OpenSea's Conduit Controller system that enables deploying and managing conduits (Conduits allow registered callers (channels) to transfer approved ERC20/721/1155 tokens on their behalf)",
+    "metadata": {
+      "title": "IConduitController",
+      "notice": "Interface for OpenSea's Conduit Controller system that enables deploying and managing conduits",
+      "dev": "Conduits allow registered callers (channels) to transfer approved ERC20/721/1155 tokens on their behalf"
+    },
+    "context": "seaport",
+    "theme": "#2081e2",
+    "address": {
+      "tatara": "0x00000000F9490004C11Cef243f5400493c00Ad63",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "ICreate2Deployer",
+    "path": "ICreate2Deployer.sol",
+    "relativePath": "",
+    "description": "ICreate2Deployer: Helper contract for using CREATE2 opcode with additional safety features and utilities (Interface for the Create2Deployer contract on Katana)",
+    "metadata": {
+      "title": "ICreate2Deployer",
+      "notice": "Helper contract for using CREATE2 opcode with additional safety features and utilities",
+      "dev": "Interface for the Create2Deployer contract on Katana"
+    },
+    "context": "utility",
+    "theme": "#00b7c5",
+    "address": {
+      "tatara": "0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "ICreateX",
+    "path": "ICreateX.sol",
+    "relativePath": "",
+    "description": "CreateX Factory Interface Definition: Advanced contract deployment factory supporting CREATE, CREATE2, and CREATE3 deployment patterns",
+    "metadata": {
+      "title": "CreateX Factory Interface Definition",
+      "notice": "Advanced contract deployment factory supporting CREATE, CREATE2, and CREATE3 deployment patterns",
+      "dev": null
+    },
+    "context": "deployment",
+    "theme": "#8b5cf6",
+    "address": {
+      "tatara": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  }
+]

@@ -1,0 +1,3521 @@
+[
+  {
+    "name": "IAccount",
+    "path": "AAv0.7.0/IERC4337Account.sol",
+    "relativePath": "AAv0.7.0",
+    "description": "ERC-4337 v0.7.0 Account Interface: Interface for accounts that can be validated by the EntryPoint",
+    "metadata": {
+      "title": "ERC-4337 v0.7.0 Account Interface",
+      "notice": "Interface for accounts that can be validated by the EntryPoint",
+      "dev": null
+    },
+    "context": "account-abstraction",
+    "theme": "#ff7a00",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IAccount",
+    "path": "AAv0.6.0/IERC4337Account.sol",
+    "relativePath": "AAv0.6.0",
+    "description": "ERC-4337 v0.6.0 Account Interface: Interface for accounts that can be validated by the EntryPoint",
+    "metadata": {
+      "title": "ERC-4337 v0.6.0 Account Interface",
+      "notice": "Interface for accounts that can be validated by the EntryPoint",
+      "dev": null
+    },
+    "context": "account-abstraction",
+    "theme": "#ff7a00",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IAggregatorV3Interface",
+    "path": "IAggregatorV3Interface.sol",
+    "relativePath": "",
+    "description": "IAggregatorV3Interface: Interface for Chainlink price feed aggregators",
+    "metadata": {
+      "title": "IAggregatorV3Interface",
+      "notice": "Interface for Chainlink price feed aggregators",
+      "dev": null
+    },
+    "context": "general",
+    "theme": "#6b7280",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IAUSD",
+    "path": "tokens/IAUSD.sol",
+    "relativePath": "tokens",
+    "description": "IAUSD: Interface for Agora USD (AUSD), the stablecoin on Katana (AUSD implements the standard ERC-20 interface)",
+    "metadata": {
+      "title": "IAUSD",
+      "notice": "Interface for Agora USD (AUSD), the stablecoin on Katana",
+      "dev": "AUSD implements the standard ERC-20 interface"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IBridgeL2SovereignChain",
+    "path": "agglayer/IBridgeL2SovereignChain.sol",
+    "relativePath": "agglayer",
+    "description": "IBridgeL2SovereignChain: Interface for the BridgeL2SovereignChain contract which handles cross-chain message passing (Implementation address: 0x8BD36ca1A55e389335004872aA3C3Be0969D3aA7)",
+    "metadata": {
+      "title": "IBridgeL2SovereignChain",
+      "notice": "Interface for the BridgeL2SovereignChain contract which handles cross-chain message passing",
+      "dev": "Implementation address: 0x8BD36ca1A55e389335004872aA3C3Be0969D3aA7"
+    },
+    "context": "bridge",
+    "theme": "#e20b8c",
+    "address": {
+      "tatara": "0x528e26b25a34a4A5d0dbDa1d57D318153d2ED582",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IBundler3",
+    "path": "IBundler3.sol",
+    "relativePath": "",
+    "description": "IBundler3: Interface for the Bundler3 contract, which enables batching multiple calls in a single transaction",
+    "metadata": {
+      "title": "IBundler3",
+      "notice": "Interface for the Bundler3 contract, which enables batching multiple calls in a single transaction",
+      "dev": null
+    },
+    "context": "utility",
+    "theme": "#00b7c5",
+    "address": {
+      "tatara": "0xD0bDf3E62F6750Bd83A50b4001743898Af287009",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IConduit",
+    "path": "IConduit.sol",
+    "relativePath": "",
+    "description": "IConduit: Interface for OpenSea's Conduit contracts that enable transferring approved tokens (Conduits are deployed by the ConduitController and can transfer ERC20/721/1155 tokens)",
+    "metadata": {
+      "title": "IConduit",
+      "notice": "Interface for OpenSea's Conduit contracts that enable transferring approved tokens",
+      "dev": "Conduits are deployed by the ConduitController and can transfer ERC20/721/1155 tokens"
+    },
+    "context": "seaport",
+    "theme": "#2081e2",
+    "address": {
+      "tatara": "0x00000000F9490004C11Cef243f5400493c00Ad63",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IConduitController",
+    "path": "IConduitController.sol",
+    "relativePath": "",
+    "description": "IConduitController: Interface for OpenSea's Conduit Controller system that enables deploying and managing conduits (Conduits allow registered callers (channels) to transfer approved ERC20/721/1155 tokens on their behalf)",
+    "metadata": {
+      "title": "IConduitController",
+      "notice": "Interface for OpenSea's Conduit Controller system that enables deploying and managing conduits",
+      "dev": "Conduits allow registered callers (channels) to transfer approved ERC20/721/1155 tokens on their behalf"
+    },
+    "context": "seaport",
+    "theme": "#2081e2",
+    "address": {
+      "tatara": "0x00000000F9490004C11Cef243f5400493c00Ad63",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "ICreate2Deployer",
+    "path": "ICreate2Deployer.sol",
+    "relativePath": "",
+    "description": "ICreate2Deployer: Helper contract for using CREATE2 opcode with additional safety features and utilities (Interface for the Create2Deployer contract on Katana)",
+    "metadata": {
+      "title": "ICreate2Deployer",
+      "notice": "Helper contract for using CREATE2 opcode with additional safety features and utilities",
+      "dev": "Interface for the Create2Deployer contract on Katana"
+    },
+    "context": "utility",
+    "theme": "#00b7c5",
+    "address": {
+      "tatara": "0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "ICreateX",
+    "path": "ICreateX.sol",
+    "relativePath": "",
+    "description": "CreateX Factory Interface Definition: Advanced contract deployment factory supporting CREATE, CREATE2, and CREATE3 deployment patterns",
+    "metadata": {
+      "title": "CreateX Factory Interface Definition",
+      "notice": "Advanced contract deployment factory supporting CREATE, CREATE2, and CREATE3 deployment patterns",
+      "dev": null
+    },
+    "context": "deployment",
+    "theme": "#8b5cf6",
+    "address": {
+      "tatara": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IDAINativeConverter",
+    "path": "vb/converters/IDAINativeConverter.sol",
+    "relativePath": "vb/converters",
+    "description": "IDAINativeConverter: Interface for the DAI Native Converter on Tatara (Converts between DAI and custom tokens on Layer Y, with migration capabilities to Layer X)",
+    "metadata": {
+      "title": "IDAINativeConverter",
+      "notice": "Interface for the DAI Native Converter on Tatara",
+      "dev": "Converts between DAI and custom tokens on Layer Y, with migration capabilities to Layer X"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0x6a99f2004044357A80E5D43345229179adc871D4",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IDeterministicDeploymentProxy",
+    "path": "IDeterministicDeploymentProxy.sol",
+    "relativePath": "",
+    "description": "IDeterministicDeploymentProxy: This contract enables deploying other contracts at the same address across different EVM chains (Interface for Deterministic Deployment Proxy on Katana)",
+    "metadata": {
+      "title": "IDeterministicDeploymentProxy",
+      "notice": "This contract enables deploying other contracts at the same address across different EVM chains",
+      "dev": "Interface for Deterministic Deployment Proxy on Katana"
+    },
+    "context": "deployment",
+    "theme": "#8b5cf6",
+    "address": {
+      "tatara": "0x4e59b44847b379578588920cA78FbF26c0B4956C",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IEntryPoint",
+    "path": "AAv0.7.0/IEntryPoint.sol",
+    "relativePath": "AAv0.7.0",
+    "description": "IEntryPoint v0.7.0: Account-Abstraction (EIP-4337) singleton EntryPoint (Only one instance required on each chain)",
+    "metadata": {
+      "title": "IEntryPoint v0.7.0",
+      "notice": "Account-Abstraction (EIP-4337) singleton EntryPoint",
+      "dev": "Only one instance required on each chain"
+    },
+    "context": "account-abstraction",
+    "theme": "#ff7a00",
+    "address": {
+      "tatara": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "mainnet": null
+    },
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple",
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ]
+          }
+        ],
+        "name": "getRequiredPrefund",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "requiredPrefund",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "initCode",
+            "type": "bytes"
+          }
+        ],
+        "name": "getSenderAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "getDepositInfo",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint112",
+                "name": "deposit",
+                "type": "uint112"
+              },
+              {
+                "internalType": "bool",
+                "name": "staked",
+                "type": "bool"
+              },
+              {
+                "internalType": "uint112",
+                "name": "stake",
+                "type": "uint112"
+              },
+              {
+                "internalType": "uint32",
+                "name": "unstakeDelaySec",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint48",
+                "name": "withdrawTime",
+                "type": "uint48"
+              }
+            ],
+            "internalType": "struct IStakeManager.DepositInfo",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "contract_",
+            "type": "address"
+          }
+        ],
+        "name": "getCodeHashOf",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "codeHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation[]",
+            "name": "ops",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "address payable",
+            "name": "beneficiary",
+            "type": "address"
+          }
+        ],
+        "name": "handleOps",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "op",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address payable",
+            "name": "beneficiary",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "targetCallData",
+            "type": "bytes"
+          }
+        ],
+        "name": "handleOp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "signatureAggregator",
+            "type": "address"
+          }
+        ],
+        "name": "delegateUserOperation",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple"
+          }
+        ],
+        "name": "getUserOpHash",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "userOpHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple"
+          }
+        ],
+        "name": "simulateValidation",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "op",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "targetCallData",
+            "type": "bytes"
+          }
+        ],
+        "name": "simulateHandleOp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "functionSignatures": [
+      {
+        "name": "getRequiredPrefund",
+        "signature": "getRequiredPrefund(tuple)",
+        "inputs": [
+          {
+            "internalType": "PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple",
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "requiredPrefund",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "pure"
+      },
+      {
+        "name": "getSenderAddress",
+        "signature": "getSenderAddress(bytes)",
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "initCode",
+            "type": "bytes"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "getDepositInfo",
+        "signature": "getDepositInfo(address)",
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint112",
+                "name": "deposit",
+                "type": "uint112"
+              },
+              {
+                "internalType": "bool",
+                "name": "staked",
+                "type": "bool"
+              },
+              {
+                "internalType": "uint112",
+                "name": "stake",
+                "type": "uint112"
+              },
+              {
+                "internalType": "uint32",
+                "name": "unstakeDelaySec",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint48",
+                "name": "withdrawTime",
+                "type": "uint48"
+              }
+            ],
+            "internalType": "struct IStakeManager.DepositInfo",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "name": "getCodeHashOf",
+        "signature": "getCodeHashOf(address)",
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "contract_",
+            "type": "address"
+          }
+        ],
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "codeHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "name": "handleOps",
+        "signature": "handleOps(tuple[],address)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation[]",
+            "name": "ops",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "address payable",
+            "name": "beneficiary",
+            "type": "address"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "handleOp",
+        "signature": "handleOp(tuple,address,address,bytes)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "op",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address payable",
+            "name": "beneficiary",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "targetCallData",
+            "type": "bytes"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "delegateUserOperation",
+        "signature": "delegateUserOperation(address)",
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "signatureAggregator",
+            "type": "address"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "getUserOpHash",
+        "signature": "getUserOpHash(tuple)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple"
+          }
+        ],
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "userOpHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "name": "simulateValidation",
+        "signature": "simulateValidation(tuple)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "simulateHandleOp",
+        "signature": "simulateHandleOp(tuple,address,bytes)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "op",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "targetCallData",
+            "type": "bytes"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      }
+    ]
+  },
+  {
+    "name": "IEntryPoint",
+    "path": "AAv0.6.0/IEntryPoint.sol",
+    "relativePath": "AAv0.6.0",
+    "description": "IEntryPoint v0.6.0: Account-Abstraction (EIP-4337) singleton EntryPoint (Only one instance required on each chain)",
+    "metadata": {
+      "title": "IEntryPoint v0.6.0",
+      "notice": "Account-Abstraction (EIP-4337) singleton EntryPoint",
+      "dev": "Only one instance required on each chain"
+    },
+    "context": "account-abstraction",
+    "theme": "#ff7a00",
+    "address": {
+      "tatara": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IEntryPointSimulations",
+    "path": "AAv0.7.0/IEntryPointSimulations.sol",
+    "relativePath": "AAv0.7.0",
+    "description": "IEntryPointSimulations Interface (v0.7.0): Extended simulation interface for EntryPoint",
+    "metadata": {
+      "title": "IEntryPointSimulations Interface (v0.7.0)",
+      "notice": "Extended simulation interface for EntryPoint",
+      "dev": null
+    },
+    "context": "account-abstraction",
+    "theme": "#ff7a00",
+    "address": {
+      "tatara": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+      "mainnet": null
+    },
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple",
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ]
+          }
+        ],
+        "name": "getRequiredPrefund",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "requiredPrefund",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "initCode",
+            "type": "bytes"
+          }
+        ],
+        "name": "getSenderAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "getDepositInfo",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint112",
+                "name": "deposit",
+                "type": "uint112"
+              },
+              {
+                "internalType": "bool",
+                "name": "staked",
+                "type": "bool"
+              },
+              {
+                "internalType": "uint112",
+                "name": "stake",
+                "type": "uint112"
+              },
+              {
+                "internalType": "uint32",
+                "name": "unstakeDelaySec",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint48",
+                "name": "withdrawTime",
+                "type": "uint48"
+              }
+            ],
+            "internalType": "struct IStakeManager.DepositInfo",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "contract_",
+            "type": "address"
+          }
+        ],
+        "name": "getCodeHashOf",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "codeHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation[]",
+            "name": "ops",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "address payable",
+            "name": "beneficiary",
+            "type": "address"
+          }
+        ],
+        "name": "handleOps",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "op",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address payable",
+            "name": "beneficiary",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "targetCallData",
+            "type": "bytes"
+          }
+        ],
+        "name": "handleOp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "signatureAggregator",
+            "type": "address"
+          }
+        ],
+        "name": "delegateUserOperation",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple"
+          }
+        ],
+        "name": "getUserOpHash",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "userOpHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple"
+          }
+        ],
+        "name": "simulateValidation",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "op",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "targetCallData",
+            "type": "bytes"
+          }
+        ],
+        "name": "simulateHandleOp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple"
+          }
+        ],
+        "name": "simulateValidation",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "preOpGas",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "prefund",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "actualAggregator",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "paymasterContext",
+            "type": "bytes"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "op",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "targetCallData",
+            "type": "bytes"
+          }
+        ],
+        "name": "simulateHandleOp",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "preOpGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "paid",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "accountValidationData",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "paymasterValidationData",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "targetSuccess",
+                "type": "bool"
+              },
+              {
+                "internalType": "bytes",
+                "name": "targetResult",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IEntryPointSimulations.ExecutionResult",
+            "name": "executionResult",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "functionSignatures": [
+      {
+        "name": "getRequiredPrefund",
+        "signature": "getRequiredPrefund(tuple)",
+        "inputs": [
+          {
+            "internalType": "PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple",
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "requiredPrefund",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "pure"
+      },
+      {
+        "name": "getSenderAddress",
+        "signature": "getSenderAddress(bytes)",
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "initCode",
+            "type": "bytes"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "getDepositInfo",
+        "signature": "getDepositInfo(address)",
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint112",
+                "name": "deposit",
+                "type": "uint112"
+              },
+              {
+                "internalType": "bool",
+                "name": "staked",
+                "type": "bool"
+              },
+              {
+                "internalType": "uint112",
+                "name": "stake",
+                "type": "uint112"
+              },
+              {
+                "internalType": "uint32",
+                "name": "unstakeDelaySec",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint48",
+                "name": "withdrawTime",
+                "type": "uint48"
+              }
+            ],
+            "internalType": "struct IStakeManager.DepositInfo",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "name": "getCodeHashOf",
+        "signature": "getCodeHashOf(address)",
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "contract_",
+            "type": "address"
+          }
+        ],
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "codeHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "name": "handleOps",
+        "signature": "handleOps(tuple[],address)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation[]",
+            "name": "ops",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "address payable",
+            "name": "beneficiary",
+            "type": "address"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "handleOp",
+        "signature": "handleOp(tuple,address,address,bytes)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "op",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address payable",
+            "name": "beneficiary",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "targetCallData",
+            "type": "bytes"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "delegateUserOperation",
+        "signature": "delegateUserOperation(address)",
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "signatureAggregator",
+            "type": "address"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "getUserOpHash",
+        "signature": "getUserOpHash(tuple)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple"
+          }
+        ],
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "userOpHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view"
+      },
+      {
+        "name": "simulateValidation",
+        "signature": "simulateValidation(tuple)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "simulateHandleOp",
+        "signature": "simulateHandleOp(tuple,address,bytes)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "op",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "targetCallData",
+            "type": "bytes"
+          }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "simulateValidation",
+        "signature": "simulateValidation(tuple)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "userOp",
+            "type": "tuple"
+          }
+        ],
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "preOpGas",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "prefund",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "actualAggregator",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "paymasterContext",
+            "type": "bytes"
+          }
+        ],
+        "stateMutability": "nonpayable"
+      },
+      {
+        "name": "simulateHandleOp",
+        "signature": "simulateHandleOp(tuple,address,bytes)",
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "initCode",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "accountGasLimits",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preVerificationGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "gasFees",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterAndData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct PackedUserOperation",
+            "name": "op",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "targetCallData",
+            "type": "bytes"
+          }
+        ],
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "preOpGas",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "paid",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "accountValidationData",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "paymasterValidationData",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "targetSuccess",
+                "type": "bool"
+              },
+              {
+                "internalType": "bytes",
+                "name": "targetResult",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IEntryPointSimulations.ExecutionResult",
+            "name": "executionResult",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "nonpayable"
+      }
+    ]
+  },
+  {
+    "name": "IERC20",
+    "path": "IERC20.sol",
+    "relativePath": "",
+    "description": "IERC20",
+    "metadata": {
+      "title": "IERC20",
+      "notice": null,
+      "dev": null
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IERC20",
+    "path": "IBatchDistributor.sol",
+    "relativePath": "",
+    "description": null,
+    "metadata": {
+      "title": null,
+      "notice": null,
+      "dev": null
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IERC4337Common",
+    "path": "IERC4337.sol",
+    "relativePath": "",
+    "description": "IERC4337 Common Interfaces: Shared types and interfaces for ERC-4337 Account Abstraction standard (These interfaces are common between v0.6.0 and v0.7.0 versions Validates user operations and handles their execution)",
+    "metadata": {
+      "title": "IERC4337 Common Interfaces",
+      "notice": "Shared types and interfaces for ERC-4337 Account Abstraction standard",
+      "dev": "These interfaces are common between v0.6.0 and v0.7.0 versions Validates user operations and handles their execution"
+    },
+    "context": "account-abstraction",
+    "theme": "#ff7a00",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IERC4626",
+    "path": "IERC4626.sol",
+    "relativePath": "",
+    "description": "IERC4626: Minimal interface for ERC4626 tokenized vaults",
+    "metadata": {
+      "title": "IERC4626",
+      "notice": "Minimal interface for ERC4626 tokenized vaults",
+      "dev": null
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IGlobalExitRootManagerL2SovereignChain",
+    "path": "agglayer/IGlobalExitRootManagerL2SovereignChain.sol",
+    "relativePath": "agglayer",
+    "description": "IGlobalExitRootManagerL2SovereignChain: Interface for the GlobalExitRootManagerL2SovereignChain contract which manages exit roots (Implementation address: 0x282a631D9F3Ef04Bf1A44B4C9e8bDC8EB278917f)",
+    "metadata": {
+      "title": "IGlobalExitRootManagerL2SovereignChain",
+      "notice": "Interface for the GlobalExitRootManagerL2SovereignChain contract which manages exit roots",
+      "dev": "Implementation address: 0x282a631D9F3Ef04Bf1A44B4C9e8bDC8EB278917f"
+    },
+    "context": "bridge",
+    "theme": "#e20b8c",
+    "address": {
+      "tatara": "0xa40D5f56745a118D0906a34E69aeC8C0Db1cB8fA",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IGnosisSafe",
+    "path": "IGnosisSafe.sol",
+    "relativePath": "",
+    "description": "IGnosisSafe: This contract enables multisig wallet functionality with support for ERC191 signatures (Interface for the Gnosis Safe multisignature wallet on Katana)",
+    "metadata": {
+      "title": "IGnosisSafe",
+      "notice": "This contract enables multisig wallet functionality with support for ERC191 signatures",
+      "dev": "Interface for the Gnosis Safe multisignature wallet on Katana"
+    },
+    "context": "gnosis",
+    "theme": "#028390",
+    "address": {
+      "tatara": "0x69f4D1788e39c87893C980c06EdF4b7f686e2938",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IGnosisSafeL2",
+    "path": "IGnosisSafeL2.sol",
+    "relativePath": "",
+    "description": "IGnosisSafeL2: This contract extends IGnosisSafe with L2-specific optimizations and events (Interface for the Gnosis Safe L2 multisignature wallet on Katana)",
+    "metadata": {
+      "title": "IGnosisSafeL2",
+      "notice": "This contract extends IGnosisSafe with L2-specific optimizations and events",
+      "dev": "Interface for the Gnosis Safe L2 multisignature wallet on Katana"
+    },
+    "context": "gnosis",
+    "theme": "#028390",
+    "address": {
+      "tatara": "0x69f4D1788e39c87893C980c06EdF4b7f686e2938",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMetaMorpho",
+    "path": "IMetaMorpho.sol",
+    "relativePath": "",
+    "description": "IMetaMorpho: Interface for MetaMorpho vaults - ERC4626 yield aggregators for Morpho Blue markets",
+    "metadata": {
+      "title": "IMetaMorpho",
+      "notice": "Interface for MetaMorpho vaults - ERC4626 yield aggregators for Morpho Blue markets",
+      "dev": null
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": {
+      "tatara": "0x505619071bdCDeA154f164b323B6C42Fc14257f7",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMetaMorphoFactory",
+    "path": "IMetaMorphoFactory.sol",
+    "relativePath": "",
+    "description": "IMetaMorphoFactory: Interface for MetaMorpho Factory, which creates MetaMorpho vaults for Morpho Blue",
+    "metadata": {
+      "title": "IMetaMorphoFactory",
+      "notice": "Interface for MetaMorpho Factory, which creates MetaMorpho vaults for Morpho Blue",
+      "dev": null
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": {
+      "tatara": "0x505619071bdCDeA154f164b323B6C42Fc14257f7",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMorphoAdaptiveIRM",
+    "path": "IMorphoAdaptiveIRM.sol",
+    "relativePath": "",
+    "description": "IMorphoAdaptiveIRM: Interface for Morpho's Adaptive Curve Interest Rate Model (IRM) (This IRM dynamically adjusts interest rates based on market utilization)",
+    "metadata": {
+      "title": "IMorphoAdaptiveIRM",
+      "notice": "Interface for Morpho's Adaptive Curve Interest Rate Model (IRM)",
+      "dev": "This IRM dynamically adjusts interest rates based on market utilization"
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": {
+      "tatara": "0x9eB6d0D85FCc07Bf34D69913031ade9E16BD5dB0",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMorphoBlue",
+    "path": "IMorphoBlue.sol",
+    "relativePath": "",
+    "description": "IMorphoBlue: Interface for Morpho Blue lending protocol (This interface combines the core functions and types from the Morpho Blue protocol)",
+    "metadata": {
+      "title": "IMorphoBlue",
+      "notice": "Interface for Morpho Blue lending protocol",
+      "dev": "This interface combines the core functions and types from the Morpho Blue protocol"
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": {
+      "tatara": "0xC263190b99ceb7e2b7409059D24CB573e3bB9021",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMorphoChainlinkOracleV2",
+    "path": "IMorphoChainlinkOracleV2.sol",
+    "relativePath": "",
+    "description": "IMorphoChainlinkOracleV2: Interface for Morpho's Chainlink Oracle V2, which combines ERC4626 vault assets with Chainlink price feeds",
+    "metadata": {
+      "title": "IMorphoChainlinkOracleV2",
+      "notice": "Interface for Morpho's Chainlink Oracle V2, which combines ERC4626 vault assets with Chainlink price feeds",
+      "dev": null
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": {
+      "tatara": "0xe795DD345aD7E1bC9e8F6B4437a21704d731F9E0",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMorphoChainlinkOracleV2Factory",
+    "path": "IMorphoChainlinkOracleV2Factory.sol",
+    "relativePath": "",
+    "description": "IMorphoChainlinkOracleV2Factory: Interface for the factory that creates Morpho Chainlink Oracle V2 instances",
+    "metadata": {
+      "title": "IMorphoChainlinkOracleV2Factory",
+      "notice": "Interface for the factory that creates Morpho Chainlink Oracle V2 instances",
+      "dev": null
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": {
+      "tatara": "0xe795DD345aD7E1bC9e8F6B4437a21704d731F9E0",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMorphoIRM",
+    "path": "IMorphoIRM.sol",
+    "relativePath": "",
+    "description": "IMorphoIRM: Interface for interest rate models used by Morpho Blue (Morpho Blue uses this interface to calculate borrow rates for markets)",
+    "metadata": {
+      "title": "IMorphoIRM",
+      "notice": "Interface for interest rate models used by Morpho Blue",
+      "dev": "Morpho Blue uses this interface to calculate borrow rates for markets"
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": {
+      "tatara": "0x9eB6d0D85FCc07Bf34D69913031ade9E16BD5dB0",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMorphoLiquidateCallback",
+    "path": "IMorphoCallbacks.sol",
+    "relativePath": "",
+    "description": "IMorphoLiquidateCallback",
+    "metadata": {
+      "title": "IMorphoLiquidateCallback",
+      "notice": null,
+      "dev": null
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMorphoOracle",
+    "path": "IMorphoOracle.sol",
+    "relativePath": "",
+    "description": "IMorphoOracle: Interface for oracles used by Morpho Blue",
+    "metadata": {
+      "title": "IMorphoOracle",
+      "notice": "Interface for oracles used by Morpho Blue",
+      "dev": null
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMulticall3",
+    "path": "IMulticall3.sol",
+    "relativePath": "",
+    "description": "IMulticall3: Allows batching multiple read-only calls into a single transaction (Interface for Multicall3 contract on Katana)",
+    "metadata": {
+      "title": "IMulticall3",
+      "notice": "Allows batching multiple read-only calls into a single transaction",
+      "dev": "Interface for Multicall3 contract on Katana"
+    },
+    "context": "utility",
+    "theme": "#00b7c5",
+    "address": {
+      "tatara": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMultiSend",
+    "path": "IMultiSend.sol",
+    "relativePath": "",
+    "description": "IMultiSend: This contract allows batching multiple transactions into a single transaction (Interface for the MultiSend contract on Katana)",
+    "metadata": {
+      "title": "IMultiSend",
+      "notice": "This contract allows batching multiple transactions into a single transaction",
+      "dev": "Interface for the MultiSend contract on Katana"
+    },
+    "context": "general",
+    "theme": "#6b7280",
+    "address": {
+      "tatara": "0x998739BFdAAdde7C933B942a68053933098f9EDa",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IMultiSendCallOnly",
+    "path": "IMultiSendCallOnly.sol",
+    "relativePath": "",
+    "description": "IMultiSendCallOnly: This contract allows batching multiple transactions into a single transaction, but only allows CALL operations (no delegatecall) (Interface for the MultiSendCallOnly contract on Katana)",
+    "metadata": {
+      "title": "IMultiSendCallOnly",
+      "notice": "This contract allows batching multiple transactions into a single transaction, but only allows CALL operations (no delegatecall)",
+      "dev": "Interface for the MultiSendCallOnly contract on Katana"
+    },
+    "context": "general",
+    "theme": "#6b7280",
+    "address": {
+      "tatara": "0x998739BFdAAdde7C933B942a68053933098f9EDa",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "INativeConverter",
+    "path": "vb/INativeConverter.sol",
+    "relativePath": "vb",
+    "description": "INativeConverter: Interface for Native Converter contracts that handle conversion between native tokens and yield-exposing tokens",
+    "metadata": {
+      "title": "INativeConverter",
+      "notice": "Interface for Native Converter contracts that handle conversion between native tokens and yield-exposing tokens",
+      "dev": null
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0x3aFbD158CF7B1E6BE4dAC88bC173FA65EBDf2EcD",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IPermit2",
+    "path": "IPermit2.sol",
+    "relativePath": "",
+    "description": "IPermit2: Comprehensive interface for Uniswap's Permit2 system, combining allowance transfers and signature-based transfers (Unifies functionality from multiple Permit2 interfaces for token approvals and transfers)",
+    "metadata": {
+      "title": "IPermit2",
+      "notice": "Comprehensive interface for Uniswap's Permit2 system, combining allowance transfers and signature-based transfers",
+      "dev": "Unifies functionality from multiple Permit2 interfaces for token approvals and transfers"
+    },
+    "context": "utility",
+    "theme": "#00b7c5",
+    "address": {
+      "tatara": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IPolygonZkEVMDeployer",
+    "path": "agglayer/IPolygonZkEVMDeployer.sol",
+    "relativePath": "agglayer",
+    "description": "IPolygonZkEVMDeployer: Interface for the PolygonZkEVMDeployer contract which manages deployments of rollup components",
+    "metadata": {
+      "title": "IPolygonZkEVMDeployer",
+      "notice": "Interface for the PolygonZkEVMDeployer contract which manages deployments of rollup components",
+      "dev": null
+    },
+    "context": "deployment",
+    "theme": "#8b5cf6",
+    "address": {
+      "tatara": "0x36810012486fc134D0679c07f85fe5ba5A087D8C",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IPolygonZkEVMTimelock",
+    "path": "agglayer/IPolygonZkEVMTimelock.sol",
+    "relativePath": "agglayer",
+    "description": "IPolygonZkEVMTimelock: Interface for the PolygonZkEVMTimelock contract which manages governance actions with time delays",
+    "metadata": {
+      "title": "IPolygonZkEVMTimelock",
+      "notice": "Interface for the PolygonZkEVMTimelock contract which manages governance actions with time delays",
+      "dev": null
+    },
+    "context": "general",
+    "theme": "#6b7280",
+    "address": {
+      "tatara": "0xdbC6981a11fc2B000c635bFA7C47676b25C87D39",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IPreLiquidation",
+    "path": "IPreLiquidation.sol",
+    "relativePath": "",
+    "description": "IPreLiquidation: Interface for the PreLiquidation contract that enables early liquidations for Morpho Blue positions",
+    "metadata": {
+      "title": "IPreLiquidation",
+      "notice": "Interface for the PreLiquidation contract that enables early liquidations for Morpho Blue positions",
+      "dev": null
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IPreLiquidationCallback",
+    "path": "IPreLiquidationCallback.sol",
+    "relativePath": "",
+    "description": "IPreLiquidationCallback: Interface that pre-liquidators must implement to receive callbacks during pre-liquidation",
+    "metadata": {
+      "title": "IPreLiquidationCallback",
+      "notice": "Interface that pre-liquidators must implement to receive callbacks during pre-liquidation",
+      "dev": null
+    },
+    "context": "general",
+    "theme": "#6b7280",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IPreLiquidationFactory",
+    "path": "IPreLiquidationFactory.sol",
+    "relativePath": "",
+    "description": "IPreLiquidationFactory: Interface for the PreLiquidation Factory that creates pre-liquidation contracts for Morpho Blue markets",
+    "metadata": {
+      "title": "IPreLiquidationFactory",
+      "notice": "Interface for the PreLiquidation Factory that creates pre-liquidation contracts for Morpho Blue markets",
+      "dev": null
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IProxyAdmin",
+    "path": "agglayer/IProxyAdmin.sol",
+    "relativePath": "agglayer",
+    "description": "IProxyAdmin: Interface for the ProxyAdmin contract which manages transparent proxy contracts",
+    "metadata": {
+      "title": "IProxyAdmin",
+      "notice": "Interface for the ProxyAdmin contract which manages transparent proxy contracts",
+      "dev": null
+    },
+    "context": "general",
+    "theme": "#6b7280",
+    "address": {
+      "tatara": "0x85cEB41028B1a5ED2b88E395145344837308b251",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IPublicAllocator",
+    "path": "IPublicAllocator.sol",
+    "relativePath": "",
+    "description": "IPublicAllocator: Interface for PublicAllocator, which enables permissionless reallocation of MetaMorpho vaults",
+    "metadata": {
+      "title": "IPublicAllocator",
+      "notice": "Interface for PublicAllocator, which enables permissionless reallocation of MetaMorpho vaults",
+      "dev": null
+    },
+    "context": "morpho",
+    "theme": "#6f4ff2",
+    "address": {
+      "tatara": "0x8FfD3815919081bDb60CD8079C68444331B65042",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IRIP7212",
+    "path": "IRIP7212.sol",
+    "relativePath": "",
+    "description": "IRIP7212 - Precompile for secp256r1 (P-256) Curve Support: Interface for the RIP-7212 precompile that enables efficient verification of P-256 signatures (Located at address 0x0000000000000000000000000000000000000100 on chains that support RIP-7212)",
+    "metadata": {
+      "title": "IRIP7212 - Precompile for secp256r1 (P-256) Curve Support",
+      "notice": "Interface for the RIP-7212 precompile that enables efficient verification of P-256 signatures",
+      "dev": "Located at address 0x0000000000000000000000000000000000000100 on chains that support RIP-7212"
+    },
+    "context": "utility",
+    "theme": "#00b7c5",
+    "address": {
+      "tatara": "0x0000000000000000000000000000000000000100",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "ISafeExecutor",
+    "path": "ISafeExecutor.sol",
+    "relativePath": "",
+    "description": "ISafeExecutor: Interface for the SafeExecutor contract used by SushiRouter",
+    "metadata": {
+      "title": "ISafeExecutor",
+      "notice": "Interface for the SafeExecutor contract used by SushiRouter",
+      "dev": null
+    },
+    "context": "sushi",
+    "theme": "#fa52a0",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "ISeaport",
+    "path": "ISeaport.sol",
+    "relativePath": "",
+    "description": "ISeaport: Interface for OpenSea's Seaport 1.6 marketplace protocol (This interface contains the main functions for interacting with the marketplace)",
+    "metadata": {
+      "title": "ISeaport",
+      "notice": "Interface for OpenSea's Seaport 1.6 marketplace protocol",
+      "dev": "This interface contains the main functions for interacting with the marketplace"
+    },
+    "context": "seaport",
+    "theme": "#2081e2",
+    "address": {
+      "tatara": "0x0000000000FFe8B47B3e2130213B802212439497",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "ISenderCreator",
+    "path": "AAv0.7.0/ISenderCreator.sol",
+    "relativePath": "AAv0.7.0",
+    "description": "ISenderCreator Interface (v0.7.0): Helper contract for creating sender accounts (Used by the EntryPoint to deploy new accounts using the \"initCode\")",
+    "metadata": {
+      "title": "ISenderCreator Interface (v0.7.0)",
+      "notice": "Helper contract for creating sender accounts",
+      "dev": "Used by the EntryPoint to deploy new accounts using the \"initCode\""
+    },
+    "context": "account-abstraction",
+    "theme": "#ff7a00",
+    "address": {
+      "tatara": "0x7fc98430eAEdbb6070B35B39D798725049088348",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "ISenderCreator",
+    "path": "AAv0.6.0/ISenderCreator.sol",
+    "relativePath": "AAv0.6.0",
+    "description": "ISenderCreator Interface (v0.6.0): Helper contract for creating sender accounts (Used by the EntryPoint to deploy new accounts using the \"initCode\")",
+    "metadata": {
+      "title": "ISenderCreator Interface (v0.6.0)",
+      "notice": "Helper contract for creating sender accounts",
+      "dev": "Used by the EntryPoint to deploy new accounts using the \"initCode\""
+    },
+    "context": "account-abstraction",
+    "theme": "#ff7a00",
+    "address": {
+      "tatara": "0x7fc98430eAEdbb6070B35B39D798725049088348",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "ISushiRouter",
+    "path": "ISushiRouter.sol",
+    "relativePath": "",
+    "description": "ISushiRouter: Interface for SushiSwap's router contract (Provides functions for swapping tokens through SushiSwap's liquidity pools)",
+    "metadata": {
+      "title": "ISushiRouter",
+      "notice": "Interface for SushiSwap's router contract",
+      "dev": "Provides functions for swapping tokens through SushiSwap's liquidity pools"
+    },
+    "context": "sushi",
+    "theme": "#fa52a0",
+    "address": {
+      "tatara": "0xAC4c6e212A361c968F1725b4d055b47E63F80b75",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IUSDCNativeConverter",
+    "path": "vb/converters/IUSDCNativeConverter.sol",
+    "relativePath": "vb/converters",
+    "description": "IUSDCNativeConverter: Interface for the USDC Native Converter on Tatara (Converts between USDC and custom tokens on Layer Y, with migration capabilities to Layer X)",
+    "metadata": {
+      "title": "IUSDCNativeConverter",
+      "notice": "Interface for the USDC Native Converter on Tatara",
+      "dev": "Converts between USDC and custom tokens on Layer Y, with migration capabilities to Layer X"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0xC4BaBEE541c2FA1EA55ce9aF9EB3B5C76B0CE5c7",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IUSDTNativeConverter",
+    "path": "vb/converters/IUSDTNativeConverter.sol",
+    "relativePath": "vb/converters",
+    "description": "IUSDTNativeConverter: Interface for the USDT Native Converter on Tatara (Converts between USDT and custom tokens on Layer Y, with migration capabilities to Layer X)",
+    "metadata": {
+      "title": "IUSDTNativeConverter",
+      "notice": "Interface for the USDT Native Converter on Tatara",
+      "dev": "Converts between USDT and custom tokens on Layer Y, with migration capabilities to Layer X"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0xB69b7196F8fa4d531452d31B82e8068110cB82d4",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IWBTCNativeConverter",
+    "path": "vb/converters/IWBTCNativeConverter.sol",
+    "relativePath": "vb/converters",
+    "description": "IWBTCNativeConverter: Interface for the WBTC Native Converter on Tatara (Converts between WBTC and custom tokens on Layer Y, with migration capabilities to Layer X)",
+    "metadata": {
+      "title": "IWBTCNativeConverter",
+      "notice": "Interface for the WBTC Native Converter on Tatara",
+      "dev": "Converts between WBTC and custom tokens on Layer Y, with migration capabilities to Layer X"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0xB567390378c304E65139a60D44886F7B0150bBC0",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IWETH",
+    "path": "vb/IWETH.sol",
+    "relativePath": "vb",
+    "description": "IWETH: Interface for the Wrapped Ether (WETH) contract on Katana (WETH is an ERC20 token that wraps ETH to make it compatible with ERC20 operations)",
+    "metadata": {
+      "title": "IWETH",
+      "notice": "Interface for the Wrapped Ether (WETH) contract on Katana",
+      "dev": "WETH is an ERC20 token that wraps ETH to make it compatible with ERC20 operations"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0x17B8Ee96E3bcB3b04b3e8334de4524520C51caB4",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IWETHNativeConverter",
+    "path": "vb/IWETHNativeConverter.sol",
+    "relativePath": "vb",
+    "description": "IWETHNativeConverter: Interface for the WETH Native Converter contract that handles conversion between WETH and ETH",
+    "metadata": {
+      "title": "IWETHNativeConverter",
+      "notice": "Interface for the WETH Native Converter contract that handles conversion between WETH and ETH",
+      "dev": null
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0x17B8Ee96E3bcB3b04b3e8334de4524520C51caB4",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IybDAI",
+    "path": "vb/tokens/IybDAI.sol",
+    "relativePath": "vb/tokens",
+    "description": "IybDAI: Interface for the Yield-Bearing DAI token on Sepolia (Exposes yield from DAI while maintaining the ERC20 interface)",
+    "metadata": {
+      "title": "IybDAI",
+      "notice": "Interface for the Yield-Bearing DAI token on Sepolia",
+      "dev": "Exposes yield from DAI while maintaining the ERC20 interface"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0x106cbB7361c3D3D0a12A8160a714879CC13C5a29",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IybUSDC",
+    "path": "vb/tokens/IybUSDC.sol",
+    "relativePath": "vb/tokens",
+    "description": "IybUSDC: Interface for the Yield-Bearing USDC token on Sepolia (Exposes yield from USDC while maintaining the ERC20 interface)",
+    "metadata": {
+      "title": "IybUSDC",
+      "notice": "Interface for the Yield-Bearing USDC token on Sepolia",
+      "dev": "Exposes yield from USDC while maintaining the ERC20 interface"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0xd8A986AFbB7e44e9F7D71cc529d7b28F7084028c",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IybUSDT",
+    "path": "vb/tokens/IybUSDT.sol",
+    "relativePath": "vb/tokens",
+    "description": "IybUSDT: Interface for the Yield-Bearing USDT token on Sepolia (Exposes yield from USDT while maintaining the ERC20 interface)",
+    "metadata": {
+      "title": "IybUSDT",
+      "notice": "Interface for the Yield-Bearing USDT token on Sepolia",
+      "dev": "Exposes yield from USDT while maintaining the ERC20 interface"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0xf5a675058bbd344a9f1Ab1AF00576Dfb404D57b2",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IybWBTC",
+    "path": "vb/tokens/IybWBTC.sol",
+    "relativePath": "vb/tokens",
+    "description": "IybWBTC: Interface for the Yield-Bearing WBTC token on Sepolia (Exposes yield from WBTC while maintaining the ERC20 interface)",
+    "metadata": {
+      "title": "IybWBTC",
+      "notice": "Interface for the Yield-Bearing WBTC token on Sepolia",
+      "dev": "Exposes yield from WBTC while maintaining the ERC20 interface"
+    },
+    "context": "token",
+    "theme": "#10b981",
+    "address": {
+      "tatara": "0x9954f137ce70db2afEA291dfcE742b14d1535110",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IYearnVault",
+    "path": "yearn/IYearnVault.sol",
+    "relativePath": "yearn",
+    "description": "IYearnVault: Interface for Yearn ERC4626-compatible vaults",
+    "metadata": {
+      "title": "IYearnVault",
+      "notice": "Interface for Yearn ERC4626-compatible vaults",
+      "dev": null
+    },
+    "context": "yearn",
+    "theme": "#0657F9",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IYieldExposedToken",
+    "path": "vb/IYieldExposedToken.sol",
+    "relativePath": "vb",
+    "description": "IYieldExposedToken: Interface for yield-exposed tokens that seamlessly bridge assets with yield generation",
+    "metadata": {
+      "title": "IYieldExposedToken",
+      "notice": "Interface for yield-exposed tokens that seamlessly bridge assets with yield generation",
+      "dev": null
+    },
+    "context": "bridge",
+    "theme": "#e20b8c",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IYvAUSD",
+    "path": "yearn/IYvAUSD.sol",
+    "relativePath": "yearn",
+    "description": "IYvAUSD: Interface for the Yearn AUSD ERC4626 vault (This vault accepts AUSD and issues yvAUSD tokens)",
+    "metadata": {
+      "title": "IYvAUSD",
+      "notice": "Interface for the Yearn AUSD ERC4626 vault",
+      "dev": "This vault accepts AUSD and issues yvAUSD tokens"
+    },
+    "context": "yearn",
+    "theme": "#0657F9",
+    "address": {
+      "tatara": "0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "IYvWETH",
+    "path": "yearn/IYvWETH.sol",
+    "relativePath": "yearn",
+    "description": "IYvWETH: Interface for the Yearn WETH ERC4626 vault (This vault accepts WETH and issues yvWETH tokens)",
+    "metadata": {
+      "title": "IYvWETH",
+      "notice": "Interface for the Yearn WETH ERC4626 vault",
+      "dev": "This vault accepts WETH and issues yvWETH tokens"
+    },
+    "context": "yearn",
+    "theme": "#0657F9",
+    "address": {
+      "tatara": "0x17B8Ee96E3bcB3b04b3e8334de4524520C51caB4",
+      "mainnet": null
+    },
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "KatanaAddresses",
+    "path": "utils/KatanaAddresses.sol",
+    "relativePath": "utils",
+    "description": null,
+    "metadata": {
+      "title": null,
+      "notice": null,
+      "dev": null
+    },
+    "context": "general",
+    "theme": "#6b7280",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  },
+  {
+    "name": "TataraAddresses",
+    "path": "utils/TataraAddresses.sol",
+    "relativePath": "utils",
+    "description": null,
+    "metadata": {
+      "title": null,
+      "notice": null,
+      "dev": null
+    },
+    "context": "general",
+    "theme": "#6b7280",
+    "address": null,
+    "abi": null,
+    "functionSignatures": []
+  }
+]
