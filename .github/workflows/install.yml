@@ -12,4 +12,4 @@ jobs:
     runs-on: ${{ inputs.runner }}
     steps:
       - name: Setup and Install
-        uses: ./actions/install
+        uses: ./.github/actions/install
