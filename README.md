@@ -26,6 +26,7 @@ This kit provides:
 - Script to generate a single file contract directory with all the ABIs,
   contract names, paths, descriptions, addresses, and context they belong to,
   for directory browsers like the [contract dir](https://contractdir.bruno.id)
+- **Pre-configured Decentralised hosting** using Github Workflows to upload to Arweave and host on Arweave Name System. 
 
 Whether you're building **yield strategies, cross-chain intent-based execution,
 or novel DeFi protocols**, this starter kit helps you bootstrap your project
