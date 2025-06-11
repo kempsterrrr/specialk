@@ -11,5 +11,8 @@ jobs:
   install:
     runs-on: ${{ inputs.runner }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Setup and Install
         uses: ./.github/actions/install
