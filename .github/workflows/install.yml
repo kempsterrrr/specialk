@@ -9,7 +9,7 @@ on:
 
 jobs:
   install:
-    runs-on: ${{ fromJSON(inputs.runner) }}
+    runs-on: ${{ inputs.runner }}
     steps:
       - name: Setup and Install
         uses: ./actions/install
