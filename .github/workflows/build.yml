@@ -11,8 +11,11 @@ jobs:
   build:
     runs-on: ${{ inputs.runner }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Setup and Install
-        uses: ./actions/install
+        uses: ./.github/actions/install
 
       - name: Build
         run: bun run build
