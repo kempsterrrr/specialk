@@ -1,0 +1,498 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "IMorphoBlue.Id",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint128",
+        "name": "amount",
+        "type": "uint128"
+      }
+    ],
+    "name": "PublicReallocateTo",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "IMorphoBlue.Id",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint128",
+        "name": "amount",
+        "type": "uint128"
+      }
+    ],
+    "name": "PublicWithdrawal",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newAdmin",
+        "type": "address"
+      }
+    ],
+    "name": "SetAdmin",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "SetFee",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "IMorphoBlue.Id",
+            "name": "id",
+            "type": "bytes32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "maxIn",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint128",
+                "name": "maxOut",
+                "type": "uint128"
+              }
+            ],
+            "internalType": "struct IPublicAllocator.FlowCaps",
+            "name": "caps",
+            "type": "tuple"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct IPublicAllocator.FlowCapsConfig[]",
+        "name": "config",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "SetFlowCaps",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      }
+    ],
+    "name": "TransferFee",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_SETTABLE_FLOW_CAP",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "",
+        "type": "uint128"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MORPHO",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      }
+    ],
+    "name": "accruedFee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      }
+    ],
+    "name": "admin",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      }
+    ],
+    "name": "fee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "internalType": "IMorphoBlue.Id",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "flowCaps",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint128",
+            "name": "maxIn",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "maxOut",
+            "type": "uint128"
+          }
+        ],
+        "internalType": "struct IPublicAllocator.FlowCaps",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "loanToken",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "collateralToken",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "oracle",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "irm",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lltv",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IMorphoBlue.MarketParams",
+            "name": "marketParams",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint128",
+            "name": "amount",
+            "type": "uint128"
+          }
+        ],
+        "internalType": "struct IPublicAllocator.Withdrawal[]",
+        "name": "withdrawals",
+        "type": "tuple[]"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "loanToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collateralToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "oracle",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "irm",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lltv",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IMorphoBlue.MarketParams",
+        "name": "supplyMarketParams",
+        "type": "tuple"
+      }
+    ],
+    "name": "reallocateTo",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "newAdmin",
+        "type": "address"
+      }
+    ],
+    "name": "setAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "newFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "setFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "IMorphoBlue.Id",
+            "name": "id",
+            "type": "bytes32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "maxIn",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint128",
+                "name": "maxOut",
+                "type": "uint128"
+              }
+            ],
+            "internalType": "struct IPublicAllocator.FlowCaps",
+            "name": "caps",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct IPublicAllocator.FlowCapsConfig[]",
+        "name": "config",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "setFlowCaps",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "feeRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "transferFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

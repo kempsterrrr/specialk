@@ -1,0 +1,250 @@
+[
+  {
+    "inputs": [],
+    "name": "MORPHO",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "IMorphoBlue.Id",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "config",
+    "outputs": [
+      {
+        "internalType": "uint184",
+        "name": "cap",
+        "type": "uint184"
+      },
+      {
+        "internalType": "bool",
+        "name": "enabled",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint64",
+        "name": "removableAt",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "curator",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fee",
+    "outputs": [
+      {
+        "internalType": "uint96",
+        "name": "",
+        "type": "uint96"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      }
+    ],
+    "name": "isAllocator",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "loanToken",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "collateralToken",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "oracle",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "irm",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lltv",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IMorphoBlue.MarketParams",
+            "name": "marketParams",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint256",
+            "name": "assets",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IMetaMorpho.MarketAllocation[]",
+        "name": "allocations",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "reallocate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "IMorphoBlue.Id[]",
+        "name": "newSupplyQueue",
+        "type": "bytes32[]"
+      }
+    ],
+    "name": "setSupplyQueue",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "loanToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collateralToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "oracle",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "irm",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lltv",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IMorphoBlue.MarketParams",
+        "name": "marketParams",
+        "type": "tuple"
+      },
+      {
+        "internalType": "uint256",
+        "name": "newSupplyCap",
+        "type": "uint256"
+      }
+    ],
+    "name": "submitCap",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "supplyQueue",
+    "outputs": [
+      {
+        "internalType": "IMorphoBlue.Id",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "indexes",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "updateWithdrawQueue",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawQueue",
+    "outputs": [
+      {
+        "internalType": "IMorphoBlue.Id",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
