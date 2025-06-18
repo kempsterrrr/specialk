@@ -229,10 +229,10 @@ To host your app on Arweave Name System (ArNS):
     - Convert this file to base64 and copy to clipboard `base64 -i wallet.json | pbcopy`
     - Paste this as the value for `DEPLOY_KEY`
 4. **Update deployment script and deploy:**
-    - Replace the value for `specialk` in `deploy:arweave` script in `package.json` with the name you've purchase earlier.
+    - Replace the value for `specialk` in `deploy:arweave` script in `package.json` to the name you purchased earlier.
     - Commit changes to Git and push to Github.
 
-NB - To use a testnet ArNS name, update the value for `specialk` to your testnet name and `--ario-process mainnet` to `--ario-process testnet`
+NB - To use a testnet ArNS name, update the value for `specialk` to your testnet name and `--ario-process mainnet` to `--ario-process testnet`.
 
 ---
 
