@@ -221,7 +221,7 @@ To host your app on Arweave Name System (ArNS):
 1. **Create & top-up your Arweave Wallet:** head to [Wander](https://www.wander.app/) to create a new wallet and then top up this wallet with [Turbo Credits](https://turbo-topup.com/) using Fiat or AR to pay for uploads.
 2. **Purchase an ArNS Name:**
     - Head to the [ArNS app](https://arns.app) to purchase a name (supports ARIO, Credit Card and Turbo Credits)
-    - Optionall purchase a testnet name by requesting `tARIO` tokens and following the "Using arns.app with Testnet" section of [this guide](https://docs.ar.io/guides/testnet) to purchase a testnet name.
+    - Optionally purchase a testnet name by requesting `tARIO` tokens from the [faucet](https://faucet.arweave.net/) and following the "Using arns.app with Testnet" section of [this guide](https://docs.ar.io/guides/testnet) to purchase a testnet name.
 3. **Configure .Github Secrets**
     - Go to your repository's **Settings > Secrets and variables > Actions**.
     - Create a new GH secret `DEPLOY_KEY`
