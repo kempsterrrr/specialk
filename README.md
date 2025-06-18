@@ -26,6 +26,7 @@ This kit provides:
 - Script to generate a single file contract directory with all the ABIs,
   contract names, paths, descriptions, addresses, and context they belong to,
   for directory browsers like the [contract dir](https://contractdir.bruno.id)
+- **Decentralised Hosting** on Arweave Name Service (ArNS) using permawed deploy package and `deploy-arns.yml` Github Workflow.
 
 Whether you're building **yield strategies, cross-chain intent-based execution,
 or novel DeFi protocols**, this starter kit helps you bootstrap your project
@@ -210,6 +211,28 @@ const morphoAddress = getContractAddress('MorphoBlue', CHAIN_IDS.TATARA);
 
 The address mapping is generated from the Solidity address libraries in the
 interfaces directory.
+
+### 7️⃣ Decentralised Hosting on Arweave Name System (ArNS)
+
+This kit includes the `permaweb-deploy` package and `deploy-arns.yml` Github Workflow for decentralized static hosting on Arweave Name System (ArNS):
+
+To host your app on Arweave Name System (ArNS):
+
+1. **Create & top-up your Arweave Wallet:** head to [Wander](https://www.wander.app/) to create a new wallet and then top up this wallet with [Turbo Credits](https://turbo-topup.com/) using Fiat or AR to pay for uploads.
+2. **Purchase an ArNS Name:**
+    - Head to the [ArNS app](https://arns.app) to purchase a name (supports ARIO, Credit Card and Turbo Credits)
+    - Optionall purchase a testnet name by requesting `tARIO` tokens and following the "Using arns.app with Testnet" section of [this guide](https://docs.ar.io/guides/testnet) to purchase a testnet name.
+3. **Configure .Github Secrets**
+    - Go to your repository's **Settings > Secrets and variables > Actions**.
+    - Create a new GH secret `DEPLOY_KEY`
+    - Download your wallets keyfile from Wander.
+    - Convert this file to base64 and copy to clipboard `base64 -i wallet.json | pbcopy`
+    - Paste this as the value for `DEPLOY_KEY`
+4. **Update deployment script and deploy:**
+    - Replace the value for `specialk` in `deploy:arweave` script in `package.json` with the name you've purchase earlier.
+    - Commit changes to Git and push to Github.
+
+NB - To use a testnet ArNS name, update the value for `specialk` to your testnet name and `--ario-process mainnet` to `--ario-process testnet`
 
 ---
 
