@@ -225,7 +225,7 @@ To host your app on ArNS follw these steps:
 3. **Configure .Github Secrets**
     - Go to your repository's **Settings > Secrets and variables > Actions**.
     - Create a new GH secret `DEPLOY_KEY`
-    - Download your wallets keyfile from Wander.
+    - Download your wallet keyfile from Wander (**NB: this is your private key and must be kept confidential.**)
     - Convert this file to base64 and copy to clipboard `base64 -i wallet.json | pbcopy`
     - Paste this as the value for `DEPLOY_KEY`
 4. **Update deployment script and deploy:**
