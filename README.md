@@ -221,7 +221,7 @@ To host your app on ArNS follw these steps:
 1. **Create & top-up your Arweave Wallet:** head to [Wander](https://www.wander.app/) to create a new wallet and then top up this wallet with [Turbo Credits](https://turbo-topup.com/) using Fiat or AR to pay for uploads.
 2. **Purchase an ArNS Name:**
     - Head to the [ArNS app](https://arns.app) to purchase a name (supports [ARIO](https://ar.io/token), Credit Card and Turbo Credits)
-    - Optionally purchase a testnet name by requesting `tARIO` tokens from the [faucet](https://faucet.arweave.net/) and following the "Using arns.app with Testnet" section of [this guide](https://docs.ar.io/guides/testnet) to purchase a testnet name.
+    - Optionally purchase a testnet name by requesting `tARIO` tokens from the [faucet](https://faucet.arweave.net/) and follow the "Using arns.app with Testnet" section of [this guide](https://docs.ar.io/guides/testnet) to purchase a testnet name.
 3. **Configure .Github Secrets**
     - Go to your repository's **Settings > Secrets and variables > Actions**.
     - Create a new GH secret `DEPLOY_KEY`
@@ -229,7 +229,7 @@ To host your app on ArNS follw these steps:
     - Convert this file to base64 and copy to clipboard `base64 -i wallet.json | pbcopy`
     - Paste this as the value for `DEPLOY_KEY`
 4. **Update deployment script and deploy:**
-    - Replace the value for `specialk` in `deploy:arweave` script in `package.json` to the name you purchased earlier.
+    - Replace the value for `<ARNS_NAME>` in `deploy:arweave` script in `package.json` to the name you purchased earlier.
     - Commit changes to Git and push to Github.
 
 To deploy manually via the CLI use the following command:

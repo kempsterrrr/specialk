@@ -1,5 +1,5 @@
 // Auto-generated contract address mapping
-// Generated on 2025-06-18T13:00:21.745Z
+// Generated on 2025-06-30T12:28:38.946Z
 
 /**
  * Chain IDs for Tatara testnet and Katana mainnet
