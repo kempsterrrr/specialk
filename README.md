@@ -232,7 +232,7 @@ To host your app on ArNS follw these steps:
     - Replace the value for `<ARNS_NAME>` in `deploy:arweave` script in `package.json` to the name you purchased earlier.
     - Commit changes to Git and push to Github.
 
-To deploy manually via the CLI use the following command:
+To deploy manually via the CLI build your app locally and then run the following command:
 
 ```
 DEPLOY_KEY=$(base64 -i wallet.json) npx permaweb-deploy --arns-name <ARNS_NAME>
