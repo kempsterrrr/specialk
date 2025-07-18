@@ -117,8 +117,10 @@ To run the example:
    bun run build
    ```
 
-3. Serve `dist/index.html` in your browser with something like
-   `cd dist && npx http-server`
+3. Start **frontend app**
+   `bun run dev`
+
+   This starts the frontend dapp here `http://localhost:8080`
 
 The example dApp shows:
 
