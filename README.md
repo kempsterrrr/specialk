@@ -31,6 +31,7 @@ Whether you're building **yield strategies, cross-chain intent-based execution,
 or novel DeFi protocols**, this starter kit helps you bootstrap your project
 **fast**.
 
+- [Documentation](https://docs.katana.network/)
 - [More about contract interfaces](/interfaces/README.md)
 - [More about running Katana locally for development](/scripts/README.md)
 
