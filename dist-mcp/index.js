@@ -8420,7 +8420,7 @@ server.tool(
       const contractRegex = new RegExp(`"${contractName}":\\s*{\\s*"tatara":\\s*"(0x[a-fA-F0-9]+)"`, "i");
       const exactContractRegex = new RegExp(`"${contractName}":\\s*{\\s*"tatara":\\s*"(0x[a-fA-F0-9]+)"`, "g");
       const tokenRegex = new RegExp(`"${contractName}":\\s*{`, "i");
-      const readmePath = path.join(process.cwd(), "interfaces", "README.md");
+      const readmePath = path.join(process.cwd(), "contracts", "README.md");
       let readmeContent;
       try {
         readmeContent = await fs.readFile(readmePath, "utf8");
@@ -8545,7 +8545,7 @@ server.tool(
       }
       if (!contractAddress) {
         try {
-          const readmePath = path.join(process.cwd(), "interfaces", "README.md");
+          const readmePath = path.join(process.cwd(), "contracts", "README.md");
           const readmeContent = await fs.readFile(readmePath, "utf8");
           const contractLines = readmeContent.split("\n").filter((line) => line.includes(contractName)).join("\n");
           const addressMatch = contractLines.match(/Address:\s*`(0x[a-fA-F0-9]+)`/);

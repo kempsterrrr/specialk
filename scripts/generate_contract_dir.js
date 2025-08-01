@@ -5,18 +5,18 @@ import { join, basename, dirname } from 'node:path';
 import { execSync } from 'node:child_process';
 
 // Constants
-const INTERFACES_DIR = join(process.cwd(), 'interfaces');
+const CONTRACTS_DIR = join(process.cwd(), 'contracts');
 const ABIS_DIR = join(process.cwd(), 'abis');
-const KATANA_ADDRESS_FILE = join(INTERFACES_DIR, 'utils', 'KatanaAddresses.sol');
-const TATARA_ADDRESS_FILE = join(INTERFACES_DIR, 'utils', 'TataraAddresses.sol');
+const KATANA_ADDRESS_FILE = join(CONTRACTS_DIR, 'utils', 'KatanaAddresses.sol');
+const TATARA_ADDRESS_FILE = join(CONTRACTS_DIR, 'utils', 'TataraAddresses.sol');
 const OUTPUT_DIR = join(process.cwd(), 'utils');
 const FULL_OUTPUT = join(OUTPUT_DIR, 'contractdir.json');
 const SAMPLE_OUTPUT = join(OUTPUT_DIR, 'contractdir_sample.json');
 const SAMPLE_SIZE = 10; // Number of contracts to include in the sample
 
 // Check that required directories exist
-if (!existsSync(INTERFACES_DIR)) {
-  console.error('Error: Interfaces directory does not exist');
+if (!existsSync(CONTRACTS_DIR)) {
+  console.error('Error: Contracts directory does not exist');
   process.exit(1);
 }
 
@@ -451,25 +451,26 @@ function determineContext(name, path, relativePath, description) {
 // Generate the contract directory
 function generateContractDirectory() {
   const addresses = mergeAddresses();
-  const interfaceFiles = getAllFiles(INTERFACES_DIR);
+  const contractFiles = getAllFiles(CONTRACTS_DIR);
   const abiFiles = getAllABIs(ABIS_DIR);
   
   const contractDir = [];
   
-  // Process each interface file
-  for (const [key, interfaceInfo] of Object.entries(interfaceFiles)) {
+  // Process each contract file
+  for (const [key, contractInfo] of Object.entries(contractFiles)) {
     const fileName = basename(key, '.sol');
-    const abiKey = join(interfaceInfo.relativePath, `${fileName}.json`).replace(/\\/g, '/');
+    const abiKey = join(contractInfo.relativePath, `${fileName}.json`).replace(/\\/g, '/');
     
-    // Get the interface content
-    const interfaceContent = readFileSync(interfaceInfo.path, 'utf8');
+    // Get the contract content
+    const contractContent = readFileSync(contractInfo.path, 'utf8');
     
-    // Extract interface name - improved regex to match actual interface declarations not comments
-    const interfaceMatch = interfaceContent.match(/(?:^|\n)\s*interface\s+(\w+)/);
-    const interfaceName = interfaceMatch ? interfaceMatch[1] : fileName;
+    // Extract contract/interface name - improved regex to match actual declarations not comments
+    const interfaceMatch = contractContent.match(/(?:^|\n)\s*interface\s+(\w+)/);
+    const contractMatch = contractContent.match(/(?:^|\n)\s*contract\s+(\w+)/);
+    const contractName = interfaceMatch ? interfaceMatch[1] : (contractMatch ? contractMatch[1] : fileName);
     
-    // Extract interface description
-    const description = extractInterfaceDescription(interfaceContent);
+    // Extract contract description
+    const description = extractInterfaceDescription(contractContent);
     
     // Try to find matching ABI
     let abi = null;
@@ -486,28 +487,28 @@ function generateContractDirectory() {
     // Find if we have an address for this contract
     let address = null;
     
-    // Try to match by name (remove leading 'I' if present)
-    let contractName = interfaceName;
-    if (contractName.startsWith('I')) {
-      contractName = contractName.substring(1);
+    // Try to match by name (remove leading 'I' if present for interfaces)
+    let addressMatchName = contractName;
+    if (addressMatchName.startsWith('I')) {
+      addressMatchName = addressMatchName.substring(1);
     }
     
     // Enhanced name matching
     for (const [addrContractName, addrInfo] of Object.entries(addresses)) {
       // Case 1: Direct match after removing 'I' prefix
-      if (contractName === addrContractName) {
+      if (addressMatchName === addrContractName) {
         address = addrInfo;
-        console.log(`Found exact address match: ${contractName} -> ${addrContractName}`);
+        console.log(`Found exact address match: ${addressMatchName} -> ${addrContractName}`);
         break;
       }
       
       // Case 2: Contract name contains our address name or vice versa (case insensitive)
-      const lowerContractName = contractName.toLowerCase();
+      const lowerContractName = addressMatchName.toLowerCase();
       const lowerAddrName = addrContractName.toLowerCase();
       
       if (lowerContractName.includes(lowerAddrName) || lowerAddrName.includes(lowerContractName)) {
         address = addrInfo;
-        console.log(`Found partial address match: ${contractName} -> ${addrContractName}`);
+        console.log(`Found partial address match: ${addressMatchName} -> ${addrContractName}`);
         break;
       }
       
@@ -519,9 +520,9 @@ function generateContractDirectory() {
       }
 
       // Case 4: Special case for fuzzy matching - "combines" is actually IMorphoBlue
-      if (interfaceName === 'combines' && key === 'IMorphoBlue.sol' && addrContractName === 'MorphoBlue') {
+      if (contractName === 'combines' && key === 'IMorphoBlue.sol' && addrContractName === 'MorphoBlue') {
         address = addrInfo;
-        console.log(`Found special fuzzy match for: ${interfaceName} (${key}) -> ${addrContractName}`);
+        console.log(`Found special fuzzy match for: ${contractName} (${key}) -> ${addrContractName}`);
         break;
       }
     }
@@ -532,15 +533,15 @@ function generateContractDirectory() {
         tatara: description.customAddress,
         mainnet: description.customAddress // Assuming same address for both networks if specified in comments
       };
-      console.log(`Found custom address for ${interfaceName} in comments: ${description.customAddress}`);
+      console.log(`Found custom address for ${contractName} in comments: ${description.customAddress}`);
     }
     
     // Create contract entry with updated structure
-    const context = determineContext(interfaceName, key, interfaceInfo.relativePath, description ? description.full : null);
+    const context = determineContext(contractName, key, contractInfo.relativePath, description ? description.full : null);
     const contract = {
-      name: interfaceName,
+      name: contractName,
       path: key,
-      relativePath: interfaceInfo.relativePath,
+      relativePath: contractInfo.relativePath,
       description: description ? description.full : null,
       metadata: {
         title: description ? description.title : null,

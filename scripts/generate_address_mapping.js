@@ -5,8 +5,8 @@ import path from 'path';
 const TATARA_CHAIN_ID = 471;
 const KATANA_MAINNET_CHAIN_ID = 0; // Will be updated when mainnet launches
 
-const TATARA_ADDRESSES_PATH = 'interfaces/utils/TataraAddresses.sol';
-const KATANA_ADDRESSES_PATH = 'interfaces/utils/KatanaAddresses.sol';
+const TATARA_ADDRESSES_PATH = 'contracts/utils/TataraAddresses.sol';
+const KATANA_ADDRESSES_PATH = 'contracts/utils/KatanaAddresses.sol';
 const OUTPUT_PATH = 'utils/addresses.ts';
 
 /**

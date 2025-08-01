@@ -5,7 +5,7 @@ import { join, basename } from 'node:path';
 import { execSync } from 'node:child_process';
 
 // Paths
-const INTERFACES_DIR = join(process.cwd(), 'interfaces');
+const CONTRACTS_DIR = join(process.cwd(), 'contracts');
 const ABIS_DIR = join(process.cwd(), 'abis');
 
 // Create output directory
@@ -694,18 +694,18 @@ function countFilesRecursively(dir, extension) {
   return count;
 }
 
-// Validate the number of generated ABIs against the number of interfaces
+// Validate the number of generated ABIs against the number of contract files
 if (process.argv.includes('--validate')) {
-  const interfaceCount = countFilesRecursively(INTERFACES_DIR, '.sol');
+  const contractCount = countFilesRecursively(CONTRACTS_DIR, '.sol');
   const abiCount = countFilesRecursively(ABIS_DIR, '.json');
   
   console.log(`\nValidation Check:`);
-  console.log(`  - Total interface files: ${interfaceCount}`);
+  console.log(`  - Total contract files: ${contractCount}`);
   console.log(`  - Total generated ABIs: ${abiCount}`);
   
-  if (abiCount === interfaceCount) {
-    console.log('\n✅ OK: The number of generated ABIs matches the number of interface files.');
+  if (abiCount === contractCount) {
+    console.log('\n✅ OK: The number of generated ABIs matches the number of contract files.');
   } else {
-    console.log('\n❌ NOK: The number of generated ABIs does not match the number of interface files.');
+    console.log('\n❌ NOK: The number of generated ABIs does not match the number of contract files.');
   }
 } 
