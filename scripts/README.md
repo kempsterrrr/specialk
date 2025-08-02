@@ -44,11 +44,15 @@ This will start Anvil with a local fork of the specified blockchain.
 #### Terminal 2: Verify the Fork
 
 ```bash
-bun run verify:anvil:tatara
+bun run verify:anvil
 ```
 
-This will verify that the fork is working correctly by checking contract states
-and the connection.
+This will automatically detect which chain is being forked (Tatara, Katana, or Bokuto) 
+and verify that the fork is working correctly by:
+- Detecting the chain ID and confirming it matches a supported network
+- Loading available contracts for that specific chain
+- Testing key contracts (AUSD, WETH, MorphoBlue) if they exist on the chain
+- Providing wallet connection details for the detected chain
 
 ### Using TEVM (Alternative)
 

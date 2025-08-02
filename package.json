@@ -5,7 +5,7 @@
   "scripts": {
     "build": "bun build.js",
     "start:anvil": "chmod +x scripts/start_anvil.sh && scripts/start_anvil.sh",
-    "verify:anvil:tatara": "bun scripts/verify_anvil.js",
+    "verify:anvil": "bun scripts/verify_anvil.js",
     "build:abi": "bun scripts/build_abi.js",
     "build:contractdir": "bun scripts/generate_contract_dir.js",
     "build:addressutils": "bun scripts/build_address_utils.js",

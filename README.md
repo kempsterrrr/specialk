@@ -131,14 +131,13 @@ This will:
 
 🚨 Note: Going forward, you can just rebuild the web app using `bun run build`.
 
-### 3️⃣ **Local Chain Forking**
-
-For local development with a chain fork, you'll need to configure RPC URLs
-and run two commands in separate terminals:
+### 3️⃣ **Local Chain Forking**.
 
 #### Environment Setup
 
-Create a `.env` file with the required RPC URLs:
+Create a `.env` file by copying `.env.example`. If you want non-rate-limited
+access, replace the RPC endpoints there with your own, otherwise, use the
+defaults.
 
 ```bash
 # Copy and customize based on your available RPC endpoints
@@ -162,14 +161,16 @@ bun run start:anvil katana
 
 #### Terminal 2: Verify the Fork
 
+To check if all is well, you can run the following command in another terminal.
+
 ```sh
-bun run verify:anvil:tatara
+bun run verify:anvil
 ```
 
-This creates a local fork of Tatara at `http://localhost:8545` that you can
-connect to with your wallet by adding a custom RPC.
-
-The same applies for Katana mainnet and Bokuto.
+This will automatically detect which chain you're forking and verify that
+contracts are accessible. It will test key contracts (like AUSD, WETH,
+MorphoBlue) if available on the forked chain and show connection details for
+your wallet.
 
 See [scripts/README.md](scripts/README.md) for more details.
 
