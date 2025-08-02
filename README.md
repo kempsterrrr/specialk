@@ -201,15 +201,15 @@ Example usage in your JavaScript/TypeScript code:
 import getContractAddress, { CHAIN_IDS } from '../utils/addresses';
 
 // Get WETH address for the current network
-const chainId = 471; // Tatara testnet
-const wethAddress = getContractAddress('WETH', chainId);
+const chainId = 129399; // Tatara testnet
+const wethAddress = getContractAddress('IWETH', chainId);
 
 // Or use the CHAIN_IDS constants
-const morphoAddress = getContractAddress('MorphoBlue', CHAIN_IDS.TATARA);
+const morphoAddress = getContractAddress('IMorphoBlue', CHAIN_IDS.TATARA);
 ```
 
-The address mapping is generated from the Solidity address libraries in the
-interfaces directory.
+The address mapping is generated from the `@custom:tatara`, `@custom:katana`, and
+`@custom:bokuto` doccomments in the contract files.
 
 ---
 
