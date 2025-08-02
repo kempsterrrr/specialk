@@ -6,7 +6,7 @@
     "build": "bun build.js",
     "start:anvil:tatara": "chmod +x scripts/start_anvil.sh && scripts/start_anvil.sh",
     "verify:anvil:tatara": "bun scripts/verify_anvil.js",
-    "build:abi": "bun scripts/build_abi.js && bun scripts/extract_abi.js --validate",
+    "build:abi": "bun scripts/build_abi.js",
     "build:contractdir": "bun scripts/generate_contract_dir.js",
     "build:addressutils": "bun scripts/build_address_utils.js",
     "build:mcpserver": "bun build.js --mcp-only",

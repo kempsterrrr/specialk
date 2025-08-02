@@ -60,6 +60,6 @@ temp/
 
 .cursor
 tutorials/
-utils/addresses.ts
+utils/addresses/mapping.ts
 utils/contractdir.json
 utils/contractdir_sample.json

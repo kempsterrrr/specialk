@@ -184,29 +184,49 @@ hardcoding them.
 To generate the address mapping:
 
 ```sh
-bun run build:addresses
+bun run build:addressutils
 ```
 
-This will create a file at `utils/addresses.ts` that exports:
+This will create files in `utils/addresses/`:
 
-- `CHAIN_IDS` - An object with chain ID constants
-- `CONTRACT_ADDRESSES` - A mapping of all contract names to their addresses on
-  both networks
-- `getContractAddress(contractName, chainId)` - A utility function to get the
-  correct address for a contract on a specific network
+- `mapping.ts` - Auto-generated mapping of contract addresses (do not edit)
+- `index.ts` - User-friendly API wrapper with chain context management
 
-Example usage in your JavaScript/TypeScript code:
+### Usage
+
+The improved API provides a cleaner interface with automatic "I" prefix handling:
 
 ```javascript
-import getContractAddress, { CHAIN_IDS } from '../utils/addresses';
+import { addresses, CHAINS } from '../utils/addresses';
 
-// Get WETH address for the current network
-const chainId = 129399; // Tatara testnet
-const wethAddress = getContractAddress('IWETH', chainId);
+// Set the chain context (by name or ID)
+addresses.setChain('tatara');
+// or
+addresses.setChain(CHAINS.tatara);
 
-// Or use the CHAIN_IDS constants
-const morphoAddress = getContractAddress('IMorphoBlue', CHAIN_IDS.TATARA);
+// Get contract addresses - automatically handles I prefix
+const wethAddress = addresses.getAddress('WETH');      // Finds IWETH
+const morphoAddress = addresses.getAddress('MorphoBlue'); // Finds IMorphoBlue
+const ausdAddress = addresses.getAddress('AUSD');      // Finds IAUSD
+
+// Check if a contract exists
+if (addresses.hasContract('Permit2')) {
+  const permit2 = addresses.getAddress('Permit2');
+}
+
+// Get all available contracts on current chain
+const allContracts = addresses.getAllContracts();
+
+// Get address for a specific chain without changing context
+const wethOnKatana = addresses.getAddressForChain('WETH', 'katana');
 ```
+
+### Features
+
+- **Automatic I-prefix handling**: Try `WETH` and it will find `IWETH`
+- **Chain context management**: Set once, use everywhere
+- **Better error messages**: Shows available contracts when not found
+- **Type-safe**: Full TypeScript support with address types
 
 The address mapping is generated from the `@custom:tatara`, `@custom:katana`, and
 `@custom:bokuto` doccomments in the contract files.

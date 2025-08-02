@@ -167,4 +167,38 @@ if (existsSync(TEMP_DIR)) {
   rmSync(TEMP_DIR, { recursive: true, force: true });
 }
 
-console.log('ABI generation complete'); 
+console.log('ABI generation complete');
+
+// Validation function
+function countFilesRecursively(dir, extension) {
+  let count = 0;
+  const items = readdirSync(dir);
+  
+  for (const item of items) {
+    const fullPath = join(dir, item);
+    const stats = statSync(fullPath);
+    
+    if (stats.isDirectory()) {
+      count += countFilesRecursively(fullPath, extension);
+    } else if (item.endsWith(extension)) {
+      count++;
+    }
+  }
+  
+  return count;
+}
+
+// Validate the generated ABIs
+console.log('\nValidation Check:');
+const contractCount = countFilesRecursively(CONTRACTS_DIR, '.sol');
+const abiCount = countFilesRecursively(ABIS_DIR, '.json');
+
+console.log(`  - Total contract files: ${contractCount}`);
+console.log(`  - Total generated ABIs: ${abiCount}`);
+
+if (abiCount === contractCount) {
+  console.log('\n✅ OK: The number of generated ABIs matches the number of contract files.');
+} else {
+  console.log('\n❌ NOK: The number of generated ABIs does not match the number of contract files.');
+  process.exit(1); // Exit with error code if validation fails
+} 
