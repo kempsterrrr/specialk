@@ -5,7 +5,7 @@
 ## 🚀 Introduction
 
 Welcome to the **Katana Development Starter Kit**! This repository serves as
-your launchpad for building on **Katana** and its testnet **Tatara**.
+your launchpad for building on **Katana** and its testnets **Tatara** and **Bokuto**.
 
 This kit provides:
 
@@ -15,24 +15,77 @@ This kit provides:
 - **[UI-kit CSS](https://getuikit.com/)**, optional to use
 - **[viem](https://viem.sh/)** for blockchain interactions
 - **Example contracts** to help you integrate with **Katana's money legos** and
-  interfaces for all deployed contracts on Katana and Tatara
+  interfaces for all deployed contracts on Katana and testnets
 - **Foundry setup** for smart contract development and testing
 - **Static File Handling** (HTML, CSS, and assets copied to `dist/`, easy to
   host on IPFS or any static file hosting service)
-- **Local blockchain forks** for development with real contract states
 - **Contract address mapping generator** for easy access to deployed contract
   addresses in JavaScript
-- **Foundry MCP Server** for AI-assisted smart contract development with Cursor
+- **Foundry MCP Server** for AI-assisted smart contract development
 - Script to generate a single file contract directory with all the ABIs,
   contract names, paths, descriptions, addresses, and context they belong to,
-  for directory browsers like the [contract dir](https://contractdir.bruno.id)
+  for directory browsers like the [contract dir](https://contracts.katana.tools)
 
-Whether you're building **yield strategies, cross-chain intent-based execution,
+Whether you're building yield strategies, cross-chain intent-based execution,
 or novel DeFi protocols**, this starter kit helps you bootstrap your project
 **fast**.
 
 - [More about contract interfaces](/interfaces/README.md)
 - [More about running Katana locally for development](/scripts/README.md)
+
+## Chain information
+
+### Katana
+
+| Property                        | Value                                         |
+|----------------------------------|-----------------------------------------------|
+| **Chain Name**                   | Katana                                        |
+| **Chain ID**                     | `747474`                                      |
+| **Public RPC URL**               | [https://rpc.katana.network/](https://rpc.katana.network/) |
+| **Gas Token**                    | ETH                                           |
+| **Block Explorer**               | [https://katanascan.com/](https://katanascan.com/) |
+| **Block Time**                   | 1 second                                      |
+| **Block Gas Limit**              | 60M units                                     |
+| **Block Gas Target**             | 30M units                                     |
+| **Gas Pricing**                  | EIP1559                                       |
+| **EIP-1559 Elasticity Multiplier** | 60                                          |
+| **EIP-1559 Denominator**         | 250                                           |
+| **Data Availability**            | EIP4844                                       |
+| **Account Abstraction**          | EIP7702                                       |
+
+---
+
+### Bokuto
+
+| Property         | Value                                              |
+|------------------|----------------------------------------------------|
+| **Chain Name**   | Bokuto                                             |
+| **Chain ID**     | `737373`                                           |
+| **RPC URL**      | [https://rpc-bokuto.katanarpc.com](https://rpc-bokuto.katanarpc.com) |
+| **Block Explorer**      | [https://explorer-bokuto.katanarpc.com/](https://explorer-bokuto.katanarpc.com/) |
+| **Gas Token**           | ETH                                                                   |
+| **Block Time**          | 1 second                                                              |
+| **Gas Block Limit**     | 60M units                                                             |
+| **Gas Pricing**         | EIP1559                                                               |
+| **Data Availability**   | EIP4844                                                               |
+
+---
+
+### Tatara
+
+| Property                | Value                                                                 |
+|-------------------------|-----------------------------------------------------------------------|
+| **Network Name**        | Tatara Network (aka Katana Testnet)                                   |
+| **Chain ID**            | `129399`                                                              |
+| **RPC URL**             | `https://rpc.tatara.katanarpc.com/<apikey>`                           |
+| **Block Explorer**      | [https://explorer.tatara.katana.network/](https://explorer.tatara.katana.network/) |
+| **Vault Bridge Faucet** | [https://faucet-api.polygon.technology/api-docs/](https://faucet-api.polygon.technology/api-docs/) |
+| **Bridge UI**           | [https://portal-staging.polygon.technology/bridge](https://portal-staging.polygon.technology/bridge) |
+| **Gas Token**           | ETH                                                                   |
+| **Block Time**          | 1 second                                                              |
+| **Gas Block Limit**     | 60M units                                                             |
+| **Gas Pricing**         | EIP1559                                                               |
+| **Data Availability**   | EIP4844                                                               |
 
 ---
 
@@ -40,7 +93,8 @@ or novel DeFi protocols**, this starter kit helps you bootstrap your project
 
 ### 1️⃣ **Install Dependencies**
 
-Copy `.env.example` into `.env` and add in your RPC endpoints.
+Copy `.env.example` into `.env` and add in your RPC endpoints if you want to
+change them (recommended: to prevent rate limiting).
 
 Ensure you have the required tools installed:
 
@@ -67,24 +121,43 @@ bun run build:all
 
 This will:
 
-- Compile and minify your TypeScript code
+- Compile and minify the example TypeScript code
 - Copy HTML & static assets to `./dist`
 - Prepare the environment for deployment
 - Compile helper utilities like an address-to-contract mapping in
-  `utils/addresses.ts` and interface ABIs in the `/abis` folder
+  `utils/addresses` and interface ABIs in the `/abis` folder as well as address
+  lookup Solidity contracts in `contracts/utils`.
 - Build the Foundry MCP server for AI-assisted development
 
-Going forward, you can just rebuild the web app using `bun run build`.
+🚨 Note: Going forward, you can just rebuild the web app using `bun run build`.
 
 ### 3️⃣ **Local Chain Forking**
 
-For local development with a Tatara testnet fork, you'll need to run two
-commands in separate terminals:
+For local development with a chain fork, you'll need to configure RPC URLs
+and run two commands in separate terminals:
+
+#### Environment Setup
+
+Create a `.env` file with the required RPC URLs:
+
+```bash
+# Copy and customize based on your available RPC endpoints
+TATARA_RPC_URL=https://rpc.tatara.network
+BOKUTO_RPC_URL=https://rpc.bokuto.network  
+KATANA_RPC_URL=https://rpc.katana.network
+```
 
 #### Terminal 1: Start Anvil Fork
 
 ```sh
-bun run start:anvil:tatara
+# Fork Tatara testnet
+bun run start:anvil tatara
+
+# Or fork Bokuto testnet
+bun run start:anvil bokuto
+
+# Or fork Katana mainnet
+bun run start:anvil katana
 ```
 
 #### Terminal 2: Verify the Fork
@@ -94,7 +167,9 @@ bun run verify:anvil:tatara
 ```
 
 This creates a local fork of Tatara at `http://localhost:8545` that you can
-connect to with MetaMask (Chain ID: 471).
+connect to with your wallet by adding a custom RPC.
+
+The same applies for Katana mainnet and Bokuto.
 
 See [scripts/README.md](scripts/README.md) for more details.
 
@@ -105,10 +180,11 @@ testnet (or your local fork) and displays information about key contracts.
 
 To run the example:
 
-1. Start your local Tatara fork (in its own terminal):
+1. Start your local chain fork (in its own terminal):
 
    ```sh
-   bun run start:anvil:tatara
+   # Fork Tatara testnet
+   bun run start:anvil tatara
    ```
 
 2. In a new terminal, build the dApp:
@@ -157,7 +233,7 @@ To use the MCP server:
    Replace `/absolute_path_to_starter_kit/` with absolute path to your clone of
    the starter kit.
 
-2. Launch the local chain with `bun run start:anvil:tatara`.
+2. Launch the local chain with `bun run start:anvil tatara` (or `bokuto`/`katana`).
 
 3. The `PRIVATE_KEY` and `RPC_URL` environment variables are optional. If not
    provided, the RPC URL will default to `http://localhost:8545`.

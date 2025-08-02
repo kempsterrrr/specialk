@@ -16,8 +16,8 @@ const NETWORKS = ['tatara', 'katana', 'bokuto'];
 // Chain IDs for each network
 const CHAIN_IDS = {
   tatara: 129399,
-  katana: 747474, // Placeholder - update when known
-  bokuto: 987654, // Placeholder - update when known
+  katana: 747474,
+  bokuto: 737373,
 };
 
 /**

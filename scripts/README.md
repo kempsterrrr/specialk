@@ -29,10 +29,17 @@ This is a two-step process (run in separate terminals):
 #### Terminal 1: Start Anvil
 
 ```bash
-bun run start:anvil:tatara
+# Fork Tatara testnet
+bun run start:anvil tatara
+
+# Or fork Bokuto testnet  
+bun run start:anvil bokuto
+
+# Or fork Katana mainnet
+bun run start:anvil katana
 ```
 
-This will start Anvil with a local fork of the Tatara blockchain.
+This will start Anvil with a local fork of the specified blockchain.
 
 #### Terminal 2: Verify the Fork
 

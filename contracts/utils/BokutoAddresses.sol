@@ -10,7 +10,7 @@ library BokutoAddresses {
     /**
      * @notice Chain ID for Bokuto network
      */
-    uint256 internal constant CHAIN_ID = 987654;
+    uint256 internal constant CHAIN_ID = 737373;
 
     // No contracts found with @custom:bokuto addresses
     // This file will be populated as contracts are deployed to Bokuto
