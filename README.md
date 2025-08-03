@@ -176,16 +176,17 @@ See [scripts/README.md](scripts/README.md) for more details.
 
 ### 4️⃣ **Example dApp**
 
-The starter kit includes a simple example dApp that connects to the Tatara
-testnet (or your local fork) and displays information about key contracts.
+The starter kit includes a simple example dApp that automatically detects and
+connects to any of the supported local chain forks (Tatara, Katana, or Bokuto)
+and displays information about key contracts available on that chain.
 
 To run the example:
 
 1. Start your local chain fork (in its own terminal):
 
    ```sh
-   # Fork Tatara testnet
-   bun run start:anvil tatara
+   # Fork any supported chain
+   bun run start:anvil tatara   # or bokuto/katana
    ```
 
 2. In a new terminal, build the dApp:
@@ -197,13 +198,16 @@ To run the example:
 3. Serve `dist/index.html` in your browser with something like
    `cd dist && npx http-server`
 
-The example dApp shows:
+The example dApp automatically:
 
-- AUSD token information
-- WETH token information
-- MorphoBlue protocol information
+- **Detects the running chain** by reading the chain ID from your local fork
+- **Loads the appropriate contracts** using the dynamic address system
+- **Shows available contract information** (AUSD, WETH, MorphoBlue) if deployed on that chain
+- **Displays helpful messages** if contracts aren't available on the selected chain
 
-You can use this as a starting point for your own dApp development.
+The app gracefully handles different chains and will show which contracts are
+available on each network. You can use this as a starting point for your own
+multi-chain dApp development.
 
 ### 5️⃣ **Using the Foundry MCP Server**
 
