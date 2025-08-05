@@ -119,8 +119,9 @@ function extractNetworkAddresses(filePath) {
   try {
     const content = readFileSync(filePath, 'utf8');
     const addresses = {};
+    const originAddresses = {};
     
-    // Look for @custom:networkName address patterns
+    // Look for @custom:networkName address patterns (destination chain)
     for (const network of NETWORKS) {
       const regex = new RegExp(`@custom:${network}\\s+(0x[a-fA-F0-9]{40})`, 'gi');
       const match = regex.exec(content);
@@ -130,10 +131,23 @@ function extractNetworkAddresses(filePath) {
       }
     }
     
-    return addresses;
+    // Look for @custom:networkName originChain:address patterns (origin chain)
+    for (const network of NETWORKS) {
+      const regex = new RegExp(`@custom:${network}\\s+(ethereum|sepolia):(0x[a-fA-F0-9]{40})`, 'gi');
+      const match = regex.exec(content);
+      if (match && match[2]) {
+        // Apply proper checksumming
+        originAddresses[network] = {
+          originChain: match[1],
+          address: toChecksumAddress(match[2])
+        };
+      }
+    }
+    
+    return { addresses, originAddresses };
   } catch (error) {
     console.error(`Error reading file ${filePath}:`, error.message);
-    return {};
+    return { addresses: {}, originAddresses: {} };
   }
 }
 
@@ -207,10 +221,61 @@ library ${networkName}Addresses {\n`;
 }
 
 /**
+ * Generate origin addresses library file for a specific network
+ */
+function generateOriginAddressLibrary(network, originContracts) {
+  const networkName = network.charAt(0).toUpperCase() + network.slice(1);
+  
+  let content = `// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/**
+ * @title ${networkName}OriginAddresses
+ * @notice Library for accessing origin chain contract addresses when operating in ${networkName} context
+ * @dev Auto-generated from contract doccomments. Do not edit manually.
+ *      These are contracts deployed on origin chains (Ethereum/Sepolia) that are accessed
+ *      from the ${networkName} context for cross-chain operations like Vault Bridge.
+ */
+library ${networkName}OriginAddresses {\n`;
+
+  // Sort contracts by name for consistent output
+  const sortedContracts = Object.entries(originContracts).sort(([a], [b]) => a.localeCompare(b));
+
+  if (sortedContracts.length === 0) {
+    content += `    // No origin chain contracts found for ${network} context
+    // This file will be populated as origin chain contracts are added
+
+`;
+  } else {
+    // Add functions for each contract
+    for (const [contractName, contractData] of sortedContracts) {
+      const functionName = contractNameToFunctionName(contractName);
+      const originChain = contractData.originChain;
+      const address = contractData.address;
+      
+      content += `    /**
+     * @notice Returns the origin chain address of ${contractName}
+     * @dev This contract is deployed on ${originChain} and accessed from ${networkName} context
+     * @return The ${contractName} contract address on ${originChain}
+     */
+    function ${functionName}() internal pure returns (address) {
+        return ${address};
+    }
+
+`;
+    }
+  }
+
+  content += `}`; // Close the library
+
+  return content;
+}
+
+/**
  * Generate TypeScript address mapping file
  */
-function generateTypeScriptMapping(networkContracts) {
-  // Get all unique contract names across all networks
+function generateTypeScriptMapping(networkContracts, originNetworkContracts) {
+  // Get all unique contract names across all networks (destination contracts)
   const allContractNames = new Set();
   
   for (const network of NETWORKS) {
@@ -219,7 +284,16 @@ function generateTypeScriptMapping(networkContracts) {
     }
   }
   
-  // Create the mapping object
+  // Get all unique origin contract names across all networks
+  const allOriginContractNames = new Set();
+  
+  for (const network of NETWORKS) {
+    for (const contractName of Object.keys(originNetworkContracts[network])) {
+      allOriginContractNames.add(contractName);
+    }
+  }
+  
+  // Create the mapping object for destination contracts
   const addressMapping = {};
   
   allContractNames.forEach(contractName => {
@@ -227,6 +301,17 @@ function generateTypeScriptMapping(networkContracts) {
       tatara: networkContracts.tatara[contractName] || null,
       katana: networkContracts.katana[contractName] || null,
       bokuto: networkContracts.bokuto[contractName] || null
+    };
+  });
+  
+  // Create the mapping object for origin contracts
+  const originAddressMapping = {};
+  
+  allOriginContractNames.forEach(contractName => {
+    originAddressMapping[contractName] = {
+      tatara: originNetworkContracts.tatara[contractName]?.address || null,
+      katana: originNetworkContracts.katana[contractName]?.address || null,
+      bokuto: originNetworkContracts.bokuto[contractName]?.address || null
     };
   });
   
@@ -244,6 +329,19 @@ export const CHAIN_IDS = {
 
 export const CONTRACT_ADDRESSES = {
 ${Object.entries(addressMapping)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([name, addrs]) => {
+    // Simple string values, typing will be in index.ts
+    const tatara = addrs.tatara ? `"tatara": "${addrs.tatara}"` : '"tatara": null';
+    const katana = addrs.katana ? `"katana": "${addrs.katana}"` : '"katana": null';
+    const bokuto = addrs.bokuto ? `"bokuto": "${addrs.bokuto}"` : '"bokuto": null';
+    return `  "${name}": { ${tatara}, ${katana}, ${bokuto} }`;
+  })
+  .join(',\n')}
+} as const;
+
+export const ORIGIN_CONTRACT_ADDRESSES = {
+${Object.entries(originAddressMapping)
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([name, addrs]) => {
     // Simple string values, typing will be in index.ts
@@ -290,13 +388,20 @@ function main() {
     bokuto: {}
   };
 
+  const originNetworkContracts = {
+    tatara: {},
+    katana: {},
+    bokuto: {}
+  };
+
   let totalAddressesFound = 0;
+  let totalOriginAddressesFound = 0;
 
   for (const filePath of solidityFiles) {
     const contractName = extractContractName(filePath);
-    const addresses = extractNetworkAddresses(filePath);
+    const { addresses, originAddresses } = extractNetworkAddresses(filePath);
     
-    // Add to appropriate network mappings
+    // Add destination chain addresses to appropriate network mappings
     for (const [network, address] of Object.entries(addresses)) {
       if (networkContracts[network]) {
         // Check for duplicates
@@ -317,9 +422,32 @@ function main() {
         console.log(`  Found ${network}: ${contractName} -> ${address} (${relative(CONTRACTS_DIR, filePath)})`);
       }
     }
+
+    // Add origin chain addresses to appropriate network mappings
+    for (const [network, addressData] of Object.entries(originAddresses)) {
+      if (originNetworkContracts[network]) {
+        // Check for duplicates
+        if (originNetworkContracts[network][contractName] && originNetworkContracts[network][contractName].address !== addressData.address) {
+          console.log(`  Warning: Duplicate origin contract name "${contractName}" with different addresses:`);
+          console.log(`    Existing: ${originNetworkContracts[network][contractName].address} (${originNetworkContracts[network][contractName].originChain})`);
+          console.log(`    New: ${addressData.address} (${addressData.originChain}) (from ${relative(CONTRACTS_DIR, filePath)})`);
+          
+          // Use the relative file path to create a unique name
+          const uniqueName = `${contractName}_${relative(CONTRACTS_DIR, filePath).replace(/[/.]/g, '_').replace(/_sol$/, '')}`;
+          originNetworkContracts[network][uniqueName] = addressData;
+          console.log(`    Renamed to: ${uniqueName}`);
+        } else {
+          originNetworkContracts[network][contractName] = addressData;
+        }
+        
+        totalOriginAddressesFound++;
+        console.log(`  Found ${network} origin (${addressData.originChain}): ${contractName} -> ${addressData.address} (${relative(CONTRACTS_DIR, filePath)})`);
+      }
+    }
   }
 
   console.log(`\nTotal addresses found: ${totalAddressesFound}`);
+  console.log(`Total origin addresses found: ${totalOriginAddressesFound}`);
 
   // Generate library files for each network
   console.log('\nGenerating address library files...');
@@ -335,6 +463,20 @@ function main() {
     console.log(`  Generated ${fileName} with ${contractCount} contracts`);
   }
 
+  // Generate origin address library files for each network
+  console.log('\nGenerating origin address library files...');
+  for (const network of NETWORKS) {
+    const networkName = network.charAt(0).toUpperCase() + network.slice(1);
+    const fileName = `${networkName}OriginAddresses.sol`;
+    const filePath = join(UTILS_DIR, fileName);
+    
+    const content = generateOriginAddressLibrary(network, originNetworkContracts[network]);
+    writeFileSync(filePath, content);
+    
+    const contractCount = Object.keys(originNetworkContracts[network]).length;
+    console.log(`  Generated ${fileName} with ${contractCount} origin contracts`);
+  }
+
   // Generate TypeScript address mapping
   console.log('\nGenerating TypeScript address mapping...');
   
@@ -344,7 +486,7 @@ function main() {
     mkdirSync(JS_UTILS_DIR, { recursive: true });
   }
   
-  const tsContent = generateTypeScriptMapping(networkContracts);
+  const tsContent = generateTypeScriptMapping(networkContracts, originNetworkContracts);
   writeFileSync(JS_OUTPUT_PATH, tsContent);
   console.log(`  Generated ${relative(process.cwd(), JS_OUTPUT_PATH)}`);
 

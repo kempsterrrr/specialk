@@ -39,6 +39,12 @@ function getAllContractFiles(dir, relativePath = '', result = []) {
     const stats = statSync(filePath);
     
     if (stats.isDirectory()) {
+      // Skip the utils directory since those are generated files
+      if (file === 'utils') {
+        console.log(`Skipping generated directory: ${join(relativePath, file)}`);
+        continue;
+      }
+      
       const newRelativePath = join(relativePath, file);
       getAllContractFiles(filePath, newRelativePath, result);
     } else if (file.endsWith('.sol')) {
@@ -170,7 +176,7 @@ if (existsSync(TEMP_DIR)) {
 console.log('ABI generation complete');
 
 // Validation function
-function countFilesRecursively(dir, extension) {
+function countFilesRecursively(dir, extension, skipDirs = []) {
   let count = 0;
   const items = readdirSync(dir);
   
@@ -179,7 +185,11 @@ function countFilesRecursively(dir, extension) {
     const stats = statSync(fullPath);
     
     if (stats.isDirectory()) {
-      count += countFilesRecursively(fullPath, extension);
+      // Skip specified directories
+      if (skipDirs.includes(item)) {
+        continue;
+      }
+      count += countFilesRecursively(fullPath, extension, skipDirs);
     } else if (item.endsWith(extension)) {
       count++;
     }
@@ -190,7 +200,7 @@ function countFilesRecursively(dir, extension) {
 
 // Validate the generated ABIs
 console.log('\nValidation Check:');
-const contractCount = countFilesRecursively(CONTRACTS_DIR, '.sol');
+const contractCount = countFilesRecursively(CONTRACTS_DIR, '.sol', ['utils']);
 const abiCount = countFilesRecursively(ABIS_DIR, '.json');
 
 console.log(`  - Total contract files: ${contractCount}`);

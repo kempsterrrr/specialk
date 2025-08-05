@@ -20,7 +20,7 @@ This kit provides:
 - **Static File Handling** (HTML, CSS, and assets copied to `dist/`, easy to
   host on IPFS or any static file hosting service)
 - **Contract address mapping generator** for easy access to deployed contract
-  addresses in JavaScript
+  addresses in JavaScript, including origin chain addresses for cross-chain operations
 - **Foundry MCP Server** for AI-assisted smart contract development
 - Script to generate a single file contract directory with all the ABIs,
   contract names, paths, descriptions, addresses, and context they belong to,
@@ -126,12 +126,13 @@ This will:
 - Prepare the environment for deployment
 - Compile helper utilities like an address-to-contract mapping in
   `utils/addresses` and interface ABIs in the `/abis` folder as well as address
-  lookup Solidity contracts in `contracts/utils`.
+  lookup Solidity contracts in `contracts/utils`. This includes both regular
+  destination chain addresses and origin chain addresses for cross-chain operations.
 - Build the Foundry MCP server for AI-assisted development
 
 🚨 Note: Going forward, you can just rebuild the web app using `bun run build`.
 
-### 3️⃣ **Local Chain Forking**.
+### 3️⃣ **Local Chain Forking**
 
 #### Environment Setup
 
@@ -141,9 +142,9 @@ defaults.
 
 ```bash
 # Copy and customize based on your available RPC endpoints
-TATARA_RPC_URL=https://rpc.tatara.network
-BOKUTO_RPC_URL=https://rpc.bokuto.network  
-KATANA_RPC_URL=https://rpc.katana.network
+TATARA_RPC_URL=https://rpc.tatara.katanarpc.com
+KATANA_RPC_URL=https://rpc.katana.network/
+BOKUTO_RPC_URL=https://rpc-bokuto.katanarpc.com
 ```
 
 #### Terminal 1: Start Anvil Fork
@@ -202,7 +203,9 @@ The example dApp automatically:
 
 - **Detects the running chain** by reading the chain ID from your local fork
 - **Loads the appropriate contracts** using the dynamic address system
-- **Shows available contract information** (AUSD, WETH, MorphoBlue) if deployed on that chain
+  (including origin chain addresses)
+- **Shows available contract information** (AUSD, WETH, MorphoBlue) if deployed
+  on that chain
 - **Displays helpful messages** if contracts aren't available on the selected chain
 
 The app gracefully handles different chains and will show which contracts are
@@ -258,9 +261,10 @@ contracts on Katana.
 ### 6️⃣ **Contract Address Mapping**
 
 The kit includes a utility to generate a JavaScript mapping of all contract
-addresses for both Tatara testnet and Katana mainnet (when available). This
+addresses for Tatara testnet, Katana mainnet, and Bokuto testnet. This
 makes it easy to access contract addresses in your frontend code without
-hardcoding them.
+hardcoding them. The system also handles **origin chain addresses** for
+cross-chain operations like Vault Bridge.
 
 To generate the address mapping:
 
@@ -268,10 +272,17 @@ To generate the address mapping:
 bun run build:addressutils
 ```
 
-This will create files in `utils/addresses/`:
+This will create files in `utils/addresses/` and `contracts/utils/`:
+
+**TypeScript Files:**
 
 - `mapping.ts` - Auto-generated mapping of contract addresses (do not edit)
 - `index.ts` - User-friendly API wrapper with chain context management
+
+**Solidity Files:**
+
+- `[Chain]Addresses.sol` - Contract address libraries for each chain
+- `[Chain]OriginAddresses.sol` - Origin chain address libraries for cross-chain operations
 
 ### Usage
 
@@ -302,12 +313,51 @@ const allContracts = addresses.getAllContracts();
 const wethOnKatana = addresses.getAddressForChain('WETH', 'katana');
 ```
 
+### Origin Chain Addresses
+
+For cross-chain operations (like Vault Bridge), you often need addresses from
+the **origin chain** (Ethereum/Sepolia) while operating in a **destination
+chain** context (Katana/Bokuto/Tatara). The address system handles this
+automatically:
+
+```javascript
+import { addresses } from '../utils/addresses';
+
+// Set context to Katana (destination chain)
+addresses.setChain('katana');
+
+// Get destination chain contracts (deployed on Katana)
+const bridgedUSDC = addresses.getAddress('bvbUSDC');
+// Returns: 0x203A662b0BD271A6ed5a60EdFbd04bFce608FD36
+
+// Get origin chain contracts (deployed on Ethereum, accessed from Katana context)
+const vaultUSDC = addresses.getOriginAddress('vbUSDC');
+// Returns: 0x53E82ABbb12638F09d9e624578ccB666217a765e
+
+const migrationManager = addresses.getOriginAddress('MigrationManager');
+// Returns: 0x417d01B64Ea30C4E163873f3a1f77b727c689e02
+
+// Check what origin contracts are available
+const originContracts = addresses.getAllOriginContracts();
+// Returns: ["IMigrationManager", "IvbETH", "IvbUSDC", "IvbUSDS", "IvbUSDT", "IvbWBTC"]
+```
+
+**Chain Context Mapping:**
+
+- **Katana context** → Origin addresses from **Ethereum**
+- **Bokuto context** → Origin addresses from **Sepolia**
+- **Tatara context** → Origin addresses from **Sepolia**
+
 ### Features
 
 - **Automatic I-prefix handling**: Try `WETH` and it will find `IWETH`
 - **Chain context management**: Set once, use everywhere
+- **Origin chain support**: Access origin chain addresses for cross-chain operations
+- **Context-aware addressing**: Katana context → Ethereum origins, Bokuto/Tatara
+  → Sepolia origins
 - **Better error messages**: Shows available contracts when not found
 - **Type-safe**: Full TypeScript support with address types
+- **Dual address types**: Regular (destination) and origin addresses in one API
 
 The address mapping is generated from the `@custom:tatara`, `@custom:katana`, and
 `@custom:bokuto` doccomments in the contract files.
@@ -317,19 +367,6 @@ The address mapping is generated from the `@custom:tatara`, `@custom:katana`, an
 ## 🔗 Smart Contract Development
 
 See [interfaces](interfaces).
-
----
-
-## 📜 Example Integration (Coming Soon)
-
-Once the **example contracts** are added, you'll have:
-
-- ERC-20 & ERC-4626 **yield strategies**
-- **Cross-chain bridging scripts**
-- **Contract interactions with AggLayer**
-- **Example UI for wallet connection & swaps**
-
----
 
 ## 🛠 Contributing
 

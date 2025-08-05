@@ -132,7 +132,7 @@ library KatanaAddresses {
         return 0x876aac7648D79f87245E73316eB2D100e75F3Df1;
     }
 
-    /**d
+    /**
      * @notice Returns the address of ICatalogFactory
      * @return The ICatalogFactory contract address
      */

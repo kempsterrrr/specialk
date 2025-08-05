@@ -3,7 +3,7 @@ import { addresses, CHAIN_IDS } from '../utils/addresses/index.js';
 
 // Import ABIs from their respective locations
 import AUSD_ABI from '../abis/tokens/IAUSD.json';
-import WETH_ABI from '../abis/tokens/IWETH.json';
+import WETH_ABI from '../abis/vb/tokens/IbvbEth.json';
 import MORPHO_BLUE_ABI from '../abis/morpho/IMorphoBlue.json';
 
 // Chain information
@@ -25,6 +25,17 @@ const connectWalletButton = document.getElementById('connect-wallet') as HTMLBut
 const ausdDataElement = document.getElementById('ausd-data') as HTMLElement;
 const wethDataElement = document.getElementById('weth-data') as HTMLElement;
 const morphoDataElement = document.getElementById('morpho-data') as HTMLElement;
+
+// Address display elements
+const ausdAddressElement = document.getElementById('ausd-address') as HTMLElement;
+const wethAddressElement = document.getElementById('weth-address') as HTMLElement;
+const morphoAddressElement = document.getElementById('morpho-address') as HTMLElement;
+
+// Origin contract elements
+const vbusdcOriginDataElement = document.getElementById('vbusdc-origin-data') as HTMLElement;
+const vbethOriginDataElement = document.getElementById('vbeth-origin-data') as HTMLElement;
+const vbusdcOriginAddressElement = document.getElementById('vbusdc-origin-address') as HTMLElement;
+const vbethOriginAddressElement = document.getElementById('vbeth-origin-address') as HTMLElement;
 
 // Check for wallet
 const hasEthereum = typeof window !== 'undefined' && window.ethereum;
@@ -90,12 +101,12 @@ async function initialize() {
       
       // Check if we have the key contracts we want to display
       const hasAUSD = addresses.hasContract('AUSD');
-      const hasWETH = addresses.hasContract('WETH');
+      const hasWETH = addresses.hasContract('bvbEth');
       const hasMorpho = addresses.hasContract('MorphoBlue');
       
       if (!hasAUSD && !hasWETH && !hasMorpho) {
         updateNetworkStatus('warning', `${chainInfo.name} (No contracts)`);
-        displayRpcError(`No key contracts (AUSD, WETH, MorphoBlue) found on ${chainInfo.name}. The contracts may not be deployed on this chain yet.`);
+        displayRpcError(`No key contracts (AUSD, bvbEth, MorphoBlue) found on ${chainInfo.name}. The contracts may not be deployed on this chain yet.`);
         return;
       }
       
@@ -116,6 +127,9 @@ async function initialize() {
           return;
         }
       }
+      
+      // Update address displays
+      updateAddressDisplays();
       
       // Now load all contract data
       loadContractData();
@@ -153,12 +167,62 @@ function displayRpcError(customMessage?: string) {
   ausdDataElement.innerHTML = errorMessage;
   wethDataElement.innerHTML = errorMessage;
   morphoDataElement.innerHTML = errorMessage;
+  vbusdcOriginDataElement.innerHTML = errorMessage;
+  vbethOriginDataElement.innerHTML = errorMessage;
 }
 
 // Update network status indicator
 function updateNetworkStatus(status: 'connected' | 'error' | 'warning', name: string) {
   networkIndicator.className = status;
   networkName.textContent = name;
+}
+
+// Update address displays
+function updateAddressDisplays() {
+  try {
+    // Update regular contract addresses
+    if (addresses.hasContract('AUSD')) {
+      const ausdAddress = addresses.getAddress('AUSD');
+      ausdAddressElement.querySelector('code')!.textContent = ausdAddress;
+    } else {
+      ausdAddressElement.querySelector('code')!.textContent = 'Not deployed on this chain';
+    }
+
+    if (addresses.hasContract('bvbEth')) {
+      const wethAddress = addresses.getAddress('bvbEth');
+      wethAddressElement.querySelector('code')!.textContent = wethAddress;
+    } else {
+      wethAddressElement.querySelector('code')!.textContent = 'Not deployed on this chain';
+    }
+
+    if (addresses.hasContract('MorphoBlue')) {
+      const morphoAddress = addresses.getAddress('MorphoBlue');
+      morphoAddressElement.querySelector('code')!.textContent = morphoAddress;
+    } else {
+      morphoAddressElement.querySelector('code')!.textContent = 'Not deployed on this chain';
+    }
+
+    // Update origin contract addresses
+    if (addresses.hasOriginContract('vbUSDC')) {
+      const vbusdcOriginAddress = addresses.getOriginAddress('vbUSDC');
+      const originChain = currentChainId === CHAIN_IDS.KATANA ? 'Ethereum' : 'Sepolia';
+      vbusdcOriginAddressElement.querySelector('code')!.textContent = vbusdcOriginAddress;
+      vbusdcOriginAddressElement.querySelector('span')!.textContent = `${originChain} Address:`;
+    } else {
+      vbusdcOriginAddressElement.querySelector('code')!.textContent = 'Not available in this context';
+    }
+
+    if (addresses.hasOriginContract('vbETH')) {
+      const vbethOriginAddress = addresses.getOriginAddress('vbETH');
+      const originChain = currentChainId === CHAIN_IDS.KATANA ? 'Ethereum' : 'Sepolia';
+      vbethOriginAddressElement.querySelector('code')!.textContent = vbethOriginAddress;
+      vbethOriginAddressElement.querySelector('span')!.textContent = `${originChain} Address:`;
+    } else {
+      vbethOriginAddressElement.querySelector('code')!.textContent = 'Not available in this context';
+    }
+  } catch (error) {
+    console.error('Error updating address displays:', error);
+  }
 }
 
 // Connect wallet
@@ -303,16 +367,16 @@ async function loadAUSDData() {
   }
 }
 
-// Load WETH Token data
+// Load bvbEth Token data
 async function loadWETHData() {
-  // Check if WETH is available on current chain
-  if (!addresses.hasContract('WETH')) {
-    wethDataElement.innerHTML = `<p>WETH not available on ${currentChainInfo?.name || 'this chain'}</p>`;
+  // Check if bvbEth is available on current chain
+  if (!addresses.hasContract('bvbEth')) {
+    wethDataElement.innerHTML = `<p>bvbEth not available on ${currentChainInfo?.name || 'this chain'}</p>`;
     return;
   }
 
-  // Get WETH address dynamically
-  const wethAddress = addresses.getAddress('WETH');
+  // Get bvbEth address dynamically
+  const wethAddress = addresses.getAddress('bvbEth');
 
   // Clear previous content and show loading state
   wethDataElement.innerHTML = '<div class="spinner"></div><p>Loading data...</p>';
@@ -325,7 +389,7 @@ async function loadWETHData() {
         abi: WETH_ABI,
         functionName: 'name'
       }),
-      (error) => console.error('Error reading WETH name:', error)
+              (error) => console.error('Error reading bvbEth name:', error)
     );
     
     const symbol = await safeContractCall(
@@ -334,7 +398,7 @@ async function loadWETHData() {
         abi: WETH_ABI,
         functionName: 'symbol'
       }),
-      (error) => console.error('Error reading WETH symbol:', error)
+              (error) => console.error('Error reading bvbEth symbol:', error)
     );
     
     const totalSupply = await safeContractCall(
@@ -343,12 +407,12 @@ async function loadWETHData() {
         abi: WETH_ABI,
         functionName: 'totalSupply'
       }),
-      (error) => console.error('Error reading WETH totalSupply:', error)
+              (error) => console.error('Error reading bvbEth totalSupply:', error)
     );
 
     // If we couldn't get any data, show error
     if (!name && !symbol && !totalSupply) {
-      throw new Error('Failed to load any WETH data');
+      throw new Error('Failed to load any bvbEth data');
     }
 
     // Format and display data
@@ -363,7 +427,7 @@ async function loadWETHData() {
         const supplyBigInt = typeof totalSupply === 'bigint' ? totalSupply : BigInt(0);
         formattedSupply = `${formatEther(supplyBigInt)} ${symbol || ''}`;
       } catch (e) {
-        console.error('Error formatting WETH supply:', e);
+        console.error('Error formatting bvbEth supply:', e);
       }
     }
 
@@ -385,7 +449,7 @@ async function loadWETHData() {
       wethDataElement.appendChild(dataItem);
     });
   } catch (error) {
-    console.error('Error loading WETH data:', error);
+    console.error('Error loading bvbEth data:', error);
     wethDataElement.innerHTML = `<p>Error loading data. Make sure the ${currentChainInfo?.name || 'chain'} fork is running.</p>`;
   }
 }
@@ -469,6 +533,88 @@ async function loadMorphoData() {
   }
 }
 
+// Load origin contract data for vbUSDC
+async function loadVBUSDCOriginData() {
+  if (!addresses.hasOriginContract('vbUSDC')) {
+    const originChain = currentChainId === CHAIN_IDS.KATANA ? 'Ethereum' : 'Sepolia';
+    vbusdcOriginDataElement.innerHTML = `<p>vbUSDC not available on ${originChain} in this context</p>`;
+    return;
+  }
+
+  vbusdcOriginDataElement.innerHTML = '<div class="spinner"></div><p>Loading origin data...</p>';
+  
+  try {
+    const vbusdcOriginAddress = addresses.getOriginAddress('vbUSDC');
+    const originChain = currentChainId === CHAIN_IDS.KATANA ? 'Ethereum' : 'Sepolia';
+    
+    // Since we're demonstrating cross-chain addresses, we can't actually read from origin contracts
+    // via the local fork, but we can show the address and explain the concept
+    vbusdcOriginDataElement.innerHTML = '';
+    vbusdcOriginDataElement.classList.add('loaded');
+
+    const formattedData = [
+      { label: 'Origin Chain', value: originChain },
+      { label: 'Contract Type', value: 'Vault Bridge USDC Token' },
+      { label: 'Purpose', value: 'Cross-chain yield-bearing USDC' },
+      { label: 'Origin Address', value: vbusdcOriginAddress },
+      { label: 'Note', value: 'This contract exists on the origin chain and cannot be read directly from the destination chain fork.' }
+    ];
+
+    formattedData.forEach(item => {
+      const dataItem = document.createElement('div');
+      dataItem.className = 'data-item';
+      dataItem.innerHTML = `
+        <div class="label">${item.label}</div>
+        <div class="value">${item.value}</div>
+      `;
+      vbusdcOriginDataElement.appendChild(dataItem);
+    });
+  } catch (error) {
+    console.error('Error loading vbUSDC origin data:', error);
+    vbusdcOriginDataElement.innerHTML = `<p>Error loading origin data.</p>`;
+  }
+}
+
+// Load origin contract data for vbETH
+async function loadVBETHOriginData() {
+  if (!addresses.hasOriginContract('vbETH')) {
+    const originChain = currentChainId === CHAIN_IDS.KATANA ? 'Ethereum' : 'Sepolia';
+    vbethOriginDataElement.innerHTML = `<p>vbETH not available on ${originChain} in this context</p>`;
+    return;
+  }
+
+  vbethOriginDataElement.innerHTML = '<div class="spinner"></div><p>Loading origin data...</p>';
+  
+  try {
+    const vbethOriginAddress = addresses.getOriginAddress('vbETH');
+    const originChain = currentChainId === CHAIN_IDS.KATANA ? 'Ethereum' : 'Sepolia';
+    
+    vbethOriginDataElement.innerHTML = '';
+    vbethOriginDataElement.classList.add('loaded');
+
+    const formattedData = [
+      { label: 'Origin Chain', value: originChain },
+      { label: 'Contract Type', value: 'Vault Bridge ETH Token' },
+      { label: 'Purpose', value: 'Cross-chain yield-bearing ETH' },
+      { label: 'Origin Address', value: vbethOriginAddress },
+      { label: 'Note', value: 'This contract exists on the origin chain and cannot be read directly from the destination chain fork.' }
+    ];
+
+    formattedData.forEach(item => {
+      const dataItem = document.createElement('div');
+      dataItem.className = 'data-item';
+      dataItem.innerHTML = `
+        <div class="label">${item.label}</div>
+        <div class="value">${item.value}</div>
+      `;
+      vbethOriginDataElement.appendChild(dataItem);
+    });
+  } catch (error) {
+    console.error('Error loading vbETH origin data:', error);
+    vbethOriginDataElement.innerHTML = `<p>Error loading origin data.</p>`;
+  }
+}
+
 // Load all contract data
 async function loadContractData() {
   // Load data sequentially to avoid overloading the server
@@ -482,10 +628,10 @@ async function loadContractData() {
       ausdDataElement.innerHTML = `<p>AUSD not deployed on ${currentChainInfo?.name}</p>`;
     }
     
-    if (addresses.hasContract('WETH')) {
+    if (addresses.hasContract('bvbEth')) {
       await loadWETHData();
     } else {
-      wethDataElement.innerHTML = `<p>WETH not deployed on ${currentChainInfo?.name}</p>`;
+      wethDataElement.innerHTML = `<p>bvbEth not deployed on ${currentChainInfo?.name}</p>`;
     }
     
     if (addresses.hasContract('MorphoBlue')) {
@@ -493,6 +639,10 @@ async function loadContractData() {
     } else {
       morphoDataElement.innerHTML = `<p>MorphoBlue not deployed on ${currentChainInfo?.name}</p>`;
     }
+
+    // Load origin contract data
+    await loadVBUSDCOriginData();
+    await loadVBETHOriginData();
     
     console.log('✅ Contract data loading complete');
   } catch (error) {
@@ -500,7 +650,7 @@ async function loadContractData() {
   }
 }
 
-// Add error styles
+// Add error styles and section styling
 const style = document.createElement('style');
 style.textContent = `
   .error-message {
@@ -522,6 +672,23 @@ style.textContent = `
     border-radius: 4px;
     margin: 8px 0;
     overflow-x: auto;
+  }
+  
+  .section-description {
+    color: #6b7280;
+    font-style: italic;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  
+  #origin-contracts-section {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  #origin-contracts-section .card {
+    border-left: 3px solid #10b981;
   }
 `;
 document.head.appendChild(style);
