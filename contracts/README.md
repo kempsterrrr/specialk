@@ -489,3 +489,10 @@ these interfaces in your own contracts.
   (through WETH) with features for managing deposit limits, strategy
   withdrawals, and fee configuration. Address:
   `0xccc0fc2e34428120f985b460b487eb79e3c6fa57`
+
+Todo prompt: Given the changes we've done, and given the new @build_address_utils.js script we built to replace the previous address utils, and given the new type of [chain]Addreesses.sol files we are generating now in @utils/ , let's update @README.md to be much clearer, and to also include all the contracts we have right now. We can omit the addresses in these contracts, since they are in the contract / interface files and can be looked up easily from any of the utils we are generating, but we should
+
+1. Update the file's general content to be true and not reference old logic
+2. Make sure all our contracts are in there
+3. Make sure all paths are correct, since we did some moving around
+4. Make sure that each contract's description has a "use this when" section, for inspiration.

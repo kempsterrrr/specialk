@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "../IERC4626.sol";
-import "../IAggregatorV3Interface.sol";
+import "../oracles/chainlink/IAggregatorV3Interface.sol";
 import "./IMorphoOracle.sol";
 
 /**
