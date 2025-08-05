@@ -7,6 +7,7 @@ import "../IERC20.sol";
  * @title IYearnVault
  * @notice Interface for Yearn ERC4626-compatible vaults
  * @dev This interface includes all standard ERC4626 methods plus additional Yearn vault specific functions
+ * @custom:tags yearn,defi,vault,erc4626,yield
  */
 interface IYearnVault is IERC20 {
     /* ERC4626 Standard Functions */

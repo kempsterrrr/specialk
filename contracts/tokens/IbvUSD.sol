@@ -7,7 +7,8 @@ import "../IERC20.sol";
  * @title IbvUSD
  * @notice Interface for BitVault USD (bvUSD) on Katana
  * @dev bvUSD implements the standard ERC-20 interface
- * @custom:katana 0x876aac7648d79f87245e73316eb2d100e75f3df1
+ * @custom:katana 0x876aac7648D79f87245E73316eB2D100e75F3Df1
+ * @custom:tags erc20,token,stablecoin,bvusd
  */
 interface IbvUSD is IERC20 {
     // bvUSD fully implements the ERC-20 standard

@@ -10,6 +10,7 @@ import "./IMorphoOracle.sol";
  * @notice Interface for Morpho's Chainlink Oracle V2, which combines ERC4626 vault assets with Chainlink price feeds
  * @author Morpho Labs
  * @custom:contact security@morpho.org
+ * @custom:tags morpho,oracle,chainlink,defi
  */
 interface IMorphoChainlinkOracleV2 is IMorphoOracle {
     /**

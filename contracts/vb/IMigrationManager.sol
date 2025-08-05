@@ -10,6 +10,7 @@ pragma solidity ^0.8.20;
    tags. Tatara does not have a MigrationManager.
  * @custom:bokuto sepolia:0x16B46094cb1eE593181Ba2d997E77E88D7E9Ab8F
  * @custom:katana ethereum:0x417d01B64Ea30C4E163873f3a1f77b727c689e02
+ * @custom:tags vaultbridge,migration,manager,bridge
  */
 interface IMigrationManager {
     error AccessControlBadConfirmation();

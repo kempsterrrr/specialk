@@ -8,7 +8,8 @@ pragma solidity ^0.8.20;
  * @dev Converts between WETH and its bridged representation across networks, with additional gas backing functionality
  * @custom:tatara 0x3aFbD158CF7B1E6BE4dAC88bC173FA65EBDf2EcD
  * @custom:bokuto 0x409834270b6F2591DD6c1e9f351E4194B112dA44
- * @custom:katana 0xa6b0db1293144ebe9478b6a84f75dd651e45914a
+ * @custom:katana 0xa6B0DB1293144Ebe9478B6a84F75dd651E45914a
+ * @custom:tags vaultbridge,converter,weth,native
  */
 
 interface IWETHNativeConverter {

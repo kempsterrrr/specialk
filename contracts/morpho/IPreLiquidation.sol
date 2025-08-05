@@ -8,6 +8,7 @@ import "./IMorphoBlue.sol";
  * @notice Interface for the PreLiquidation contract that enables early liquidations for Morpho Blue positions
  * @author Morpho Labs
  * @custom:contact security@morpho.org
+ * @custom:tags morpho,defi,liquidation,preliquidation
  */
 interface IPreLiquidation {
     /**

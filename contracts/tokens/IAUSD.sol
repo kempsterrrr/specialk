@@ -8,6 +8,7 @@ import "../IERC20.sol";
  * @notice Interface for Agora USD (AUSD), the stablecoin on Katana
  * @dev AUSD implements the standard ERC-20 interface
  * @custom:tatara 0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC
+ * @custom:tags erc20,token,stablecoin,ausd
  */
 interface IAUSD is IERC20 {
     // AUSD fully implements the ERC-20 standard

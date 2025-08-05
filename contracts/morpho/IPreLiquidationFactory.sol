@@ -9,6 +9,7 @@ import "./IPreLiquidation.sol";
  * @notice Interface for the PreLiquidation Factory that creates pre-liquidation contracts for Morpho Blue markets
  * @author Morpho Labs
  * @custom:contact security@morpho.org
+ * @custom:tags morpho,defi,liquidation,factory,preliquidation
  */
 interface IPreLiquidationFactory {
     /**

@@ -13,6 +13,7 @@ import "../IGenericCustomToken.sol";
  * @custom:tatara 0xDe51Ef59663e79B494E1236551187399D3359C92
  * @custom:katana 0x2DCa96907fde857dd3D816880A0df407eeB2D2F2
  * @custom:bokuto 0xf6801557e17131Da48Fd03B2c34172872F936345
+ * @custom:tags vaultbridge,token,usdt,bridge,destination
  */
 interface IbvbUSDT is IGenericCustomToken {
 

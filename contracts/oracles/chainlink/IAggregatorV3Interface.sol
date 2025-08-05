@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
  * @title IAggregatorV3Interface
  * @notice Interface for Chainlink price feed aggregators
  * @dev From Chainlink's AggregatorV3Interface
+ * @custom:tags oracle,chainlink,price-feed,standard
  */
 interface IAggregatorV3Interface {
     /**

@@ -8,6 +8,7 @@ import "./IMorphoBlue.sol";
  * @notice Interface for MetaMorpho vaults - ERC4626 yield aggregators for Morpho Blue markets
  * @author Morpho Labs
  * @custom:contact security@morpho.org
+ * @custom:tags morpho,defi,vault,erc4626,metamorpho
  */
 interface IMetaMorpho {
     /**

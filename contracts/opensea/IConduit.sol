@@ -6,6 +6,7 @@ pragma solidity ^0.8.0;
  * @notice Interface for OpenSea's Conduit contracts that enable transferring approved tokens
  * @dev Conduits are deployed by the ConduitController and can transfer ERC20/721/1155 tokens
  * @custom:address Contract addresses are generated dynamically based on the conduit key
+ * @custom:tags opensea,nft,marketplace,conduit
  */
 interface IConduit {
     /**

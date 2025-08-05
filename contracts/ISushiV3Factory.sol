@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.7.0 <0.9.0;
 
-/// @custom:tatara 0x9B3336186a38E1b6c21955d112dbb0343Ee061eE
+/**
+ * @title ISushiV3Factory
+ * @notice Interface for SushiSwap V3 Factory contract
+ * @dev Factory for creating SushiSwap V3 pools
+ * @custom:tatara 0x9B3336186a38E1b6c21955d112dbb0343Ee061eE
+ * @custom:tags sushi,defi,amm,factory,v3
+ */
 interface SushiV3Factory {
     event FeeAmountEnabled(uint24 indexed fee, int24 indexed tickSpacing);
     event OwnerChanged(address indexed oldOwner, address indexed newOwner);

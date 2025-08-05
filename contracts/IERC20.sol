@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 /**
  * @title IERC20
  * @dev Interface for the ERC20 standard token contract
+ * @custom:tags erc20,token,standard
  */
 interface IERC20 {
     /**

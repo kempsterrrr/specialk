@@ -53,6 +53,46 @@ library TataraAddresses {
     }
 
     /**
+     * @notice Returns the address of IbvbEth
+     * @return The IbvbEth contract address
+     */
+    function getIbvbEthAddress() internal pure returns (address) {
+        return 0x17B8Ee96E3bcB3b04b3e8334de4524520C51caB4;
+    }
+
+    /**
+     * @notice Returns the address of IbvbUSDC
+     * @return The IbvbUSDC contract address
+     */
+    function getIbvbUSDCAddress() internal pure returns (address) {
+        return 0x102E14ffF48170F2e5b6d0e30259fCD4eE5E28aE;
+    }
+
+    /**
+     * @notice Returns the address of IbvbUSDS
+     * @return The IbvbUSDS contract address
+     */
+    function getIbvbUSDSAddress() internal pure returns (address) {
+        return 0xD416d04845d299bCC0e5105414C99fFc88f0C97d;
+    }
+
+    /**
+     * @notice Returns the address of IbvbUSDT
+     * @return The IbvbUSDT contract address
+     */
+    function getIbvbUSDTAddress() internal pure returns (address) {
+        return 0xDe51Ef59663e79B494E1236551187399D3359C92;
+    }
+
+    /**
+     * @notice Returns the address of IbvbWBTC
+     * @return The IbvbWBTC contract address
+     */
+    function getIbvbWBTCAddress() internal pure returns (address) {
+        return 0x1538aDF273f6f13CcdcdBa41A5ce4b2DC2177D1C;
+    }
+
+    /**
      * @notice Returns the address of IConduitController
      * @return The IConduitController contract address
      */
@@ -277,6 +317,14 @@ library TataraAddresses {
     }
 
     /**
+     * @notice Returns the address of IUSDSNativeConverter
+     * @return The IUSDSNativeConverter contract address
+     */
+    function getUSDSNativeConverterAddress() internal pure returns (address) {
+        return 0x56342E6093381E2Bd732FFd6141b22136efB98Bf;
+    }
+
+    /**
      * @notice Returns the address of IUSDTNativeConverter
      * @return The IUSDTNativeConverter contract address
      */
@@ -301,59 +349,11 @@ library TataraAddresses {
     }
 
     /**
-     * @notice Returns the address of IvbUSDC
-     * @return The IvbUSDC contract address
-     */
-    function getIvbUSDCAddress() internal pure returns (address) {
-        return 0x102E14ffF48170F2e5b6d0e30259fCD4eE5E28aE;
-    }
-
-    /**
-     * @notice Returns the address of IvbUSDS
-     * @return The IvbUSDS contract address
-     */
-    function getIvbUSDSAddress() internal pure returns (address) {
-        return 0xD416d04845d299bCC0e5105414C99fFc88f0C97d;
-    }
-
-    /**
-     * @notice Returns the address of IvbUSDT
-     * @return The IvbUSDT contract address
-     */
-    function getIvbUSDTAddress() internal pure returns (address) {
-        return 0xDe51Ef59663e79B494E1236551187399D3359C92;
-    }
-
-    /**
-     * @notice Returns the address of IvbWBTC
-     * @return The IvbWBTC contract address
-     */
-    function getIvbWBTCAddress() internal pure returns (address) {
-        return 0x1538aDF273f6f13CcdcdBa41A5ce4b2DC2177D1C;
-    }
-
-    /**
      * @notice Returns the address of IWBTCNativeConverter
      * @return The IWBTCNativeConverter contract address
      */
     function getWBTCNativeConverterAddress() internal pure returns (address) {
-        return 0x56342E6093381E2Bd732FFd6141b22136efB98Bf;
-    }
-
-    /**
-     * @notice Returns the address of IWBTCNativeConverter_vb_converters_IWBTCNativeConverter
-     * @return The IWBTCNativeConverter_vb_converters_IWBTCNativeConverter contract address
-     */
-    function getWBTCNativeConverter_vb_converters_IWBTCNativeConverterAddress() internal pure returns (address) {
         return 0x3Ef265DD0b4B86fC51b08D5B03699E57d52C9B27;
-    }
-
-    /**
-     * @notice Returns the address of IWETH
-     * @return The IWETH contract address
-     */
-    function getWETHAddress() internal pure returns (address) {
-        return 0x17B8Ee96E3bcB3b04b3e8334de4524520C51caB4;
     }
 
     /**

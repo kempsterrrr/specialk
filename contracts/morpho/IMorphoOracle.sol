@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
  * @title IMorphoOracle
  * @notice Interface for oracles used by Morpho Blue
  * @dev It is the user's responsibility to select markets with safe oracles
+ * @custom:tags morpho,oracle,defi,interface
  */
 interface IMorphoOracle {
     /**

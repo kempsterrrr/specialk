@@ -8,6 +8,7 @@ pragma solidity ^0.8.4;
  * @notice Advanced contract deployment factory supporting CREATE, CREATE2, and CREATE3 deployment patterns
  * @dev Deployed at the same address across all EVM chains: 0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed
  * @custom:tatara 0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed
+ * @custom:tags deployment,factory,create2,create3,utility
  */
 interface ICreateX {
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/

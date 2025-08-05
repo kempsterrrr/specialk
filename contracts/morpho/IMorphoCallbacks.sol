@@ -2,6 +2,10 @@
 pragma solidity ^0.8.0;
 
 /**
+ * @custom:tags morpho,defi,callbacks,hooks
+ */
+
+/**
  * @title IMorphoLiquidateCallback
  * @notice Interface that liquidators willing to use `liquidate`'s callback must implement
  */

@@ -8,6 +8,7 @@ import "./IEACAggregatorProxy.sol";
  * @notice Interface for MORPHO/USD Chainlink price oracle on Katana
  * @dev Extends the EAC Aggregator Proxy interface for price feeds
  * @custom:katana 0xdFd824A5Dcad8667142d58FE4aF115d5d052f26c
+ * @custom:tags oracle,chainlink,price-feed,morpho,usd
  */
 interface IMORPHOUSDOracle is IEACAggregatorProxy {
 

@@ -8,6 +8,7 @@ import "../IERC20.sol";
  * @notice Interface for Bridge-wrapped Yearn Finance (YFI) on Katana
  * @dev YFI implements the standard ERC-20 interface
  * @custom:katana 0x476eaCd417cD65421bD34fca054377658BB5E02b
+ * @custom:tags erc20,token,governance,yearn,yfi
  */
 interface IYFI is IERC20 {
     // YFI fully implements the ERC-20 standard

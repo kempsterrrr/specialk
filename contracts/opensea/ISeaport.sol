@@ -8,6 +8,7 @@ pragma solidity ^0.8.0;
  * @custom:tatara 0x0000000000FFe8B47B3e2130213B802212439497
  * @custom:katana 0x0000000000000068F116a894984e2DB1123eB395
  * @custom:bokuto 0x0000000000000068F116a894984e2DB1123eB395
+ * @custom:tags opensea,nft,marketplace,seaport
  */
 interface ISeaport {
     /**

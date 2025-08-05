@@ -8,6 +8,7 @@ pragma solidity ^0.8.0;
  * @custom:tatara 0x00000000F9490004C11Cef243f5400493c00Ad63
  * @custom:katana 0x00000000F9490004C11Cef243f5400493c00Ad63
  * @custom:bokuto 0x00000000F9490004C11Cef243f5400493c00Ad63
+ * @custom:tags opensea,nft,marketplace,conduit,controller
  */
 interface IConduitController {
     /**

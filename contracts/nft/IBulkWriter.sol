@@ -8,6 +8,7 @@ pragma solidity ^0.8.20;
  * @dev Interface for bulk operations on RMRK NFT collections
  * @custom:katana 0xcd891c3de90dcdF99549E9B6402BFAa695DEc69B
  * @custom:bokuto 0xA681A7BE7A87bDA505c1a947b172b8A1988E329A
+ * @custom:tags nft,erc721,rmrk,bulk,utility
  */
 interface IBulkWriter {
     error RMRKCanOnlyDoBulkOperationsOnOwnedTokens();

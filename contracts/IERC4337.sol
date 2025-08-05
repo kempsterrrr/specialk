@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
  * @title IERC4337 Common Interfaces
  * @notice Shared types and interfaces for ERC-4337 Account Abstraction standard
  * @dev These interfaces are common between v0.6.0 and v0.7.0 versions
+ * @custom:tags account-abstraction,erc4337,standard
  */
 
 /**

@@ -6,6 +6,7 @@ pragma solidity ^0.8.20;
  * @title IBridgeExtension
  * @notice Interface for the Bridge Extension contract
  * @custom:katana 0x64B20Eb25AEd030FD510EF93B9135278B152f6a6
+ * @custom:tags agglayer,bridge,polygon,extension
  */
 interface IBridgeExtension {
     error AddressEmptyCode(address target);

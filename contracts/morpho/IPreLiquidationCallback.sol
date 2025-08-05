@@ -6,6 +6,7 @@ pragma solidity ^0.8.0;
  * @notice Interface that pre-liquidators must implement to receive callbacks during pre-liquidation
  * @author Morpho Labs
  * @custom:contact security@morpho.org
+ * @custom:tags morpho,defi,liquidation,callback,preliquidation
  */
 interface IPreLiquidationCallback {
     /**

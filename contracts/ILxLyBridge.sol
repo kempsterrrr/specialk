@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 pragma solidity 0.8.28;
 
+/**
+ * @title ILxLyBridge
+ * @notice Interface for Polygon LxLy Bridge contract
+ * @dev Provides cross-chain bridging functionality
+ * @custom:tags bridge,polygon,crosschain
+ */
 interface ILxLyBridge {
     function networkID() external view returns (uint32);
     function bridgeAsset(

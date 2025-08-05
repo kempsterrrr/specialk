@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
  * @title IERC4626
  * @notice Minimal interface for ERC4626 tokenized vaults
  * @dev Only includes the functions needed for Morpho Chainlink Oracle integration
+ * @custom:tags erc4626,vault,standard,defi
  */
 interface IERC4626 {
     /**

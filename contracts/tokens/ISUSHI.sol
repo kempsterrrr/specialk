@@ -8,6 +8,7 @@ import "../IERC20.sol";
  * @notice Interface for Bridge-wrapped SUSHI (SUSHI) on Katana
  * @dev SUSHI implements the standard ERC-20 interface
  * @custom:katana 0x17BFF452dae47e07CeA877Ff0E1aba17eB62b0aB
+ * @custom:tags erc20,token,governance,sushi,defi
  */
 interface ISUSHI is IERC20 {
     // SUSHI fully implements the ERC-20 standard

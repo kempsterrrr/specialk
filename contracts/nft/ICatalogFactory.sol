@@ -8,6 +8,7 @@ pragma solidity ^0.8.20;
  * @dev Interface for deploying and managing RMRK catalog contracts
  * @custom:katana 0xC0137140B2D2a146d20dBbb0153e5Ac1048f30E3
  * @custom:bokuto 0xC0137140B2D2a146d20dBbb0153e5Ac1048f30E3
+ * @custom:tags nft,erc721,rmrk,catalog,factory
  */
 interface ICatalogFactory {
     event CatalogDeployed(address indexed deployer, address indexed catalog);

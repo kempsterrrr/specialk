@@ -8,6 +8,7 @@ pragma solidity ^0.8.20;
  * @dev Interface for managing token attributes across NFT collections
  * @custom:katana 0xC3f5961F6Bf6A60A6d2F9f45Ec477E1E46144827
  * @custom:bokuto 0xC3f5961F6Bf6A60A6d2F9f45Ec477E1E46144827
+ * @custom:tags nft,erc721,rmrk,attributes,repository
  */
 interface ITokenAttributesRepository {
     error CollaboratorArraysNotEqualLength();

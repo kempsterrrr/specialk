@@ -8,6 +8,7 @@ import "./IMorphoBlue.sol";
  * @notice Interface for Morpho's Adaptive Curve Interest Rate Model (IRM)
  * @dev This IRM dynamically adjusts interest rates based on market utilization
  * @custom:tatara 0x9eB6d0D85FCc07Bf34D69913031ade9E16BD5dB0
+ * @custom:tags morpho,defi,irm,interest-rate,adaptive
  */
 interface IMorphoAdaptiveIRM {
     /**

@@ -8,6 +8,7 @@ pragma solidity ^0.8.20;
  * @dev Interface for catalog utility operations in RMRK NFT ecosystem
  * @custom:katana 0xB1e10B768E9d56A51f1C80d70414989ECAf87fd0
  * @custom:bokuto 0xB1e10B768E9d56A51f1C80d70414989ECAf87fd0
+ * @custom:tags nft,erc721,rmrk,catalog,utility
  */
 interface ICatalogUtils {
     error RMRKNotComposableAsset();

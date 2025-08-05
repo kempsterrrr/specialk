@@ -9,6 +9,7 @@ import "./IERC20.sol";
  * @dev Provides functions for swapping tokens through SushiSwap's liquidity pools
  * @custom:tatara 0xAC4c6e212A361c968F1725b4d055b47E63F80b75
  * @dev The address 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE is used to represent the native token (ETH)
+ * @custom:tags sushi,defi,amm,router,swap
  */
 interface ISushiRouter {
     /**

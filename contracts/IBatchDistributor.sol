@@ -10,6 +10,7 @@ import "./IERC20.sol";
  * @custom:tatara 0x36C38895A20c835F9A6A294821D669995eB2265E
  * @custom:katana 0x66C0499B1Df146dbaf4B1DEa1df436ba26DAfF21
  * @custom:bokuto 0x2A6fd05d3C6A373FBb073dea12bCee7C174AE606
+ * @custom:tags utility,batch,distribution,erc20
  */
 interface IBatchDistributor {
     /**

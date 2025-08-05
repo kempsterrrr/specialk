@@ -6,6 +6,7 @@ pragma solidity ^0.8.0;
  * @dev Interface for Multicall3 contract on Katana
  * @notice Allows batching multiple read-only calls into a single transaction
  * @custom:tatara 0xcA11bde05977b3631167028862bE2a173976CA11
+ * @custom:tags utility,multicall,batch
  */
 interface IMulticall3 {
     struct Call {

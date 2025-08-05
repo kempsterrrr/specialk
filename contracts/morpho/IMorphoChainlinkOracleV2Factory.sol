@@ -11,6 +11,7 @@ import "./IMorphoChainlinkOracleV2.sol";
  * @author Morpho Labs
  * @custom:contact security@morpho.org
  * @custom:tatara 0xe795DD345aD7E1bC9e8F6B4437a21704d731F9E0
+ * @custom:tags morpho,oracle,chainlink,factory,defi
  */
 interface IMorphoChainlinkOracleV2Factory {
     /**

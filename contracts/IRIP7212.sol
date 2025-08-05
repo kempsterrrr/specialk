@@ -6,6 +6,7 @@ pragma solidity ^0.8.0;
  * @notice Interface for the RIP-7212 precompile that enables efficient verification of P-256 signatures
  * @dev Located at address 0x0000000000000000000000000000000000000100 on chains that support RIP-7212
  * @custom:tatara 0x0000000000000000000000000000000000000100
+ * @custom:tags utility,cryptography,precompile,signature-verification
  */
 interface IRIP7212 {
     /**
