@@ -1,0 +1,49 @@
+{
+  "version": "2.0",
+  "description": "Katana Contract Directory Schema",
+  "generatedAt": "2025-08-05T22:26:31.998Z",
+  "networks": [
+    "tatara",
+    "katana",
+    "bokuto"
+  ],
+  "contexts": [
+    "morpho",
+    "yearn",
+    "vaultbridge",
+    "oracle",
+    "chainlink",
+    "redstone",
+    "opensea",
+    "account-abstraction",
+    "agglayer",
+    "nft",
+    "erc20",
+    "defi",
+    "utility",
+    "bridge",
+    "general"
+  ],
+  "contractStructure": {
+    "name": "string - Contract or interface name",
+    "path": "string - Relative path from contracts/ directory",
+    "relativePath": "string - Parent directory path",
+    "description": "string|null - Combined title, notice, and dev comments",
+    "metadata": {
+      "title": "string|null - @title doccomment",
+      "notice": "string|null - @notice doccomment",
+      "dev": "string|null - @dev doccomment",
+      "tags": "string[] - @custom:tags doccomment"
+    },
+    "context": "string - Primary context/category based on tags",
+    "theme": "string - Hex color for UI theming",
+    "addresses": "object - Network addresses {tatara?, katana?, bokuto?}",
+    "originAddresses": "object - Origin chain addresses for cross-chain operations",
+    "abi": "array|null - Contract ABI if available",
+    "functionSignatures": "array - Parsed function signatures from ABI",
+    "hasAddresses": "boolean - Whether contract has any network addresses",
+    "hasOriginAddresses": "boolean - Whether contract has origin addresses",
+    "hasAbi": "boolean - Whether ABI is available",
+    "functionCount": "number - Number of functions in ABI"
+  }
+}
