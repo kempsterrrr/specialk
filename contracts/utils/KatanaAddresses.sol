@@ -21,6 +21,14 @@ library KatanaAddresses {
     }
 
     /**
+     * @notice Returns the address of IAUSD
+     * @return The IAUSD contract address
+     */
+    function getAUSDAddress() internal pure returns (address) {
+        return 0x00000000eFE302BEAA2b3e6e1b18d08D69a9012a;
+    }
+
+    /**
      * @notice Returns the address of IAUSDUSDOracle
      * @return The IAUSDUSDOracle contract address
      */
