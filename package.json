@@ -4,6 +4,7 @@
   "description": "Development starter kit for Katana and Tatara",
   "scripts": {
     "build": "bun build.js",
+    "dev": "cd dist && npx http-server",
     "start:anvil": "chmod +x scripts/start_anvil.sh && scripts/start_anvil.sh",
     "verify:anvil": "bun scripts/verify_anvil.js",
     "build:abi": "bun scripts/build_abi.js",
