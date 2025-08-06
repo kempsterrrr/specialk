@@ -131,7 +131,7 @@ function loadAddresses() {
     const mappingContent = readFileSync(addressMappingFile, 'utf8');
     
     // Extract the CONTRACT_ADDRESSES object
-    const contractAddressMatch = mappingContent.match(/export const CONTRACT_ADDRESSES = ({[\s\S]*?});/);
+    const contractAddressMatch = mappingContent.match(/export const CONTRACT_ADDRESSES = ({[\s\S]*?}) as const;/);
     if (!contractAddressMatch) {
       console.warn('Warning: Could not parse CONTRACT_ADDRESSES from mapping.ts');
       return {};
@@ -171,7 +171,7 @@ function loadOriginAddresses() {
     const mappingContent = readFileSync(addressMappingFile, 'utf8');
     
     // Extract the ORIGIN_CONTRACT_ADDRESSES object
-    const originAddressMatch = mappingContent.match(/export const ORIGIN_CONTRACT_ADDRESSES = ({[\s\S]*?});/);
+    const originAddressMatch = mappingContent.match(/export const ORIGIN_CONTRACT_ADDRESSES = ({[\s\S]*?}) as const;/);
     if (!originAddressMatch) {
       return {};
     }
@@ -314,9 +314,9 @@ function extractContractMetadata(content) {
   }
   
   // Extract tags
-  const tagsMatches = commentBlock.match(/@custom:tags\s+(.*?)(?=\s*\*\s*@|\s*\*\/)/gs) || [];
+  const tagsMatches = commentBlock.match(/@custom:tags\s+([^\n\r]*)/g) || [];
   const tags = tagsMatches.length > 0 
-    ? tagsMatches[0].replace(/@custom:tags\s+/g, '').replace(/\s*\*\s*/g, ' ').trim().split(',').map(tag => tag.trim())
+    ? tagsMatches[0].replace(/@custom:tags\s+/g, '').trim().split(',').map(tag => tag.trim())
     : [];
   
   // Clean up the extracted comments
