@@ -1,498 +1,571 @@
 # Katana Contract Interfaces
 
-This repository contains Solidity interfaces for all core contracts deployed on
-Katana.
+This folder contains Solidity interfaces for all core contracts deployed on
+**Katana**, **Tatara** (testnet), and **Bokuto** (testnet). These interfaces
+provide a unified way to interact with the diverse ecosystem of DeFi protocols,
+bridges, oracles, and utilities available across the Katana network.
 
-## Network-aware Contract Addresses
+## 📋 Address Management System
 
-All interfaces in this repository include the deployed contract addresses for
-the Tatara testnet. For code that needs to work across both testnet and mainnet
-environments, we provide the `KatanaAddresses` library (and the matching
-`TataraAddresses` lib):
+The starter kit provides both **Solidity** and **JavaScript/TypeScript**
+utilities for managing contract addresses across networks.
 
-- **[KatanaAddresses](./utils/KatanaAddresses.sol)** - Utility library that
-  dynamically resolves contract addresses based on the current network
-  (`block.chainid`). This allows your code to work seamlessly on both Tatara
-  testnet and Katana mainnet without hard-coding network-specific addresses.
+### Solidity Address Libraries
 
-Example usage:
+Network-specific address libraries are auto-generated and provide type-safe
+access to contract addresses:
 
 ```solidity
-// Import both the interface and the address resolver
-import "@katana/interfaces/ISeaport.sol";
-import "@katana/interfaces/utils/KatanaAddresses.sol";
+import "./utils/KatanaAddresses.sol";
+import "./utils/TataraAddresses.sol";
+import "./utils/BokutoAddresses.sol";
 
 contract MyDapp {
-    function executeSeaportFunction() external {
-        // Get the correct Seaport address for the current network
-        address seaportAddress = KatanaAddresses.getSeaportAddress();
-        
-        // Instantiate the interface with the network-appropriate address
-        ISeaport seaport = ISeaport(seaportAddress);
-        
-        // Use the interface normally...
-        // seaport.fulfillOrder(...);
+    function usebvbEth() external {
+        // Automatically gets the correct address for the current network
+        address wethAddress = KatanaAddresses.getbvbEthAddress();
+        IbvbEth weth = IbvbEth(wethAddress);
+        weth.deposit{value: 1 ether}();
     }
 }
 ```
 
-As Katana mainnet launches, the `KatanaAddresses` library will be updated with
-mainnet addresses, allowing your code to work across environments without
-changes.
+### JavaScript/TypeScript Address API
 
-## JavaScript Address Mapping
-
-For frontend and JavaScript applications, we provide a utility to generate a
-JavaScript mapping of all contract addresses. This is particularly useful for
-web applications that need to connect to contracts without hardcoding addresses.
-
-### Generating the Address Mapping
-
-Run the following command to generate the JavaScript address mapping:
-
-```sh
-bun run build:addresses
-```
-
-This will create a file at `utils/addresses.ts` that exports:
-
-- `CHAIN_IDS` - Constants for Tatara and Katana chain IDs
-- `CONTRACT_ADDRESSES` - A mapping of contract names to their addresses on each network
-- `getContractAddress(contractName, chainId)` - A helper function to get the
-  right address
-
-### Using the Address Mapping
-
-In your JavaScript/TypeScript code:
+For frontend applications, use the comprehensive address management system:
 
 ```javascript
-import getContractAddress, { CHAIN_IDS, CONTRACT_ADDRESSES } from '../utils/addresses';
+import { addresses, CHAINS } from '../utils/addresses';
 
-// Example 1: Get a specific contract address for a specific chain
-const wethAddress = getContractAddress('WETH', CHAIN_IDS.TATARA);
+// Set the chain context (by name or ID)
+addresses.setChain('katana');
+// or addresses.setChain(CHAINS.katana);
 
-// Example 2: Access all contract addresses
-console.log(CONTRACT_ADDRESSES.Seaport.tatara);
+// Get contract addresses with automatic "I" prefix handling
+const wethAddress = addresses.getAddress('bvbEth');      // Finds IbvbEth automatically
+const morphoAddress = addresses.getAddress('MorphoBlue'); // Direct match
+const ausdAddress = addresses.getAddress('AUSD');      // Finds IAUSD
 
-// Example 3: Dynamic chain ID (e.g., from wallet connection)
-const chainId = await ethereum.request({ method: 'eth_chainId' });
-const morphoAddress = getContractAddress('MorphoBlue', parseInt(chainId, 16));
+// Check contract availability
+if (addresses.hasContract('Permit2')) {
+  const permit2 = addresses.getAddress('Permit2');
+}
+
+// Get all available contracts on current chain
+const allContracts = addresses.getAllContracts();
+
+// Cross-chain origin addresses (for Vault Bridge)
+addresses.setChain('katana');
+const bridgedUSDC = addresses.getAddress('bvbUSDC');      // Katana address
+const originUSDC = addresses.getOriginAddress('vbUSDC');  // Ethereum address
 ```
 
-The address mapping is automatically generated from the Solidity address
-libraries (`TataraAddresses.sol` and `KatanaAddresses.sol`), ensuring
-consistency between your Solidity and JavaScript code.
+### Generating Address Utilities
 
-## Interface Categories
+To update the address utilities after adding new contracts:
 
-The interfaces in this folder are designed to make it easy to connect different
-"money legos" on Katana.
+```bash
+bun run build:addressutils
+```
 
-## Core Interfaces
+This generates:
 
-Below are the key interfaces available for interacting with Katana's core infrastructure:
+- **Solidity libraries**: `contracts/utils/[Network]Addresses.sol`
+- **Origin chain libraries**: `contracts/utils/[Network]OriginAddresses.sol`
+- **TypeScript mapping**: `utils/addresses/mapping.ts` (data only)
+- **TypeScript API**: `utils/addresses/index.ts` (user-friendly wrapper)
 
-### Bridge and Cross-chain Communication
+## 🏗️ Contract Categories
 
-- TODO - lxly etc
+### 🪙 **Core Tokens**
 
-### AggChain Core Contracts
+**Use these when:** You need to interact with primary tokens in the Katana ecosystem
 
-- **[IPolygonZkEVMDeployer](./agglayer/IPolygonZkEVMDeployer.sol)** - Main
-  deployer contract for AggChain (Polygon's ZkEVM) components. Manages the
-  deployment and initialization of rollup infrastructure with configurable
-  parameters including chain ID, gas token settings, and verifier addresses.
-  Address: `0x36810012486fc134D0679c07f85fe5ba5A087D8C`
+- **[IAUSD](./tokens/IAUSD.sol)** - Agora USD stablecoin, the primary stable
+  asset on Katana. Use for stable value transfers, yield farming base asset, and
+  as loan/collateral in DeFi protocols.
 
-- **[IProxyAdmin](./agglayer/IProxyAdmin.sol)** - Admin contract for managing
-  transparent proxies in the AggChain architecture. Provides functions to
-  upgrade proxy implementations, change proxy admins, and manage ownership.
-  Essential for controlled upgrades of core infrastructure contracts. Address:
-  `0x85cEB41028B1a5ED2b88E395145344837308b251`
+- **[IbvUSD](./tokens/IbvUSD.sol)** - Bitvault USD - BTC collateralized stablecoin.
 
-- **[IBridgeL2SovereignChain](./agglayer/IBridgeL2SovereignChain.sol)** - Bridge
-  contract for cross-chain communication between Layer 1 and Layer 2. Enables
-  bridging of assets and arbitrary messages across chains with comprehensive
-  verification mechanisms. Implementation:
-  `0x8BD36ca1A55e389335004872aA3C3Be0969D3aA7`, Proxy:
-  `0x528e26b25a34a4A5d0dbDa1d57D318153d2ED582`
+- **[IBTCK](./tokens/IBTCK.sol)** - Bitcoin Katana, wrapped Bitcoin on Katana.
+  Use for Bitcoin exposure in DeFi applications.
 
--
-  **[IGlobalExitRootManagerL2SovereignChain](./agglayer/IGlobalExitRootManagerL2SovereignChain.sol)**
-  - Manages exit roots across chains, essential for secure cross-chain
-  withdrawals. Maintains a history of global exit roots and their timestamps for
-  verification purposes. Implementation:
-  `0x282a631D9F3Ef04Bf1A44B4C9e8bDC8EB278917f`, Proxy:
-  `0xa40d5f56745a118d0906a34e69aec8c0db1cb8fa`
+- **[ILBTC](./tokens/ILBTC.sol)** - Lombard Bitcoin, liquid Bitcoin staking
+  token. Use when you want Bitcoin exposure with staking rewards.
 
-- **[IPolygonZkEVMTimelock](./agglayer/IPolygonZkEVMTimelock.sol)** - Governance
-  timelock contract that enforces delays for administrative actions. Provides
-  scheduling, execution, and cancellation of governance operations with granular
-  permission controls for proposers and executors. Address:
-  `0xdbC6981a11fc2B000c635bFA7C47676b25C87D39`
+- **[IKAT](./tokens/IKAT.sol)** - Katana network token. Use for governance,
+  staking, and protocol incentives. Currently non-transferable until ~EOY.
+  [More info](https://katana.network/blog/the-network-is-katana-the-token-is-kat).
 
-### Multisig and Security
+- **[IPOL](./tokens/IPOL.sol)** - Polygon token on Katana. Use for cross-chain
+  Polygon ecosystem interactions.
 
-- **[IGnosisSafe](./IGnosisSafe.sol)** - Gnosis Safe multisignature wallet for
-  secure asset management and transaction execution requiring multiple
-  signatures. Address: `0x69f4D1788e39c87893C980c06EdF4b7f686e2938`
+- **[ISUSHI](./tokens/ISUSHI.sol)** - SushiSwap token on Katana. Use for DEX
+  interactions and SushiSwap protocol participation.
 
-- **[IGnosisSafeL2](./IGnosisSafeL2.sol)** - Layer 2 optimized version of Gnosis
-  Safe with additional events for better indexing and gas optimizations.
-  Address: `0xfb1bffC9d739B8D520DaF37dF666da4C687191EA`
+- **[IMORPHO](./tokens/IMORPHO.sol)** - Morpho protocol token. Use for Morpho
+  governance and protocol incentives.
 
-- **[IMultiSend](./IMultiSend.sol)** - Utility that batches multiple
-  transactions into a single transaction. Supports both call and delegatecall
-  operations. Address: `0x998739BFdAAdde7C933B942a68053933098f9EDa`
+- **[IYFI](./tokens/IYFI.sol)** - Yearn Finance token. Use for Yearn protocol
+  interactions and governance.
 
-- **[IMultiSendCallOnly](./IMultiSendCallOnly.sol)** - Safer version of
-  MultiSend that only allows regular call operations (no delegatecall). Address:
-  `0xA1dabEF33b3B82c7814B6D82A79e50F4AC44102B`
+- **[IweETH](./tokens/IweETH.sol)** - Wrapped liquid staked Ethereum. Use for
+  ETH staking exposure with DeFi composability.
 
-### Deployment Utilities
+- **[IwstETH](./tokens/IwstETH.sol)** - Wrapped staked ETH from Lido. Use for
+  ETH staking rewards while maintaining liquidity.
 
-- **[IDeterministicDeploymentProxy](./IDeterministicDeploymentProxy.sol)** -
-  Arachnid's proxy for deploying contracts at the same address across different
-  EVM chains. Address: `0x4e59b44847b379578588920cA78FbF26c0B4956C` or `0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7`
+- **[IJitoSOL](./tokens/IJitoSOL.sol)** - Jito liquid staked Solana. Use for
+  Solana staking exposure on Katana.
 
-- **[ICreate2Deployer](./ICreate2Deployer.sol)** - Advanced CREATE2 deployment
-  tool with additional safety features, address computation utilities, and
-  pausability. Complementary to the Deterministic Deployment Proxy.
-  Address: `0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2`
+- **[IuBTC](./tokens/IuBTC.sol)** - Universal Bitcoin token. Use for Bitcoin
+  yield strategies.
 
-- **[ICreateX](./ICreateX.sol)** - The most comprehensive contract deployment
-  factory, supporting CREATE, CREATE2, and CREATE3 patterns with advanced features
-  like initialization calls, proxying, and address computation. Ideal for complex
-  deployment workflows and cross-chain applications.
-  Address: `0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed`
+- **[IuSOL](./tokens/IuSOL.sol)** - Universal Solana token. Use for Solana
+  yield strategies.
 
-### Tokens and Assets
+- **[IuSUI](./tokens/IuSUI.sol)** - Universal Sui token. Use for Sui ecosystem
+  exposure.
 
-- **[IAUSD](./tokens/IAUSD.sol)** - Agora USD (AUSD), the native stablecoin on
-  Katana. Implements the standard ERC-20 interface for seamless integration with
-  DeFi protocols and applications. AUSD is designed to maintain a stable value
-  and serve as a medium of exchange within the Katana ecosystem. Address:
-  `0xa9012a055bd4e0eDfF8Ce09f960291C09D5322dC`
+- **[IuXRP](./tokens/IuXRP.sol)** - Universal XRP token. Use for XRP ecosystem
+  interactions.
 
-### Vault Bridge Contracts
+### 🌉 **Vault Bridge Ecosystem**
 
-- **[IWETH](./vb/IWETH.sol)** - Wrapped Ether (WETH) token on Katana, which
-  wraps native ETH into an ERC-20 compatible token. Provides standard methods
-  for depositing ETH to mint WETH and withdrawing ETH by burning WETH, enabling
-  ETH to be used in applications requiring ERC-20 token interfaces.
-  Address: `0x17B8Ee96E3bcB3b04b3e8334de4524520C51caB4`
+**Use these when:** You're building cross-chain applications or working with
+bridged assets
 
-- **[IWETHNativeConverter](./vb/IWETHNativeConverter.sol)** - Utility contract
-  for seamless conversion between WETH and native ETH. Simplifies integration
-  with applications that need to handle both token formats by providing helper
-  functions for wrapping, unwrapping, and estimating conversion amounts.
-  Address: `0x3aFbD158CF7B1E6BE4dAC88bC173FA65EBDf2EcD`
+#### Bridged Vault Tokens (Destination Chain)
 
-- **[IYieldExposedToken](./vb/IYieldExposedToken.sol)** - Base interface for
-  yield-bearing tokens that combine ERC20 functionality with yield-generation
-  mechanisms like ERC4626. These tokens use yield vaults to generate returns on
-  their underlying assets while maintaining standard token interfaces.
+- **[IbvbEth](./vb/tokens/IbvbEth.sol)** - Bridged vault-bridge ETH on
+  destination chains. Use when receiving ETH from Ethereum/Sepolia. Also known
+  as WETH (same interface).
+
+- **[IbvbUSDC](./vb/tokens/IbvbUSDC.sol)** - Bridged vault-bridge USDC. Use for
+  USDC bridged from origin chains to Katana/testnets.
+
+- **[IbvbUSDS](./vb/tokens/IbvbUSDS.sol)** - Bridged vault-bridge USDS. Use for
+  USDS cross-chain transfers.
+
+- **[IbvbUSDT](./vb/tokens/IbvbUSDT.sol)** - Bridged vault-bridge USDT. Use for
+  Tether transfers between chains.
+
+- **[IbvbWBTC](./vb/tokens/IbvbWBTC.sol)** - Bridged vault-bridge wrapped
+  Bitcoin. Use for Bitcoin cross-chain transfers.
+
+#### Base Interfaces
+
+- **[IVaultBridgeToken](./vb/IVaultBridgeToken.sol)** - Base interface for Vault
+  Bridge Token contracts. Use as the foundation for all vault bridge token
+  implementations.
+
+- **[IBridgedVaultBridgeEth](./vb/IBridgedVaultBridgeEth.sol)** - Interface for
+  Bridged Vault Bridge ETH token. Use for bridged ETH functionality on
+  destination chains.
+
+- **[IGenericCustomToken](./vb/IGenericCustomToken.sol)** - Base interface for
+  generic custom tokens in the vault bridge ecosystem. Use for custom token
+  implementations.
 
 - **[INativeConverter](./vb/INativeConverter.sol)** - Base interface for native
-  converter contracts that handle conversion between native tokens and their
-  yield-exposed versions, with cross-chain migration capabilities between Layer
-  X and Layer Y.
+  converter contracts. Use as foundation for all converter implementations.
 
-#### Yield-Bearing Tokens
-
-- **[IybUSDC](./vb/tokens/IybUSDC.sol)** - Yield-bearing USDC token on Sepolia
-  that generates yield from USDC deposits while maintaining the ERC20 interface.
-  Includes yield management functions and configurable reserve requirements.
-  Address: `0xd8A986AFbB7e44e9F7D71cc529d7b28F7084028c`
-
-- **[IybUSDT](./vb/tokens/IybUSDT.sol)** - Yield-bearing USDT token on Sepolia
-  that generates yield from USDT deposits while maintaining the ERC20 interface.
-  Features balanced reserve management and yield distribution mechanisms.
-  Address: `0xf5a675058bbd344a9f1Ab1AF00576Dfb404D57b2`
-
-- **[IybWBTC](./vb/tokens/IybWBTC.sol)** - Yield-bearing WBTC token on Sepolia
-  that generates yield from WBTC deposits while maintaining the ERC20 interface.
-  Provides Bitcoin exposure with yield generation capabilities. Address:
-  `0x9954f137ce70db2afEA291dfcE742b14d1535110`
-
-- **[IybDAI](./vb/tokens/IybDAI.sol)** - Yield-bearing DAI token on Sepolia that
-  generates yield from DAI deposits while maintaining the ERC20 interface.
-  Features automated yield harvesting and reserve management. Address:
-  `0x106cbB7361c3D3D0a12A8160a714879CC13C5a29`
+- **[IMigrationManager](./vb/IMigrationManager.sol)** - Migration manager
+  interface for handling cross-chain asset migrations. Use for complex migration
+  operations.
 
 #### Native Converters
 
 - **[IUSDCNativeConverter](./vb/converters/IUSDCNativeConverter.sol)** -
-  Converter for USDC on Tatara that handles conversion between USDC and its
-  yield-exposed version. Provides migration capabilities between Layer X and
-  Layer Y with configurable parameters for backing reserves. Address:
-  `0xC4BaBEE541c2FA1EA55ce9aF9EB3B5C76B0CE5c7`
+  Converts between USDC and yield-bearing versions. Use for USDC yield
+  optimization strategies.
+
+- **[IUSDSNativeConverter](./vb/converters/IUSDSNativeConverter.sol)** -
+  Converts USDS to yield-bearing format. Use for USDS yield generation.
 
 - **[IUSDTNativeConverter](./vb/converters/IUSDTNativeConverter.sol)** -
-  Converter for USDT on Tatara that handles conversion between USDT and its
-  yield-exposed version. Features cross-chain migration capabilities with safety
-  mechanisms for reserve management. Address:
-  `0xB69b7196F8fa4d531452d31B82e8068110cB82d4`
+  Converts USDT for yield strategies. Use for Tether yield optimization.
 
 - **[IWBTCNativeConverter](./vb/converters/IWBTCNativeConverter.sol)** -
-  Converter for WBTC on Tatara that handles conversion between WBTC and its
-  yield-exposed version. Provides secure migration of backing reserves between
-  chains. Address: `0xB567390378c304E65139a60D44886F7B0150bBC0`
+  Converts WBTC for yield strategies. Use for Bitcoin yield generation.
 
-- **[IDAINativeConverter](./vb/converters/IDAINativeConverter.sol)** - Converter
-  for DAI on Tatara that handles conversion between DAI and its yield-exposed
-  version. Includes efficient conversion methods and migration capabilities.
-  Address: `0x6a99f2004044357A80E5D43345229179adc871D4`
+- **[IWETHNativeConverter](./vb/converters/IWETHNativeConverter.sol)** -
+  Seamless ETH/WETH(bvbEth) conversion. Use for ETH wrapping/unwrapping in
+  applications.
 
-### NFT and Marketplaces
+### 🏦 **DeFi Lending & Borrowing**
 
-- **[ISeaport](./ISeaport.sol)** - OpenSea's marketplace protocol for safely and
-  efficiently trading NFTs. Supports diverse order types, collection offers,
-  efficient fulfillments, and advanced features like hooks and criteria-based
-  orders. The definitive NFT marketplace protocol for Katana. Address:
-  `0x0000000000FFe8B47B3e2130213B802212439497`
+**Use these when:** Building lending protocols, yield strategies, or leveraged positions
 
-- **[IConduitController](./IConduitController.sol)** - OpenSea's Conduit
-  Controller that manages the deployment and configuration of Conduits. Allows
-  token owners to create secure transfer pathways for approved applications
-  without needing to approve individual marketplaces. Critical infrastructure
-  for secure token transfers in Seaport-based marketplaces. Address:
-  `0x00000000F9490004C11Cef243f5400493c00Ad63`
+#### Morpho Protocol
 
-- **[IConduit](./IConduit.sol)** - Interfaces for OpenSea's Conduit contracts,
-  which enable the efficient transfer of approved ERC20/721/1155 tokens.
-  Conduits act as transfer agents that can only be used by authorized channels,
-  providing a safer way to manage token approvals across multiple applications.
+- **[IMorphoBlue](./morpho/IMorphoBlue.sol)** - Core Morpho lending protocol.
+  Use for creating isolated lending markets, supplying assets, borrowing against
+  collateral, and liquidations.
 
-### DeFi Protocols
+- **[IMorphoAdaptiveIRM](./morpho/IMorphoAdaptiveIRM.sol)** - Adaptive interest
+  rate model. Use when creating markets that need dynamic rate optimization.
 
-- **[ISushiRouter](./ISushiRouter.sol)** - SushiSwap's specialized router for
-  efficient token swaps. Features direct and batch swapping capabilities with
-  flexible execution options, optimized for gas efficiency and minimal slippage.
-  Suitable for both simple token exchanges and complex multi-token or multi-path
-  trading strategies. Address: `0xAC4c6e212A361c968F1725b4d055b47E63F80b75`
+- **[IMetaMorphoFactory](./morpho/IMetaMorphoFactory.sol)** - Factory for
+  MetaMorpho vaults. Use to deploy new yield aggregation vaults.
 
-- **[IMorphoBlue](./IMorphoBlue.sol)** - Morpho Labs' lending protocol that
-  offers efficient and flexible isolated lending markets. Supports creating
-  customizable markets with configurable parameters like collateral types,
-  interest rate models, and oracles. Features include supplying/borrowing
-  assets, using collateral, liquidations, flash loans, and delegated operations
-  via signatures. Address: `0xC263190b99ceb7e2b7409059D24CB573e3bB9021`
+- **[IMetaMorpho](./morpho/IMetaMorpho.sol)** - ERC-4626 yield aggregator
+  vaults. Use for automated yield optimization across multiple Morpho markets.
 
-- **[IMorphoIRM](./IMorphoIRM.sol)** - Morpho's interest rate model interface
-  that calculates dynamic borrow rates based on market conditions. The adaptive
-  IRM implementation adjusts rates based on supply and demand, optimizing
-  capital efficiency. Address: `0x9eB6d0D85FCc07Bf34D69913031ade9E16BD5dB0`
+- **[IPublicAllocator](./morpho/IPublicAllocator.sol)** - Permissionless vault
+  rebalancing. Use to optimize MetaMorpho vault allocations for fees.
 
-- **[IMorphoAdaptiveIRM](./IMorphoAdaptiveIRM.sol)** - Morpho's advanced
-  interest rate model that uses an adaptive curve algorithm to optimize rates
-  based on market utilization. The model dynamically adjusts the interest rate
-  curve to balance supply and demand, promoting market equilibrium. This
-  sophisticated IRM is designed to enhance capital efficiency in Morpho Blue
-  markets. Address: `0x9eB6d0D85FCc07Bf34D69913031ade9E16BD5dB0`
-
-- **[IMetaMorphoFactory](./IMetaMorphoFactory.sol)** - Factory contract for
-  creating MetaMorpho vaults, which are ERC-4626 compliant yield aggregators
-  that allocate funds across multiple Morpho Blue markets. The factory
-  simplifies deployment of new vaults with customizable parameters including
-  owner, timelock periods, and underlying assets. Address:
-  `0x505619071bdCDeA154f164b323B6C42Fc14257f7`
-
-- **[IMetaMorpho](./IMetaMorpho.sol)** - Interface for MetaMorpho vaults, which
-  are ERC-4626 tokenized vaults that strategically allocate funds across
-  multiple Morpho Blue lending markets. These vaults feature dynamic
-  reallocation capabilities, market-specific caps, and customizable
-  deposit/withdraw strategies managed by curators. MetaMorpho vaults
-  automatically optimize for yield while maintaining a configurable risk profile
-  managed through governance.
-
-- **[IBundler3](./IBundler3.sol)** - Advanced multicall utility that enables
-  batching multiple contract calls into a single transaction. Unlike standard
-  multicall contracts, Bundler3 supports complex interaction patterns including
-  reentrant callbacks, ETH value transfers, and selective error handling. The
-  contract stores the transaction initiator, making it useful for protocols that
-  need to identify the original caller across multiple contract interactions.
-  Address: `0xD0bDf3E62F6750Bd83A50b4001743898Af287009`
-
-- **[IPublicAllocator](./IPublicAllocator.sol)** - Enables permissionless
-  reallocation of MetaMorpho vaults through a bounded, fee-paying interface.
-  This contract allows anyone to rebalance funds between markets within
-  administrator-defined flow caps, optimizing capital utilization without
-  requiring governance actions. The Public Allocator creates a market-driven
-  approach to capital allocation while maintaining security through configurable
-  constraints and fee incentives. Address:
-  `0x8FfD3815919081bDb60CD8079C68444331B65042`
-
-- **[IPreLiquidationFactory](./IPreLiquidationFactory.sol)** - Factory contract
-  for creating pre-liquidation contracts tailored to specific Morpho Blue
-  markets. These pre-liquidation contracts enable safety-focused early
-  liquidations for positions that are approaching unhealthy LTV ratios but
-  haven't yet reached the liquidation threshold.
-
-- **[IPreLiquidation](./IPreLiquidation.sol)** - Implements an
-  early-intervention liquidation mechanism that allows positions to be partially
-  liquidated before they reach Morpho's liquidation threshold but after crossing
-  a configurable pre-liquidation threshold. Features linear scaling of both
-  incentives and maximum liquidatable amounts based on position health,
-  providing a more capital-efficient approach to managing risk in lending
+-
+  **[IMorphoChainlinkOracleV2Factory](./morpho/IMorphoChainlinkOracleV2Factory.sol)**
+  - Oracle factory for Morpho markets. Use to create price oracles for new
   markets.
 
-- **[IPreLiquidationCallback](./IPreLiquidationCallback.sol)** - Callback
-  interface for pre-liquidation integrators that enables complex liquidation
-  strategies by providing notification when pre-liquidations are executed.
+- **[IMorphoChainlinkOracleV2](./morpho/IMorphoChainlinkOracleV2.sol)** -
+  Chainlink-based price oracles. Use for accurate price feeds in lending
+  markets.
 
-- **[IMorphoOracle](./IMorphoOracle.sol)** - Oracle interface used by Morpho
-  Blue to price collateral assets against loan assets. Essential component for
-  calculating health factors and liquidation thresholds in lending markets.
+- **[IPreLiquidationFactory](./morpho/IPreLiquidationFactory.sol)** - Factory
+  for pre-liquidation contracts. Use to create early intervention liquidation
+  mechanisms.
 
-- **[IMorphoChainlinkOracleV2Factory](./IMorphoChainlinkOracleV2Factory.sol)** -
-  Factory contract for creating Chainlink-based price oracles for Morpho Blue
-  markets. Supports complex oracle configurations that can combine multiple
-  Chainlink price feeds and ERC4626 vault token conversions to calculate
-  accurate collateral-to-loan asset price ratios. Essential for creating markets
-  with wrapped or yield-bearing tokens as collateral or loan assets. Address:
-  `0xe795DD345aD7E1bC9e8F6B4437a21704d731F9E0`
+- **[IPreLiquidation](./morpho/IPreLiquidation.sol)** - Early liquidation
+  system. Use to prevent bad debt by liquidating risky positions before they
+  become underwater.
 
-- **[IMorphoChainlinkOracleV2](./IMorphoChainlinkOracleV2.sol)** -
-  Implementation of Morpho's oracle interface that uses Chainlink price feeds.
-  Can handle direct token prices or compositions of multiple price feeds and
-  ERC4626 vault conversions to determine accurate price ratios between
-  collateral and loan assets.
+#### Yearn Protocol
 
-- **[IMorphoCallbacks](./IMorphoCallbacks.sol)** - Collection of callback
-  interfaces that integrators can implement to interact with Morpho Blue's key
-  operations including supply, borrow, repay, liquidation, and flash loan
-  functions.
+- **[IYvAUSD](./yearn/IYvAUSD.sol)** - Yearn AUSD vault for automated yield
+  generation. Use to earn yield on AUSD deposits.
 
-### Utility Contracts
+- **[IYvWETH](./yearn/IYvWETH.sol)** - Yearn WETH vault for ETH yield
+  strategies. Use to earn yield on ETH holdings.
 
-- **[IMulticall3](./IMulticall3.sol)** - Contract that allows batching multiple
-  read-only calls into a single transaction. Improves dapp performance and UX by
-  reducing RPC requests. Includes functions from Multicall1, Multicall2, and
-  adds new features like per-call failure flags and value transfer. Address:
-  `0xcA11bde05977b3631167028862bE2a173976CA11`
+### 🔄 **DEX & Trading**
 
-- **[IBatchDistributor](./IBatchDistributor.sol)** - Utility for batch distributing
-  ETH and ERC-20 tokens to multiple addresses in a gas-efficient manner.
-  Perfect for airdrops, reward distributions, payroll, and other bulk transfer scenarios.
-  Address: `0x36C38895A20c835F9A6A294821D669995eB2265E`
+**Use these when:** Building trading interfaces, implementing swaps, or managing
+liquidity
 
-- **[IPermit2](./IPermit2.sol)** - Uniswap's next-generation token
-  approval/transfer system that enhances safety and UX by allowing
-  signature-based token transfers and approvals. Features include approval
-  expiration, batch operations, and gas optimizations. Used by many DeFi
-  protocols to improve token authorization workflows. Address:
-  `0x000000000022D473030F116dDEE9F6B43aC78BA3`
+- **[ISushiRouter](./ISushiRouter.sol)** - SushiSwap router for token swaps. Use
+  for efficient token exchanges with minimal slippage.
 
-- **[IRIP7212](./IRIP7212.sol)** - Precompile for efficient verification of
-  secp256r1 (P-256) curve signatures, commonly used in secure enclaves (Apple
-  Secure Enclave, Android TEE). Enables native biometric authentication support
-  for smart accounts with dramatic gas savings. Address:
-  `0x0000000000000000000000000000000000000100`
+- **[ISushiV3Factory](./ISushiV3Factory.sol)** - SushiSwap V3 factory contract.
+  Use to create new trading pairs and manage pool deployments.
 
-## ERC-4337 Account Abstraction Interfaces
+- **[ISushiV3PositionManager](./ISushiV3PositionManager.sol)** - Manages
+  SushiSwap V3 liquidity positions. Use for sophisticated liquidity provision
+  strategies.
 
-These interfaces provide support for the ERC-4337 Account Abstraction standard.
+### 🖼️ **NFTs & Marketplaces**
 
-### Common Components
+**Use these when:** Building NFT applications, marketplaces, or trading platforms
 
-**[IERC4337.sol](./IERC4337.sol)**  
-Common interfaces and structures used across both v0.6.0 and v0.7.0 of the
-ERC-4337 standard, including `IStakeManager` and `INonceManager`.
+- **[ISeaport](./opensea/ISeaport.sol)** - OpenSea's advanced marketplace
+  protocol. Use for comprehensive NFT trading with complex order types, bulk
+  operations, and criteria-based orders.
 
-### v0.6.0 Implementation
+- **[IConduitController](./opensea/IConduitController.sol)** - Manages Seaport
+  conduits for secure transfers. Use to create secure transfer pathways for
+  marketplaces.
 
-**[v0.6.0/IEntryPoint.sol](./v0.6.0/IEntryPoint.sol)**  
-Interface for the EntryPoint v0.6.0, which is the primary contract responsible
-for handling user operations.
+- **[IConduit](./opensea/IConduit.sol)** - Efficient token transfer system. Use
+  for gas-optimized batch transfers in NFT marketplaces.
 
-- **Address**: `0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789`
-- Contains interfaces for IAggregator and IPaymaster
+- **[ICatalogFactory](./nft/ICatalogFactory.sol)** - Factory for NFT catalog
+  contracts. Use to deploy new ERC6220 NFT collections with standardized
+  features.
 
-**[v0.6.0/IERC4337Account.sol](./v0.6.0/IERC4337Account.sol)**  
-Interface for ERC-4337 compatible accounts for v0.6.0, including the
-UserOperation struct.
+- **[ICatalogUtils](./nft/ICatalogUtils.sol)** - Utilities for NFT ERC6220
+  catalog management. Use for metadata and collection management tools.
 
-**[v0.6.0/ISenderCreator.sol](./v0.6.0/ISenderCreator.sol)**  
-Interface for the SenderCreator helper contract used in v0.6.0 to create new
-account contracts.
+- **[IRenderUtils](./nft/IRenderUtils.sol)** - NFT rendering utilities. Use for
+  dynamic NFT metadata and image generation.
 
-- **Address**: `0x7fc98430eaedbb6070b35b39d798725049088348`
+- **[ITokenAttributesRepository](./nft/ITokenAttributesRepository.sol)** -
+  Repository for NFT attributes. Use for modular NFT trait systems.
 
-### v0.7.0 Implementation
+- **[IBulkWriter](./nft/IBulkWriter.sol)** - Bulk operations for NFT attributes.
+  Use for efficient batch updates of NFT metadata.
 
-**[v0.7.0/IEntryPoint.sol](./v0.7.0/IEntryPoint.sol)**  
-Interface for the EntryPoint v0.7.0, which is the primary contract responsible
-for handling user operations.
+### 🔐 **Security & Multisig**
 
-- **Address**: `0x0000000071727De22E5E9d8BAf0edAc6f37da032`
-- Contains interfaces for IAggregator and IPaymaster
+**Use these when:** Implementing secure transaction patterns or multisig functionality
 
-**[v0.7.0/IEntryPointSimulations.sol](./v0.7.0/IEntryPointSimulations.sol)**  
-Extended simulation interface for EntryPoint v0.7.0 that provides detailed
-simulation capabilities.
+- **[IGnosisSafe](./IGnosisSafe.sol)** - Industry-standard multisig wallet. Use
+  for secure multi-party asset management and governance.
 
-- **Address**: `0x0000000071727De22E5E9d8BAf0edAc6f37da032` (same as EntryPoint)
+- **[IGnosisSafeL2](./IGnosisSafeL2.sol)** - L2-optimized Gnosis Safe with
+  enhanced event logging. Use for gas-efficient multisig operations.
 
-**[v0.7.0/IERC4337Account.sol](./v0.7.0/IERC4337Account.sol)**  
-Interface for ERC-4337 compatible accounts for v0.7.0, including the
-PackedUserOperation struct.
+- **[IMultiSend](./IMultiSend.sol)** - Batch transaction execution with call and
+  delegatecall support. Use for complex multi-step operations.
 
-**[v0.7.0/ISenderCreator.sol](./v0.7.0/ISenderCreator.sol)**  
-Interface for the SenderCreator helper contract used in v0.7.0 to create new
-account contracts.
+- **[IMultiSendCallOnly](./IMultiSendCallOnly.sol)** - Safer batch execution
+  (call only). Use when you need transaction batching without delegatecall
+  risks.
 
-- **Address**: `0x00000000FC04c59277B65Bc2AC8c843392C3ca4c`
+- **[ISafeExecutor](./ISafeExecutor.sol)** - Safe execution patterns. Use for
+  secure contract interactions with built-in safety checks.
 
-## How to Use These Interfaces
+### 🚀 **Contract Deployment**
 
-To interact with these contracts in your own project:
+**Use these when:** Deploying contracts, especially with deterministic addresses
 
-1. Import the desired interface into your Solidity file:
+- **[ICreateX](./ICreateX.sol)** - Comprehensive deployment factory supporting
+  CREATE, CREATE2, and CREATE3. Use for advanced deployment patterns,
+  cross-chain address consistency, and proxy deployments.
 
-   ```solidity
-   import "@katana/interfaces/IWETH.sol";
-   ```
+- **[ICreate2Deployer](./ICreate2Deployer.sol)** - CREATE2 deployer with safety
+  features. Use for deterministic deployments with additional security.
 
-2. Create an instance of the contract using the interface and address:
+- **[IDeterministicDeploymentProxy](./IDeterministicDeploymentProxy.sol)** -
+  Arachnid's standard proxy for same-address deployments across chains. Use for
+  basic cross-chain contract deployment.
 
-   ```solidity
-   IWETH weth = IWETH(0x17B8Ee96E3bcB3b04b3e8334de4524520C51caB4);
-   ```
+### 🌐 **Cross-chain Infrastructure**
 
-3. Call functions on the contract:
+**Use these when:** Building cross-chain applications or bridges
 
-   ```solidity
-   weth.deposit{value: 1 ether}();
-   ```
+- **[IBridgeL2SovereignChain](./agglayer/IBridgeL2SovereignChain.sol)** - Bridge
+  for cross-chain asset and message transfers. Use for secure inter-chain
+  communication.
 
-## Examples
+-
+  **[IGlobalExitRootManagerL2SovereignChain](./agglayer/IGlobalExitRootManagerL2SovereignChain.sol)**
+  - Manages exit roots for secure withdrawals. Use for cross-chain withdrawal
+  verification.
 
-Check out our example contracts in the `/examples` folder to see how to use
-these interfaces in your own contracts.
+- **[IPolygonZkEVMDeployer](./agglayer/IPolygonZkEVMDeployer.sol)** - Interface
+  for the PolygonZkEVMDeployer contract which manages deployments of rollup
+  components.
 
-### Yearn Contracts
+- **[IPolygonZkEVMTimelock](./agglayer/IPolygonZkEVMTimelock.sol)** - Governance
+  timelock for administrative actions. Use for secure governance operations.
 
-- **[IYearnVault](./yearn/IYearnVault.sol)** - Base interface for Yearn Finance
-  ERC4626-compatible vaults, which extend the ERC20 standard with tokenized
-  vault shares. Includes full ERC4626 functionality plus Yearn-specific features
-  like strategy management, fee configuration, and performance metrics.
+- **[IProxyAdmin](./agglayer/IProxyAdmin.sol)** - Manages transparent proxy
+  upgrades. Use for controlled infrastructure upgrades.
 
-- **[IYvAUSD](./yearn/IYvAUSD.sol)** - Interface for the Yearn AUSD vault, which
-  accepts AUSD deposits and issues yvAUSD tokens. Provides yield-generating
-  capabilities for AUSD holdings with additional controls for deposit limits,
-  emergency shutdown, and fee management. Address:
-  `0xAe4b2FCf45566893Ee5009BA36792D5078e4AD60`
+- **[IBridgeExtension](./agglayer/IBridgeExtension.sol)** - Extended bridge
+  functionality. Use for advanced cross-chain operations with Agglayer / LXLY
+  bridging.
 
-- **[IYvWETH](./yearn/IYvWETH.sol)** - Interface for the Yearn WETH vault, which
-  accepts WETH deposits and issues yvWETH tokens. Offers yield generation on ETH
-  (through WETH) with features for managing deposit limits, strategy
-  withdrawals, and fee configuration. Address:
-  `0xccc0fc2e34428120f985b460b487eb79e3c6fa57`
+- **[ILxLyBridge](./ILxLyBridge.sol)** - Layer X to Layer Y bridge interface.
+  Use for cross-chain asset transfers between different layers.
 
-Todo prompt: Given the changes we've done, and given the new @build_address_utils.js script we built to replace the previous address utils, and given the new type of [chain]Addreesses.sol files we are generating now in @utils/ , let's update @README.md to be much clearer, and to also include all the contracts we have right now. We can omit the addresses in these contracts, since they are in the contract / interface files and can be looked up easily from any of the utils we are generating, but we should
+### 🧮 **Utilities & Helpers**
 
-1. Update the file's general content to be true and not reference old logic
-2. Make sure all our contracts are in there
-3. Make sure all paths are correct, since we did some moving around
-4. Make sure that each contract's description has a "use this when" section, for inspiration.
+**Use these when:** You need common utility functions or gas optimizations
+
+- **[IMulticall3](./IMulticall3.sol)** - Batch multiple read-only calls in a
+  single transaction. Use to reduce RPC calls and improve dApp performance.
+
+- **[IBundler3](./IBundler3.sol)** - Advanced multicall with reentrant callback
+  support. Use for complex multi-contract interactions.
+
+- **[IBatchDistributor](./IBatchDistributor.sol)** - Efficient bulk token
+  distribution. Use for airdrops, payroll, and reward distribution.
+
+- **[IPermit2](./IPermit2.sol)** - Advanced token approval system with
+  signatures and batch operations. Use for better UX in token transfers.
+
+- **[IRIP7212](./IRIP7212.sol)** - secp256r1 signature verification precompile.
+  Use for biometric authentication and secure enclave integration.
+
+- **[IAgoraFaucet](./IAgoraFaucet.sol)** - Testnet faucet for obtaining AUSD
+  test tokens. Use for testnet development and testing.
+
+### 📊 **Price Oracles**
+
+**Use these when:** You need reliable price data for DeFi applications
+
+#### Chainlink Oracles
+
+- **[IAggregatorV3Interface](./oracles/chainlink/IAggregatorV3Interface.sol)** -
+  Base Chainlink aggregator interface
+- **[IEACAggregatorProxy](./oracles/chainlink/IEACAggregatorProxy.sol)** -
+  Chainlink aggregator proxy interface
+- **[IAUSDUSDOracle](./oracles/chainlink/IAUSDUSDOracle.sol)** - AUSD/USD price
+  feed
+- **[IBTCUSDOracle](./oracles/chainlink/IBTCUSDOracle.sol)** - Bitcoin/USD price
+  feed
+- **[IETHUSDOracle](./oracles/chainlink/IETHUSDOracle.sol)** - Ethereum/USD
+  price feed
+- **[IJitoSOLSOLOracle](./oracles/chainlink/IJitoSOLSOLOracle.sol)** -
+  JitoSOL/SOL price feed
+- **[IJitoSOLUSDOracle](./oracles/chainlink/IJitoSOLUSDOracle.sol)** -
+  JitoSOL/USD price feed
+- **[ILBTCBTCOracle](./oracles/chainlink/ILBTCBTCOracle.sol)** - Lombard BTC/BTC
+  price feed
+- **[ILBTCUSDOracle](./oracles/chainlink/ILBTCUSDOracle.sol)** - Lombard BTC/USD
+  price feed
+- **[ILINKUSDOracle](./oracles/chainlink/ILINKUSDOracle.sol)** - LINK/USD price
+  feed
+- **[IMORPHOUSDOracle](./oracles/chainlink/IMORPHOUSDOracle.sol)** - MORPHO/USD
+  price feed
+- **[IPOLUSDOracle](./oracles/chainlink/IPOLUSDOracle.sol)** - POL/USD price
+  feed
+- **[ISOLUSDOracle](./oracles/chainlink/ISOLUSDOracle.sol)** - SOL/USD price
+  feed
+- **[ISUSHIUSDOracle](./oracles/chainlink/ISUSHIUSDOracle.sol)** - SUSHI/USD
+  price feed
+- **[IUSDCUSDOracle](./oracles/chainlink/IUSDCUSDOracle.sol)** - USDC/USD price
+  feed
+- **[IUSDSUSDOracle](./oracles/chainlink/IUSDSUSDOracle.sol)** - USDS/USD price
+  feed
+- **[IUSDTUSDOracle](./oracles/chainlink/IUSDTUSDOracle.sol)** - USDT/USD price
+  feed
+- **[IWBTCBTCOracle](./oracles/chainlink/IWBTCBTCOracle.sol)** - WBTC/BTC price
+  feed
+- **[IWBTCUSDOracle](./oracles/chainlink/IWBTCUSDOracle.sol)** - WBTC/USD price
+  feed
+- **[IweETHETHOracle](./oracles/chainlink/IweETHETHOracle.sol)** - weETH/ETH
+  price feed
+- **[IwstETHETHOracle](./oracles/chainlink/IwstETHETHOracle.sol)** - wstETH/ETH
+  price feed
+- **[IYFIUSDOracle](./oracles/chainlink/IYFIUSDOracle.sol)** - YFI/USD price
+  feed
+- **[IyUSDUSDOracle](./oracles/chainlink/IyUSDUSDOracle.sol)** - yUSD/USD price
+  feed
+
+#### RedStone Oracles
+
+- **[IRedstoneAggregator](./oracles/redstone/IRedstoneAggregator.sol)** - Base
+  RedStone aggregator interface
+- **[IADAUSDOracle](./oracles/redstone/IADAUSDOracle.sol)** - Cardano/USD price
+  feed
+- **[IAUSDUSDOracle](./oracles/redstone/IAUSDUSDOracle.sol)** - AUSD/USD price
+  feed (RedStone)
+- **[IBTCUSDOracle](./oracles/redstone/IBTCUSDOracle.sol)** - Bitcoin/USD price
+  feed (RedStone)
+- **[IETHUSDOracle](./oracles/redstone/IETHUSDOracle.sol)** - Ethereum/USD price
+  feed (RedStone)
+- **[ILBTCBTCOracle](./oracles/redstone/ILBTCBTCOracle.sol)** - Lombard BTC/BTC
+  price feed (RedStone)
+- **[ISUIUSDOracle](./oracles/redstone/ISUIUSDOracle.sol)** - Sui/USD price feed
+- **[IWBTCUSDOracle](./oracles/redstone/IWBTCUSDOracle.sol)** - WBTC/USD price
+  feed (RedStone)
+- **[IweETHETHOracle](./oracles/redstone/IweETHETHOracle.sol)** - weETH/ETH
+  price feed (RedStone)
+- **[IweETHUSDOracle](./oracles/redstone/IweETHUSDOracle.sol)** - weETH/USD
+  price feed (RedStone)
+- **[IwstETHstETHOracle](./oracles/redstone/IwstETHstETHOracle.sol)** -
+  wstETH/stETH price feed (RedStone)
+- **[IwstETHUSDOracle](./oracles/redstone/IwstETHUSDOracle.sol)** - wstETH/USD
+  price feed (RedStone)
+- **[IXRPUSDOracle](./oracles/redstone/IXRPUSDOracle.sol)** - XRP/USD price feed
+
+### ⚡ **Account Abstraction (ERC-4337)**
+
+**Use these when:** Building smart account systems or account abstraction features
+
+#### Common Components
+
+- **[IERC4337](./IERC4337.sol)** - Common interfaces and structures used across
+  both v0.6.0 and v0.7.0 of the ERC-4337 standard, including IStakeManager and
+  INonceManager.
+
+#### v0.6.0 Implementation
+
+- **[IEntryPoint](./AAv0.6.0/IEntryPoint.sol)** - Core entry point for user
+  operations
+- **[IERC4337Account](./AAv0.6.0/IERC4337Account.sol)** - Smart account
+  interface
+- **[ISenderCreator](./AAv0.6.0/ISenderCreator.sol)** - Helper for account
+  creation
+
+#### v0.7.0 Implementation
+
+- **[IEntryPoint](./AAv0.7.0/IEntryPoint.sol)** - Updated entry point with
+  latest features
+- **[IEntryPointSimulations](./AAv0.7.0/IEntryPointSimulations.sol)** -
+  Simulation capabilities for v0.7.0
+- **[IERC4337Account](./AAv0.7.0/IERC4337Account.sol)** - Updated account
+  interface with PackedUserOperation
+- **[ISenderCreator](./AAv0.7.0/ISenderCreator.sol)** - v0.7.0 account creation
+  helper
+
+### 📜 **Legacy & Compatibility**
+
+**Use these when:** Working with legacy systems or needing backward compatibility
+
+- **[Multicall](./MultiCall1.sol)** - Original multicall implementation
+- **[Multicall2](./MultiCall2.sol)** - Enhanced multicall with failure handling
+- **[IERC20](./IERC20.sol)** - Standard ERC-20 token interface
+- **[IERC4626](./IERC4626.sol)** - Tokenized vault standard interface
+
+## 🔧 How to Use These Interfaces
+
+### 1. **Import the Interface**
+
+```solidity
+import "./contracts/tokens/IAUSD.sol";
+import "./contracts/utils/KatanaAddresses.sol";
+```
+
+### 2. **Get the Contract Address**
+
+```solidity
+address ausdAddress = KatanaAddresses.getAUSDAddress();
+```
+
+### 3. **Create Contract Instance**
+
+```solidity
+IAUSD ausd = IAUSD(ausdAddress);
+```
+
+### 4. **Interact with the Contract**
+
+```solidity
+uint256 balance = ausd.balanceOf(msg.sender);
+ausd.transfer(recipient, amount);
+```
+
+## 🔄 Origin Chain Addresses
+
+For cross-chain operations, some contracts exist on **origin chains**
+(Ethereum/Sepolia) while being used in the context of **destination chains**
+(Katana/Bokuto/Tatara):
+
+```solidity
+// Access origin chain addresses from destination chain context
+import "./contracts/utils/KatanaOriginAddresses.sol";
+
+contract VaultBridgeIntegration {
+    function bridgeUSDC() external {
+        // Get the origin USDC vault address (on Ethereum)  
+        address originVault = KatanaOriginAddresses.getvbUSDCAddress();
+        
+        // Get the destination bridged token (on Katana)
+        address bridgedToken = KatanaAddresses.getbvbUSDCAddress();
+    }
+}
+```
+
+**Chain Context Mapping:**
+
+- **Katana context** → Origin addresses from **Ethereum**
+- **Bokuto/Tatara context** → Origin addresses from **Sepolia**
+
+## 🏗️ Examples
+
+Check out the `/examples` folder in the root repository for complete examples
+showing how to:
+
+- Build lending interfaces with Morpho
+- Create DEX trading bots with SushiSwap  
+- Implement NFT marketplaces with Seaport
+- Build cross-chain applications with Vault Bridge
+- Create yield strategies with Yearn and MetaMorpho
+
+## 🔄 Keeping Addresses Updated
+
+Contract addresses are automatically extracted from the `@custom:network`
+doccomments in each interface file. To add a new contract:
+
+1. Create the interface file with proper `@custom:tatara`, `@custom:katana`,
+   `@custom:bokuto` tags
+2. Run `bun run build:addressutils` to regenerate address utilities
+3. Use the new contract in your applications via the address management system
+
+This ensures your addresses stay synchronized across Solidity libraries,
+TypeScript utilities, and documentation.
