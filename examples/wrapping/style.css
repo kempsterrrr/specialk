@@ -196,3 +196,89 @@ footer {
   color: var(--light-text);
   font-size: 0.9rem;
 }
+
+/* ETH/bvbEth Operations */
+#eth-weth-section {
+  margin-top: 2rem;
+}
+
+.balances-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.balance-item {
+  flex: 1;
+  background-color: #f5f7fa;
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+}
+
+.balance-item .label {
+  font-size: 0.9rem;
+  color: #687588;
+  margin-bottom: 0.4rem;
+}
+
+.balance-item .value {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.operations-container {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.operation-card {
+  flex: 1;
+  border: 1px solid #e0e4e9;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.operation-card h4 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.operation-description {
+  font-size: 0.85rem;
+  color: #687588;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #d0d6df;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #1a73e8;
+}
+
+@media (max-width: 768px) {
+  .balances-container,
+  .operations-container {
+    flex-direction: column;
+  }
+}

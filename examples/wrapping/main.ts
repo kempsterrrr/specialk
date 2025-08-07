@@ -1,4 +1,4 @@
-import { createPublicClient, createWalletClient, http, custom, formatEther, formatUnits, PublicClient, WalletClient } from 'viem';
+import { createPublicClient, createWalletClient, http, custom, formatEther, formatUnits, parseUnits, PublicClient, WalletClient } from 'viem';
 import { addresses, CHAIN_IDS } from '../../utils/addresses/index.js';
 
 // Import ABIs from their respective locations
@@ -36,6 +36,14 @@ const vbusdcOriginDataElement = document.getElementById('vbusdc-origin-data') as
 const vbethOriginDataElement = document.getElementById('vbeth-origin-data') as HTMLElement;
 const vbusdcOriginAddressElement = document.getElementById('vbusdc-origin-address') as HTMLElement;
 const vbethOriginAddressElement = document.getElementById('vbeth-origin-address') as HTMLElement;
+
+// ETH/bvbEth wrapping elements
+const ethBalanceElement = document.getElementById('eth-balance') as HTMLElement;
+const wethBalanceElement = document.getElementById('weth-balance') as HTMLElement;
+const wrapAmountInput = document.getElementById('wrap-amount') as HTMLInputElement;
+const unwrapAmountInput = document.getElementById('unwrap-amount') as HTMLInputElement;
+const wrapButton = document.getElementById('wrap-button') as HTMLButtonElement;
+const unwrapButton = document.getElementById('unwrap-button') as HTMLButtonElement;
 
 // Check for wallet
 const hasEthereum = typeof window !== 'undefined' && window.ethereum;
@@ -244,6 +252,9 @@ async function connectWallet() {
       walletStatus.textContent = `Connected: ${shortenAddress(accounts[0])}`;
       connectWalletButton.textContent = 'Connected';
       connectWalletButton.disabled = true;
+      
+      // Load balances after wallet connection
+      loadBalances();
     }
   } catch (error) {
     console.error('Connection error:', error);
@@ -615,6 +626,24 @@ async function loadVBETHOriginData() {
   }
 }
 
+// Helper function to create chain config for viem
+function createChainConfig() {
+  return {
+    id: currentChainId,
+    name: currentChainInfo?.name || 'Unknown',
+    nativeCurrency: {
+      decimals: 18,
+      name: 'Ether',
+      symbol: 'ETH',
+    },
+    rpcUrls: {
+      default: {
+        http: ['http://localhost:8545'],
+      },
+    },
+  };
+}
+
 // Load all contract data
 async function loadContractData() {
   // Load data sequentially to avoid overloading the server
@@ -647,6 +676,182 @@ async function loadContractData() {
     console.log('✅ Contract data loading complete');
   } catch (error) {
     console.error('Failed to load contract data:', error);
+  }
+}
+
+// Load ETH and bvbEth balances
+async function loadBalances() {
+  if (!walletClient || !publicClient) {
+    ethBalanceElement.textContent = 'Wallet not connected';
+    wethBalanceElement.textContent = 'Wallet not connected';
+    return;
+  }
+  
+  try {
+    // Get connected account
+    const accounts = await walletClient.getAddresses();
+    if (accounts.length === 0) {
+      return;
+    }
+    const account = accounts[0];
+    
+    // Get bvbEth address for the current chain
+    const wethAddress = addresses.getAddress('bvbEth');
+    if (!wethAddress) {
+      ethBalanceElement.textContent = 'bvbEth not available';
+      wethBalanceElement.textContent = 'bvbEth not available';
+      return;
+    }
+    
+    // Read ETH balance
+    const ethBalance = await publicClient.getBalance({ address: account });
+    ethBalanceElement.textContent = `${formatEther(ethBalance)} ETH`;
+    
+    // Read bvbEth balance
+    const wethBalance = await publicClient.readContract({
+      address: wethAddress,
+      abi: WETH_ABI,
+      functionName: 'balanceOf',
+      args: [account]
+    });
+    
+    wethBalanceElement.textContent = `${formatEther(wethBalance as bigint)} bvbEth`;
+    
+    // Enable buttons if wallet is connected
+    wrapButton.disabled = false;
+    unwrapButton.disabled = false;
+  } catch (error) {
+    console.error('Error loading balances:', error);
+    ethBalanceElement.textContent = 'Error loading';
+    wethBalanceElement.textContent = 'Error loading';
+  }
+}
+
+// Wrap ETH to bvbEth
+async function wrapEth() {
+  if (!walletClient || !publicClient) {
+    alert('Please connect your wallet first');
+    return;
+  }
+  
+  const wrapAmount = wrapAmountInput.value;
+  if (!wrapAmount || parseFloat(wrapAmount) <= 0) {
+    alert('Please enter a valid amount');
+    return;
+  }
+  
+  try {
+    const accounts = await walletClient.getAddresses();
+    const account = accounts[0];
+    
+    // Get bvbEth address for the current chain
+    const wethAddress = addresses.getAddress('bvbEth');
+    if (!wethAddress) {
+      alert('bvbEth not available on this chain');
+      return;
+    }
+    
+    // Convert the input value to Wei (bigint)
+    const wrapAmountWei = parseUnits(wrapAmount, 18);
+    
+
+    
+    // Show loading state
+    wrapButton.disabled = true;
+    wrapButton.textContent = 'Processing...';
+    
+    // Call bvbEth deposit function
+    const hash = await walletClient.writeContract({
+      address: wethAddress,
+      abi: WETH_ABI,
+      functionName: 'deposit',
+      value: wrapAmountWei,
+      account,
+      chain: createChainConfig()
+    });
+    
+    // Wait for transaction to be mined
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    
+    if (receipt.status === 'success') {
+      alert(`Successfully wrapped ${wrapAmount} ETH to bvbEth!`);
+      
+      // Clear input and update balances
+      wrapAmountInput.value = '';
+      loadBalances();
+    } else {
+      alert('Transaction failed. Please try again.');
+    }
+  } catch (error) {
+    console.error('Error wrapping ETH:', error);
+    alert('Error wrapping ETH. See console for details.');
+  } finally {
+    // Reset button state
+    wrapButton.disabled = false;
+    wrapButton.textContent = 'Wrap ETH';
+  }
+}
+
+// Unwrap bvbEth to ETH
+async function unwrapWeth() {
+  if (!walletClient || !publicClient) {
+    alert('Please connect your wallet first');
+    return;
+  }
+  
+  const unwrapAmount = unwrapAmountInput.value;
+  if (!unwrapAmount || parseFloat(unwrapAmount) <= 0) {
+    alert('Please enter a valid amount');
+    return;
+  }
+  
+  try {
+    const accounts = await walletClient.getAddresses();
+    const account = accounts[0];
+    
+    // Get bvbEth address for the current chain
+    const wethAddress = addresses.getAddress('bvbEth');
+    if (!wethAddress) {
+      alert('bvbEth not available on this chain');
+      return;
+    }
+    
+    // Convert the input value to Wei (bigint)
+    const unwrapAmountWei = parseUnits(unwrapAmount, 18);
+    
+    // Show loading state
+    unwrapButton.disabled = true;
+    unwrapButton.textContent = 'Processing...';
+    
+    // Call bvbEth withdraw function
+    const hash = await walletClient.writeContract({
+      address: wethAddress,
+      abi: WETH_ABI,
+      functionName: 'withdraw',
+      args: [unwrapAmountWei],
+      account,
+      chain: createChainConfig()
+    });
+    
+    // Wait for transaction to be mined
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    
+    if (receipt.status === 'success') {
+      alert(`Successfully unwrapped ${unwrapAmount} bvbEth to ETH!`);
+      
+      // Clear input and update balances
+      unwrapAmountInput.value = '';
+      loadBalances();
+    } else {
+      alert('Transaction failed. Please try again.');
+    }
+  } catch (error) {
+    console.error('Error unwrapping bvbEth:', error);
+    alert('Error unwrapping bvbEth. See console for details.');
+  } finally {
+    // Reset button state
+    unwrapButton.disabled = false;
+    unwrapButton.textContent = 'Unwrap bvbEth';
   }
 }
 
@@ -695,6 +900,8 @@ document.head.appendChild(style);
 
 // Event listeners
 connectWalletButton.addEventListener('click', connectWallet);
+wrapButton.addEventListener('click', wrapEth);
+unwrapButton.addEventListener('click', unwrapWeth);
 
 // Initialize the app
 initialize();
