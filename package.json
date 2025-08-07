@@ -11,6 +11,7 @@
     "build:contractdir": "bun scripts/generate_contract_dir.js",
     "build:addressutils": "bun scripts/build_address_utils.js",
     "build:mcpserver": "bun build.js --mcp-only",
+    "build:examples": "bun build.js --examples-only",
     "build:all": "bun run build:addressutils && bun run build:abi && bun run build:contractdir && bun run build && bun run build:mcpserver",
     "start:mcp": "bun dist-mcp/index.js"
   },
