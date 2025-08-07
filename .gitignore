@@ -32,6 +32,7 @@ yarn.lock
 
 # Build output
 dist/
+dist-examples/
 build/
 out/
 
