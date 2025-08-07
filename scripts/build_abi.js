@@ -114,10 +114,14 @@ function processContract(contractFile) {
     try {
       execSync(solcCmd, { stdio: 'pipe' });
     } catch (solcError) {
-      console.error(`  - Error generating ABI for ${fileName}: ${solcError.message}`);
       // If solc fails, try solcjs
       solcCmd = `solcjs --abi --include-path node_modules/ --base-path . -o ${TEMP_DIR} ${path}`;
-      execSync(solcCmd, { stdio: 'pipe' });
+      try{
+        execSync(solcCmd, { stdio: 'pipe' });
+      } catch (solcjsError){
+        console.error(`  - Error generating ABI for ${fileName}: ${solcjsError.message}`);
+      }
+      
     }
     
     // Find the generated ABI file
