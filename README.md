@@ -261,7 +261,7 @@ The MCP server provides a seamless interface between AI tools and Foundry's
 blockchain development toolkit, making it easier to build and interact with
 contracts on Katana.
 
-## Foundry commands (run from repo root)
+### 6️⃣ **Foundry commands (run from repo root)**
 
 The following convenience commands are available via Bun scripts in
 `package.json` and run from the repository root:
@@ -332,7 +332,27 @@ The following convenience commands are available via Bun scripts in
       --sig 'run(uint256,uint256,bool)' 5000000000000000 100 true
     ```
 
-### 6️⃣ **Contract Address Mapping**
+#### Verifying contracts programmatically
+
+To verify a Katana-deployed contract via the unified Etherscan API key, install
+nightly
+[per their guide](https://docs.etherscan.io/etherscan-v2/contract-verification/verify-with-foundry).
+
+Then:
+
+```bash
+cd forge
+forge verify-contract --watch --root . --chain katana \
+  {ADDRESS} \
+  src/{CONTRACTFILE.sol}:{CONTRACTNAME} \
+  --verifier etherscan \
+  --etherscan-api-key {APIKEY} \
+  --optimizer-runs 200
+```
+
+Obtain the etherscan key [in the API dash](https://etherscan.io/apidashboard).
+
+### 7️⃣ **Contract Address Mapping**
 
 The kit includes a utility to generate a JavaScript mapping of all contract
 addresses for Tatara testnet, Katana mainnet, and Bokuto testnet. This
