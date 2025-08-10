@@ -261,7 +261,98 @@ The MCP server provides a seamless interface between AI tools and Foundry's
 blockchain development toolkit, making it easier to build and interact with
 contracts on Katana.
 
-### 6️⃣ **Contract Address Mapping**
+### 6️⃣ **Foundry commands (run from repo root)**
+
+The following convenience commands are available via Bun scripts in
+`package.json` and run from the repository root:
+
+- **forge:deps**: Set up Foundry dependencies (clones `forge-std` if missing)
+
+  ```sh
+  bun run forge:deps
+  ```
+
+  You don't need to generally run this ever - it's automatic during `build:all`.
+
+- **forge:build**: Build the contracts in the `forge/` workspace
+
+  ```sh
+  bun run forge:build
+  ```
+
+  Compiles your contracts, creating deployable artifacts.
+
+- **forge:test**: Run the Foundry test suite in the `forge/` workspace
+
+  ```sh
+  bun run forge:test
+  ```
+
+- **forge:deploy**: Deploy a Foundry script target using a wrapper around `forge script`
+
+  Defaults if not provided:
+
+- **RPC URL**: `http://localhost:8545`
+- **Private key**: `0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80` (unlocked Anvil demo account)
+
+  Chain-aware usage (the `@script/` prefix is optional):
+
+  ```sh
+  # Local anvil (uses defaults shown above)
+  bun run forge:deploy -- @script/DaikatanaPayments.s.sol:DaikatanaPaymentsScript --chain local
+
+  # Katana mainnet (reads KATANA_RPC_URL and KATANA_DEPLOYER_KEY from .env)
+  bun run forge:deploy -- @script/DaikatanaPayments.s.sol:DaikatanaPaymentsScript --chain katana
+
+  # Tatara/Bokuto testnets
+  bun run forge:deploy -- @script/Counter.s.sol:CounterScript --chain tatara
+  bun run forge:deploy -- @script/Counter.s.sol:CounterScript --chain bokuto
+
+  # Override only the private key while keeping chain RPC from .env
+  bun run forge:deploy -- @script/DaikatanaPayments.s.sol:DaikatanaPaymentsScript \
+    --chain katana \
+    --private-key 0xYOUR_PRIVATE_KEY
+
+  # Override both explicitly (bypasses .env values for the chain)
+  bun run forge:deploy -- @script/Counter.s.sol:CounterScript \
+    --rpc-url https://your.rpc/ \
+    --private-key 0xYOUR_PRIVATE_KEY
+  ```
+
+  Notes:
+
+- The wrapper auto-adds `--broadcast` unless you already provided it.
+- Extra flags are forwarded to `forge script` as-is.
+- Script path is normalized to `forge/script/...` under the `forge/` workspace.
+- When using `--sig`, put it after a literal `--` and quote the signature to avoid shell parsing:
+
+    ```sh
+    bun run forge:deploy -- @script/DaikatanaPayments.s.sol:DaikatanaPaymentsScript \
+      --chain local \
+      --sig 'run(uint256,uint256,bool)' 5000000000000000 100 true
+    ```
+
+#### Verifying contracts programmatically
+
+To verify a Katana-deployed contract via the unified Etherscan API key, install
+nightly
+[per their guide](https://docs.etherscan.io/etherscan-v2/contract-verification/verify-with-foundry).
+
+Then:
+
+```bash
+cd forge
+forge verify-contract --watch --root . --chain katana \
+  {ADDRESS} \
+  src/{CONTRACTFILE.sol}:{CONTRACTNAME} \
+  --verifier etherscan \
+  --etherscan-api-key {APIKEY} \
+  --optimizer-runs 200
+```
+
+Obtain the etherscan key [in the API dash](https://etherscan.io/apidashboard).
+
+### 7️⃣ **Contract Address Mapping**
 
 The kit includes a utility to generate a JavaScript mapping of all contract
 addresses for Tatara testnet, Katana mainnet, and Bokuto testnet. This
