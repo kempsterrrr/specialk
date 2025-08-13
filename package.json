@@ -12,7 +12,7 @@
     "build:mcpserver": "bun build.js --mcp-only",
     "build:all": "bun run build:addresses && bun run build:abi && bun run build:contractdir && bun run build && bun run build:mcpserver",
     "start:mcp": "bun dist-mcp/index.js",
-    "deploy:arweave": "bun run build:all && permaweb-deploy --arns-name specialkevmtes --ario-process testnet --sig-key ethereum"
+    "deploy:arweave": "bun run build:all && permaweb-deploy --arns-name <ARNS_NAME> --sig-key ethereum"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.2",

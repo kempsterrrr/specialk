@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feat-evm-signer-for-arns-deployment
 
 jobs:
   Arweave-build-and-deploy:
