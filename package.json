@@ -12,6 +12,7 @@
     "build:addressutils": "bun scripts/build_address_utils.js",
     "build:mcpserver": "bun build.js --mcp-only",
     "build:examples": "bun build.js --examples-only",
+    "generate_mintlify_context": "bun scripts/generate_mintlify_context.js",
     "forge:deps": "mkdir -p forge/lib && [ -d forge/lib/forge-std/.git ] || git clone --depth 1 https://github.com/foundry-rs/forge-std forge/lib/forge-std && chmod +x scripts/forge-deploy.sh",
     "forge:build": "cd forge && forge build && cd ..",
     "forge:test": "cd forge && forge test && cd ..",

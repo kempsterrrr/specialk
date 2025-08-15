@@ -66,3 +66,4 @@ utils/contractdir*.json
 
 # Not using submodules anymore
 .gitmodules
+mintlify_context/
