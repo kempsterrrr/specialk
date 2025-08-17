@@ -17,7 +17,7 @@ library TataraAddresses {
      * @return The IAgoraFaucet contract address
      */
     function getAgoraFaucetAddress() internal pure returns (address) {
-        return 0xba804DF5c476E8EaeF87BF8085F295300ccE2a49;
+        return 0xd236c18D274E54FAccC3dd9DDA4b27965a73ee6C;
     }
 
     /**
