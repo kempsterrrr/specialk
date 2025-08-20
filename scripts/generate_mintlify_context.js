@@ -8,6 +8,8 @@ const ROOT_DIR = process.cwd();
 const CONTRACT_DIR_JSON = join(ROOT_DIR, 'utils', 'contractdir.json');
 const OUTPUT_DIR = join(ROOT_DIR, 'mintlify_context');
 const GITIGNORE_FILE = join(ROOT_DIR, '.gitignore');
+const NAV_TAB_NAME = 'Contracts';
+const NAV_BASE_PATH = 'mintlify_context';
 
 function ensureGitignoreHasMintlify() {
   try {
@@ -209,6 +211,7 @@ function main() {
 
   const contractDir = loadContractDirectory();
   let count = 0;
+  const writtenFiles = [];
 
   for (const contract of contractDir) {
     const outPath = filePathForContract(contract);
@@ -216,6 +219,9 @@ function main() {
     const markdown = generateMarkdown(contract);
     writeFileSync(outPath, markdown, 'utf8');
     count += 1;
+    // Track relative path from OUTPUT_DIR for navigation building
+    const relativeFromOutput = outPath.replace(OUTPUT_DIR + '/', '');
+    writtenFiles.push(relativeFromOutput);
   }
 
   // Add a simple index file for convenience
@@ -228,10 +234,98 @@ function main() {
     indexLines.push('');
     indexLines.push('Generated contract documentation for Mintlify RAG.');
     writeFileSync(join(OUTPUT_DIR, 'index.md'), indexLines.join('\n'), 'utf8');
+    writtenFiles.push('index.md');
   } catch {}
+
+  // Build and write Mintlify navigation tab JSON
+  try {
+    const tab = buildMintlifyTabObject(writtenFiles);
+    writeFileSync(join(OUTPUT_DIR, 'docs_tab.json'), JSON.stringify(tab, null, 2), 'utf8');
+  } catch (err) {
+    console.warn('Warning: failed to build docs_tab.json:', err?.message || err);
+  }
 
   console.log(`✅ Wrote ${count} markdown files to ${OUTPUT_DIR}`);
 }
 
 main();
+
+function buildMintlifyTabObject(files) {
+  // files: relative paths under OUTPUT_DIR, e.g. 'vb/tokens/IvbETH.md'
+  const tree = {};
+
+  function addFile(relPath) {
+    if (!relPath || !relPath.endsWith('.md')) return;
+    const parts = relPath.split('/');
+    let node = tree;
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i];
+      const isFile = i === parts.length - 1;
+      if (isFile) {
+        node.__files = node.__files || [];
+        node.__files.push(part);
+      } else {
+        node[part] = node[part] || {};
+        node = node[part];
+      }
+    }
+  }
+
+  for (const f of files) addFile(f);
+
+  // Helper to convert a directory node into a group object
+  function buildGroup(dirName, node, parentSegments) {
+    const pages = [];
+    const groups = [];
+
+    const filesHere = (node.__files || []).filter(name => name.toLowerCase() !== 'index.md');
+    filesHere.sort((a, b) => a.localeCompare(b));
+    for (const file of filesHere) {
+      const slug = file.replace(/\.md$/i, '');
+      const fullPath = [NAV_BASE_PATH, ...parentSegments, dirName, slug].filter(Boolean).join('/');
+      pages.push(fullPath);
+    }
+
+    for (const [key, child] of Object.entries(node)) {
+      if (key === '__files') continue;
+      groups.push(buildGroup(key, child, [...parentSegments, dirName]));
+    }
+
+    const groupObj = { group: dirName };
+    if (pages.length > 0) groupObj.pages = pages;
+    if (groups.length > 0) groupObj.groups = groups;
+    return groupObj;
+  }
+
+  // Build top-level pages for files at root (excluding index.md)
+  const rootPages = [];
+  const rootFiles = (tree.__files || []).filter(name => name.toLowerCase() !== 'index.md');
+  rootFiles.sort((a, b) => a.localeCompare(b));
+  for (const file of rootFiles) {
+    const slug = file.replace(/\.md$/i, '');
+    rootPages.push([NAV_BASE_PATH, slug].join('/'));
+  }
+
+  // Build top-level groups from top-level directories
+  const topGroups = [];
+  for (const [key, child] of Object.entries(tree)) {
+    if (key === '__files') continue;
+    topGroups.push(buildGroup(key, child, []));
+  }
+
+  const tab = { tab: NAV_TAB_NAME };
+
+  // Include index page and other root pages at the tab level
+  const tabPages = [];
+  if ((tree.__files || []).includes('index.md')) tabPages.push(`${NAV_BASE_PATH}/index`);
+  if (tabPages.length > 0) tab.pages = tabPages;
+
+  // Put root-level pages (without a folder) into a Utilities group so they show up in the menu
+  if (rootPages.length > 0) {
+    topGroups.unshift({ group: 'utilities', pages: rootPages });
+  }
+
+  if (topGroups.length > 0) tab.groups = topGroups;
+  return tab;
+}
 
