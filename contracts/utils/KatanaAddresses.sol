@@ -293,6 +293,14 @@ library KatanaAddresses {
     }
 
     /**
+     * @notice Returns the address of IPROVE
+     * @return The IPROVE contract address
+     */
+    function getPROVEAddress() internal pure returns (address) {
+        return 0xb244Add9FE6cB17558221e4Dfea960e680CCD29b;
+    }
+
+    /**
      * @notice Returns the address of IRedSnwapper
      * @return The IRedSnwapper contract address
      */
