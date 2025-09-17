@@ -2,6 +2,18 @@ import { build } from 'esbuild';
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Project-root import alias: allows imports like '@/utils/...'
+const rootAliasPlugin = {
+  name: 'root-alias',
+  setup(b) {
+    b.onResolve({ filter: /^@\// }, args => {
+      const rel = args.path.slice(2); // strip '@/'
+      const abs = path.resolve(process.cwd(), rel);
+      return { path: abs };
+    });
+  }
+};
+
 async function buildProject() {
   console.log('🏗️ Building project...');
 
@@ -14,18 +26,6 @@ async function buildProject() {
 
   try {
     // Build TypeScript
-    // Simple alias plugin to allow imports like '@/utils/...'
-    const rootAliasPlugin = {
-      name: 'root-alias',
-      setup(b) {
-        b.onResolve({ filter: /^@\// }, args => {
-          const rel = args.path.slice(2); // strip '@/'
-          const abs = path.resolve(process.cwd(), rel);
-          return { path: abs };
-        });
-      }
-    };
-
     await build({
       entryPoints: ['./src/main.ts'],
       outfile: './dist/main.js',
@@ -86,18 +86,6 @@ async function buildMcpServer() {
 
   try {
     // Build MCP server
-    // Reuse alias plugin for MCP build as well (harmless if unused)
-    const rootAliasPlugin = {
-      name: 'root-alias',
-      setup(b) {
-        b.onResolve({ filter: /^@\// }, args => {
-          const rel = args.path.slice(2);
-          const abs = path.resolve(process.cwd(), rel);
-          return { path: abs };
-        });
-      }
-    };
-
     await build({
       entryPoints: ['./utils/mcp-server/index.ts'],
       outfile: './dist-mcp/index.js',
@@ -202,17 +190,6 @@ async function buildExamples() {
       }
 
       // Build TypeScript for this example
-      const rootAliasPlugin = {
-        name: 'root-alias',
-        setup(b) {
-          b.onResolve({ filter: /^@\// }, args => {
-            const rel = args.path.slice(2);
-            const abs = path.resolve(process.cwd(), rel);
-            return { path: abs };
-          });
-        }
-      };
-
       await build({
         entryPoints: [mainTsPath],
         outfile: path.join(outputPath, 'main.js'),
