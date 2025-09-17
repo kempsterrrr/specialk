@@ -6,7 +6,7 @@
     "prebuild": "bun utils/phonehome.ts --event build",
     "build": "bun build.js",
     "predev": "bun utils/phonehome.ts --event dev",
-    "dev": "cd dist && npx http-server",
+    "dev": "npx http-server dist",
     "prestart:anvil": "bun utils/phonehome.ts --event start:anvil",
     "start:anvil": "chmod +x scripts/start_anvil.sh && scripts/start_anvil.sh",
     "preverify:anvil": "bun utils/phonehome.ts --event verify:anvil",
