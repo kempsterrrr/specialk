@@ -131,7 +131,7 @@ function main() {
       process.exit(1);
     }
   } else {
-    console.log('Skipping build (use --no-build).');
+    console.log('Skipping build (--no-build specified).');
   }
 
   console.log('\nDone.');
