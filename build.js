@@ -14,6 +14,18 @@ async function buildProject() {
 
   try {
     // Build TypeScript
+    // Simple alias plugin to allow imports like '@/utils/...'
+    const rootAliasPlugin = {
+      name: 'root-alias',
+      setup(b) {
+        b.onResolve({ filter: /^@\// }, args => {
+          const rel = args.path.slice(2); // strip '@/'
+          const abs = path.resolve(process.cwd(), rel);
+          return { path: abs };
+        });
+      }
+    };
+
     await build({
       entryPoints: ['./src/main.ts'],
       outfile: './dist/main.js',
@@ -23,10 +35,12 @@ async function buildProject() {
       platform: 'browser',
       loader: {
         '.ts': 'ts',
+        '.json': 'json',
       },
       define: {
         'process.env.NODE_ENV': '"production"',
-      }
+      },
+      plugins: [rootAliasPlugin]
     });
 
     console.log('✅ TypeScript compiled successfully.');
@@ -72,6 +86,18 @@ async function buildMcpServer() {
 
   try {
     // Build MCP server
+    // Reuse alias plugin for MCP build as well (harmless if unused)
+    const rootAliasPlugin = {
+      name: 'root-alias',
+      setup(b) {
+        b.onResolve({ filter: /^@\// }, args => {
+          const rel = args.path.slice(2);
+          const abs = path.resolve(process.cwd(), rel);
+          return { path: abs };
+        });
+      }
+    };
+
     await build({
       entryPoints: ['./utils/mcp-server/index.ts'],
       outfile: './dist-mcp/index.js',
@@ -81,11 +107,13 @@ async function buildMcpServer() {
       platform: 'node',
       loader: {
         '.ts': 'ts',
+        '.json': 'json',
       },
       external: ['child_process', 'fs', 'path', 'os', 'util'],
       define: {
         'process.env.NODE_ENV': '"production"',
-      }
+      },
+      plugins: [rootAliasPlugin]
     });
 
     console.log('✅ MCP server compiled successfully.');
@@ -174,6 +202,17 @@ async function buildExamples() {
       }
 
       // Build TypeScript for this example
+      const rootAliasPlugin = {
+        name: 'root-alias',
+        setup(b) {
+          b.onResolve({ filter: /^@\// }, args => {
+            const rel = args.path.slice(2);
+            const abs = path.resolve(process.cwd(), rel);
+            return { path: abs };
+          });
+        }
+      };
+
       await build({
         entryPoints: [mainTsPath],
         outfile: path.join(outputPath, 'main.js'),
@@ -183,10 +222,12 @@ async function buildExamples() {
         platform: 'browser',
         loader: {
           '.ts': 'ts',
+          '.json': 'json',
         },
         define: {
           'process.env.NODE_ENV': '"production"',
-        }
+        },
+        plugins: [rootAliasPlugin]
       });
 
       console.log(`✅ TypeScript compiled for ${example}`);
