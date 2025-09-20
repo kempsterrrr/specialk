@@ -17,7 +17,7 @@ library TataraAddresses {
      * @return The IAgoraFaucet contract address
      */
     function getAgoraFaucetAddress() internal pure returns (address) {
-        return 0xba804DF5c476E8EaeF87BF8085F295300ccE2a49;
+        return 0xd236c18D274E54FAccC3dd9DDA4b27965a73ee6C;
     }
 
     /**
@@ -261,6 +261,14 @@ library TataraAddresses {
     }
 
     /**
+     * @notice Returns the address of IRedSnwapper
+     * @return The IRedSnwapper contract address
+     */
+    function getRedSnwapperAddress() internal pure returns (address) {
+        return 0xAC4c6e212A361c968F1725b4d055b47E63F80b75;
+    }
+
+    /**
      * @notice Returns the address of IRIP7212
      * @return The IRIP7212 contract address
      */
@@ -298,6 +306,22 @@ library TataraAddresses {
      */
     function getSushiRouterAddress() internal pure returns (address) {
         return 0xAC4c6e212A361c968F1725b4d055b47E63F80b75;
+    }
+
+    /**
+     * @notice Returns the address of ISushiTickLens
+     * @return The ISushiTickLens contract address
+     */
+    function getSushiTickLensAddress() internal pure returns (address) {
+        return 0xb46e319390de313b8cc95ea5aa30c7bbfd79da94;
+    }
+
+    /**
+     * @notice Returns the address of ISushiV2Factory
+     * @return The ISushiV2Factory contract address
+     */
+    function getSushiV2FactoryAddress() internal pure returns (address) {
+        return 0xb45e53277a7e0f1d35f2a77160e91e25507f1763;
     }
 
     /**
@@ -418,6 +442,14 @@ library TataraAddresses {
      */
     function getSushiV3PositionManagerAddress() internal pure returns (address) {
         return 0x1400feFD6F9b897970f00Df6237Ff2B8b27Dc82C;
+    }
+
+    /**
+     * @notice Returns the address of UniswapV2Router02
+     * @return The UniswapV2Router02 contract address
+     */
+    function getUniswapV2Router02Address() internal pure returns (address) {
+        return 0x57bffa72db682f7eb6c132dae03ff36bbeb0c459;
     }
 
 }
