@@ -29,7 +29,7 @@
     "forge:deploy": "bash scripts/forge-deploy.sh",
     "build:all": "bun run forge:deps && bun run build:addressutils && bun run build:abi && bun run build:contractdir && bun run build && bun run build:mcpserver",
     "predeploy:arns": "bun utils/phonehome.ts --event deploy:arns",
-    "deploy:arns": "bun run build:all && permaweb-deploy --arns-name $ARNS_NAME --sig-type ethereum"
+    "deploy:arns": "bun run build:all && permaweb-deploy --arns-name $ARNS_NAME --sig-type ethereum",
     "prestart:mcp": "bun utils/phonehome.ts --event start:mcp",
     "start:mcp": "bun dist-mcp/index.js",
     "prefork": "bun utils/phonehome.ts --event fork",
